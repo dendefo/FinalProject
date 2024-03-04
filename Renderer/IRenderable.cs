@@ -1,12 +1,11 @@
 ﻿using System.Drawing;
 using System.Numerics;
 
-namespace Renderer.Renderer
+namespace Renderer
 {
     public interface IRenderable<T>
     {
         Vector2 Position { get; set; }
-        T Visual { get; set; }
-        Color Color { get; set; }
+        VisualRepresentation<T> Visuals { get; set; }
     }
 }

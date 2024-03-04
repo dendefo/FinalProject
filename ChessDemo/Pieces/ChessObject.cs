@@ -1,14 +1,13 @@
 ﻿using QuarterEngine.Core;
+using Renderer;
 using System.Drawing;
 
 namespace QuarterEngine.ChessDemo.Pieces
 {
     internal abstract class ChessObject<T> : TileObject<T>
     {
-        public ConsoleColor ObjectColor { get; protected set; }
-        public ChessObject(int PlayerId)
+        public ChessObject(int PlayerId,VisualRepresentation<T> visuals) : base(visuals)
         {
-            ObjectColor = PlayerId == 0 ? ConsoleColor.Black : ConsoleColor.DarkGray;
         }
     }
 }
