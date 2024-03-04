@@ -1,11 +1,10 @@
-﻿using FinalProject.Engine;
+﻿using QuarterEngine.Core;
+using System.Drawing;
 
-namespace FinalProject.ChessDemo.Pieces
+namespace QuarterEngine.ChessDemo.Pieces
 {
-    internal abstract class ChessObject : ITileObject
+    internal abstract class ChessObject<T> : TileObject<T>
     {
-        public char Symbol { get; protected set; }
-
         public ConsoleColor ObjectColor { get; protected set; }
         public ChessObject(int PlayerId)
         {

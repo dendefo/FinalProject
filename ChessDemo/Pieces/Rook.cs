@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
-namespace FinalProject.ChessDemo.Pieces
+namespace QuarterEngine.ChessDemo.Pieces
 {
-    internal class Rook : ChessObject
+    internal class Rook<T> : ChessObject<T>
     {
-        public Rook(int PlayerId) : base(PlayerId)
+        public Rook(int PlayerId,T visual) : base(PlayerId)
         {
-            Symbol = 'R';
+            Visual = visual;
         }
     }
 }

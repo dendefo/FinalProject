@@ -1,10 +1,10 @@
-﻿namespace FinalProject.ChessDemo.Pieces
+﻿namespace QuarterEngine.ChessDemo.Pieces
 {
-    internal class Pawn : ChessObject
+    internal class Pawn<T> : ChessObject<T>
     {
-        public Pawn(int PlayerId):base(PlayerId)
+        public Pawn(int PlayerId,T visual):base(PlayerId)
         {
-            Symbol = 'P';
+            Visual = visual;
         }
     }
 }
