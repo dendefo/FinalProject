@@ -1,11 +1,8 @@
 ﻿using Renderer;
 
-namespace QuarterEngine.ChessDemo.Pieces
+namespace ChessDemo.Pieces
 {
-    internal class Pawn<T> : ChessObject<T>
+    internal class Pawn : ChessObject
     {
-        public Pawn(int PlayerId,VisualRepresentation<T> visuals):base(PlayerId,visuals)
-        {
-        }
     }
 }

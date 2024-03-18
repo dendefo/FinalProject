@@ -1,13 +1,8 @@
-﻿
+﻿using Renderer;
 
-using Renderer;
-
-namespace QuarterEngine.ChessDemo.Pieces
+namespace ChessDemo.Pieces
 {
-    internal class Rook<T> : ChessObject<T>
+    internal class Rook : ChessObject
     {
-        public Rook(int PlayerId,VisualRepresentation<T> visuals) : base(PlayerId,visuals)
-        {
-        }
     }
 }

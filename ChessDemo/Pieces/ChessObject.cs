@@ -1,13 +1,10 @@
-﻿using QuarterEngine.Core;
+﻿using Core;
 using Renderer;
 using System.Drawing;
-
-namespace QuarterEngine.ChessDemo.Pieces
+using Core.Components;
+namespace ChessDemo.Pieces
 {
-    internal abstract class ChessObject<T> : TileObject<T>
+    internal abstract class ChessObject : CustomComponent
     {
-        public ChessObject(int PlayerId,VisualRepresentation<T> visuals) : base(visuals)
-        {
-        }
     }
 }

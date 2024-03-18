@@ -1,28 +1,45 @@
 ﻿
-namespace QuarterEngine.ChessDemo
+namespace ChessDemo
 {
-    using QuarterEngine.ChessDemo.Pieces;
-    using QuarterEngine.Core;
+    using ChessDemo.Pieces;
+    using Core;
+    using static Core.Engine;
     using System.Numerics;
+    using Core.Components;
 
     public class Programm
     {
         static void Main(string[] args)
         {
-            Core engine = new Core(8, 8);
+            
+            Engine engine = new Engine(8, 8);
             engine.Scene.DefaulChessFloor();
-            engine.Instantiate(new Rook<char>(0, new('R', System.Drawing.Color.Green)), new Vector2(0, 0));
-            engine.Instantiate(new Rook<char>(0, new('R', System.Drawing.Color.Green)), new Vector2(7, 0));
+            Rook rook;
+            //var rook = Instantiate<Rook>(new Rook(), new Vector2(0, 0));
+            var rook2 = new CharacterRenderer();
+            rook2.SetVisuals('R', System.Drawing.Color.Green);
+
+            //rook.AddComponent<CharacterRenderer>().SetVisuals('R', System.Drawing.Color.Green);
+            rook = Instantiate<Rook>(new Vector2(7, 0));
+            rook.AddComponent<CharacterRenderer>().SetVisuals('R', System.Drawing.Color.Green);
+
+
             for (int i = 0; i < 8; i++)
             {
-                engine.Instantiate(new Pawn<char>(0, new('P', System.Drawing.Color.Green)), new Vector2(i, 1));
+                var pawn = Instantiate<Pawn>(new Vector2(i, 1));
+                pawn.AddComponent<CharacterRenderer>().SetVisuals('P', System.Drawing.Color.Green);
             }
             for (int i = 0; i < 8; i++)
             {
-                engine.Instantiate(new Pawn<char>(1, new('P', System.Drawing.Color.Red)), new Vector2(i, 6));
+                var pawn = Instantiate<Pawn>(new Vector2(i, 6));
+                pawn.AddComponent<CharacterRenderer>().SetVisuals('P', System.Drawing.Color.Red);
             }
-            engine.Instantiate(new Rook<char>(1, new('R', System.Drawing.Color.Red)), new Vector2(0, 7));
-            engine.Instantiate(new Rook<char>(1, new('R', System.Drawing.Color.Red)), new Vector2(7, 7));
+
+            rook = Instantiate<Rook>(new Vector2(0, 7));
+            rook.AddComponent<CharacterRenderer>().SetVisuals('R', System.Drawing.Color.Red);
+
+            rook = Instantiate<Rook>(new Vector2(7, 7));
+            rook.AddComponent<CharacterRenderer>().SetVisuals('R', System.Drawing.Color.Red);
             engine.EndTurn();
         }
     }

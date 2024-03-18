@@ -1,25 +1,27 @@
 ﻿using System.Numerics;
 using Renderer;
 
-namespace QuarterEngine.Core
+namespace Core
 {
     public class TileMap
     {
-        public TileObject<char> this[int x, int y]
+        public TileObject this[int x, int y]
         {
             get => floor[x, y];
         }
-        public TileObject<char>[,] floor;
-        public List<TileObject<char>> Objects; 
+        public TileObject[,] floor;
+        public List<TileObject> Objects; 
+        public static TileMap Instance;
 
         public int Height => floor.GetLength(0);
         public int Width => floor.GetLength(1);
         public TileMap(int width, int height)
         {
-            Objects = new List<TileObject<char>>();
-            floor = new TileObject<char>[width, height];
+            Objects = new List<TileObject>();
+            floor = new TileObject[width, height];
+            Instance = this;
         }
-        public void SetFloorTile(TileObject<char> tile, int x, int y)
+        public void SetFloorTile(TileObject tile, int x, int y)
         {
             floor[x, y] = tile;
         }
@@ -30,9 +32,9 @@ namespace QuarterEngine.Core
                 for (int j = 0; j < Width; j++)
                 {
                     var col = (i + j) % 2 == 0 ? System.Drawing.Color.Gray : System.Drawing.Color.Black;
-                    var tile = new TileObject<char>(new VisualRepresentation<char>(' ',col));
-                    SetFloorTile(tile,i,j);
-                    tile.Position = new Vector2(i, j);
+                    //var tile = new TileObject<char>(new VisualRepresentation<char>(' ',col));
+                    //SetFloorTile(tile,i,j);
+                    //tile.Position = new Vector2(i, j);
                 }
             }
         }
@@ -42,7 +44,7 @@ namespace QuarterEngine.Core
             {
                 for (int j = 0; j < Width; j++)
                 {
-                    renderer.RenderBackGroundObject(floor[i, j]);
+                    //renderer.RenderBackGroundObject(floor[i, j]);
                 }
             }
         }

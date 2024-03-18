@@ -1,16 +1,25 @@
 ﻿using System.Numerics;
 using Renderer;
 
-namespace QuarterEngine.Core
+namespace Core
 {
-    public class TileObject<T> : IRenderable<T>
+    using Components;
+    public class TileObject
     {
+        public List<TileComponent> components = new();
         public Vector2 Position { get; set; }
 
-        public VisualRepresentation<T> Visuals { get; set; }
-        public TileObject(VisualRepresentation<T> visuals)
+        public TileObject()
         {
-            Visuals = visuals;
         }
+        public T AddComponent<T>() where T : TileComponent
+        {
+
+            var ctr = typeof(T).GetConstructors();
+            var Component = (T)ctr[0].Invoke(new object[] { this });
+            components.Add(Component);
+            return Component;
+        }
+
     }
 }

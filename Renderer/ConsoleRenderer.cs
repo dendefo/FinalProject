@@ -8,7 +8,7 @@ namespace Renderer
         {
             Console.SetCursorPosition((int)@object.Position.X, (int)@object.Position.Y);
             Console.ForegroundColor = FromColor(@object.Visuals.Color);
-            Console.BackgroundColor = FromColor(BackgroundObject.Visuals.Color);
+            //Console.BackgroundColor = FromColor(BackgroundObject.Visuals.Color);
             Console.Write(@object.Visuals.Visual);
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
