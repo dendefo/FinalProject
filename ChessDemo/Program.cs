@@ -1,4 +1,4 @@
-﻿
+﻿global using System.Drawing;
 namespace ChessDemo
 {
     using ChessDemo.Pieces;
@@ -14,32 +14,31 @@ namespace ChessDemo
             
             Engine engine = new Engine(8, 8);
             engine.Scene.DefaulChessFloor();
-            Rook rook;
-            //var rook = Instantiate<Rook>(new Rook(), new Vector2(0, 0));
             var rook2 = new CharacterRenderer();
-            rook2.SetVisuals('R', System.Drawing.Color.Green);
+            rook2.SetVisuals('R', Color.Green);
 
-            //rook.AddComponent<CharacterRenderer>().SetVisuals('R', System.Drawing.Color.Green);
-            rook = Instantiate<Rook>(new Vector2(7, 0));
-            rook.AddComponent<CharacterRenderer>().SetVisuals('R', System.Drawing.Color.Green);
+            var PrefabComponent = Instantiate<Rook>(new Vector2(7, 0));
+            PrefabComponent.AddComponent<CharacterRenderer>().SetVisuals('R', Color.Green);
 
+            var Copy = Instantiate(PrefabComponent);
+            Copy.TileObject.Position = new Vector2(0, 7);
+            Copy.GetComponent<CharacterRenderer>().SetVisuals('R', Color.Red);
 
             for (int i = 0; i < 8; i++)
             {
                 var pawn = Instantiate<Pawn>(new Vector2(i, 1));
-                pawn.AddComponent<CharacterRenderer>().SetVisuals('P', System.Drawing.Color.Green);
+                pawn.AddComponent<CharacterRenderer>().SetVisuals('P', Color.Green);
             }
             for (int i = 0; i < 8; i++)
             {
                 var pawn = Instantiate<Pawn>(new Vector2(i, 6));
-                pawn.AddComponent<CharacterRenderer>().SetVisuals('P', System.Drawing.Color.Red);
+                pawn.AddComponent<CharacterRenderer>().SetVisuals('P', Color.Red);
             }
 
-            rook = Instantiate<Rook>(new Vector2(0, 7));
-            rook.AddComponent<CharacterRenderer>().SetVisuals('R', System.Drawing.Color.Red);
 
-            rook = Instantiate<Rook>(new Vector2(7, 7));
-            rook.AddComponent<CharacterRenderer>().SetVisuals('R', System.Drawing.Color.Red);
+            var prefabCopy = Instantiate(PrefabComponent.TileObject);
+            prefabCopy.AddComponent<CharacterRenderer>().SetVisuals('R', Color.Red);
+            prefabCopy.Position = new Vector2(7, 7);
             engine.EndTurn();
         }
     }

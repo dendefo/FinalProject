@@ -1,4 +1,6 @@
 ﻿using System.Numerics;
+using System.Text.Json;
+using Core.Components;
 using Renderer;
 
 namespace Core
@@ -29,18 +31,43 @@ namespace Core
                 //item.components.Cast<CharacterRenderer>().ToList().ForEach(x => renderer.RenderObject(x, x));
             }
         }
-        static public T Instantiate<T>(T tileObject,Vector2 position = default) where T : TileObject
+        static public T Instantiate<T>(T origin, Vector2 position = default) where T : TileObject
         {
-            TileMap.Instance.Objects.Add(tileObject);
-            tileObject.Position = position;
-            return tileObject;
+            var newtileObject = JsonSerializer.Deserialize<T>(JsonSerializer.Serialize(origin));
+
+            origin.components.ForEach(x => newtileObject.AddComponent(x.Copy(x)).TileObject = newtileObject);
+            TileMap.Instance.Objects.Add(newtileObject);
+            newtileObject.Position = position;
+            return newtileObject;
         }
-        static public T Instantiate<T>(Vector2 position = default) where T : Components.TileComponent, new()
+        static public T Instantiate<T>() where T : TileObject, new()
         {
             var tileObject = new T();
-            TileMap.Instance.Objects.Add(tileObject.TileObject);
-            tileObject.TileObject.Position = position;
+            TileMap.Instance.Objects.Add(tileObject);
             return tileObject;
+        }
+
+        static public T Instantiate<T>(Vector2 position = default) where T : TileComponent, new()
+        {
+            var component = new T();
+            TileMap.Instance.Objects.Add(component.TileObject);
+            component.TileObject.Position = position;
+            return component;
+        }
+        static public T Instantiate<T>(T origin) where T : TileComponent, new()
+        {
+            var obj = Instantiate<TileObject>();
+            T toReturn = null;
+            foreach (var x in origin.TileObject.components)
+            {
+                var t = x.GetType();
+                
+                var lol = obj.AddComponent(x.Copy(x));
+                if (t==typeof(T)) toReturn = lol as T;
+            }
+
+            TileMap.Instance.Objects.Add(obj);
+            return toReturn;
         }
     }
 }

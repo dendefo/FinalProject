@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Core.Components
 {
-    public abstract class CustomComponent : TileComponent
+    [Serializable]
+    public class CustomComponent : TileComponent
     {
+        public CustomComponent():base() { }
     }
 }

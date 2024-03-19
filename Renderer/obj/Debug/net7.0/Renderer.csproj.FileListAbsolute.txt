@@ -1,0 +1,15 @@
+C:\Users\danie\Documents\GitHub\QuarterEngine\Renderer\bin\Debug\net7.0\Renderer.exe
+C:\Users\danie\Documents\GitHub\QuarterEngine\Renderer\bin\Debug\net7.0\Renderer.deps.json
+C:\Users\danie\Documents\GitHub\QuarterEngine\Renderer\bin\Debug\net7.0\Renderer.runtimeconfig.json
+C:\Users\danie\Documents\GitHub\QuarterEngine\Renderer\bin\Debug\net7.0\Renderer.dll
+C:\Users\danie\Documents\GitHub\QuarterEngine\Renderer\bin\Debug\net7.0\Renderer.pdb
+C:\Users\danie\Documents\GitHub\QuarterEngine\Renderer\obj\Debug\net7.0\Renderer.csproj.AssemblyReference.cache
+C:\Users\danie\Documents\GitHub\QuarterEngine\Renderer\obj\Debug\net7.0\Renderer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\danie\Documents\GitHub\QuarterEngine\Renderer\obj\Debug\net7.0\Renderer.AssemblyInfoInputs.cache
+C:\Users\danie\Documents\GitHub\QuarterEngine\Renderer\obj\Debug\net7.0\Renderer.AssemblyInfo.cs
+C:\Users\danie\Documents\GitHub\QuarterEngine\Renderer\obj\Debug\net7.0\Renderer.csproj.CoreCompileInputs.cache
+C:\Users\danie\Documents\GitHub\QuarterEngine\Renderer\obj\Debug\net7.0\Renderer.dll
+C:\Users\danie\Documents\GitHub\QuarterEngine\Renderer\obj\Debug\net7.0\refint\Renderer.dll
+C:\Users\danie\Documents\GitHub\QuarterEngine\Renderer\obj\Debug\net7.0\Renderer.pdb
+C:\Users\danie\Documents\GitHub\QuarterEngine\Renderer\obj\Debug\net7.0\Renderer.genruntimeconfig.cache
+C:\Users\danie\Documents\GitHub\QuarterEngine\Renderer\obj\Debug\net7.0\ref\Renderer.dll
