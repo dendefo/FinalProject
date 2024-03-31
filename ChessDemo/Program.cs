@@ -11,34 +11,44 @@ namespace ChessDemo
     {
         static void Main(string[] args)
         {
+            Engine engine = Start(8, 8);
+
+            // Load the assets
+            var RookPrefab = AssetManager.LoadAsset<Rook>("Rook");
+            var PawnPrefab = AssetManager.LoadAsset<Pawn>("Pawn");
+
+            // Example of saving assets
+            //AssetManager.SaveAsset(RookPrefab, "Rook");
+            //AssetManager.SaveAsset(PawnPrefab, "Pawn");
             
-            Engine engine = new Engine(8, 8);
-            engine.Scene.DefaulChessFloor();
-            var rook2 = new CharacterRenderer();
-            rook2.SetVisuals('R', Color.Green);
+            //Example of Adding assets to scene by reference to prefab component
+            Instantiate(RookPrefab).TileObject.Position = new Vector2(0, 0);
+            Instantiate(RookPrefab).TileObject.Position = new Vector2(7, 0);
 
-            var PrefabComponent = Instantiate<Rook>(new Vector2(7, 0));
-            PrefabComponent.AddComponent<CharacterRenderer>().SetVisuals('R', Color.Green);
-
-            var Copy = Instantiate(PrefabComponent);
-            Copy.TileObject.Position = new Vector2(0, 7);
-            Copy.GetComponent<CharacterRenderer>().SetVisuals('R', Color.Red);
 
             for (int i = 0; i < 8; i++)
             {
-                var pawn = Instantiate<Pawn>(new Vector2(i, 1));
-                pawn.AddComponent<CharacterRenderer>().SetVisuals('P', Color.Green);
+                Instantiate<Pawn>(PawnPrefab).TileObject.Position = new Vector2(i, 1);
             }
             for (int i = 0; i < 8; i++)
             {
-                var pawn = Instantiate<Pawn>(new Vector2(i, 6));
-                pawn.AddComponent<CharacterRenderer>().SetVisuals('P', Color.Red);
+                var pawn = Instantiate<Pawn>(PawnPrefab);
+                pawn.TileObject.Position = new Vector2(i, 6);
+                pawn.TileObject.AddComponent<CharacterRenderer>().Visuals = new('p', Color.Red);
             }
+            //Example of Adding assets to scene by creating new instance
+            var newrook = Instantiate<TileObject>();
+            //Add the component to the object
+            newrook.AddComponent<Rook>();
+            //Set the position of the object
+            newrook.Position = new Vector2(0, 7);
+            //Add the renderer to the object
+            newrook.AddComponent<CharacterRenderer>().Visuals = new('R',Color.Red);
 
+            //Example of Adding assets to scene by reference to prefab
+            Instantiate(newrook).Position = new Vector2(7, 7);
 
-            var prefabCopy = Instantiate(PrefabComponent.TileObject);
-            prefabCopy.AddComponent<CharacterRenderer>().SetVisuals('R', Color.Red);
-            prefabCopy.Position = new Vector2(7, 7);
+            //Just to show the board rn
             engine.EndTurn();
         }
     }

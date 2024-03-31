@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Core.Components
 {
-    [Serializable]
-    public class CharacterRenderer :RenderingComponent<char>
+    /// <summary>
+    /// Basic component for rendering characters
+    /// </summary>
+    public class CharacterRenderer : RenderingComponent<char>
     {
-
-        [JsonConstructor]
-        public CharacterRenderer(TileObject tileObject = null) : base(tileObject)
+        public CharacterRenderer() : base()
         {
         }
     }

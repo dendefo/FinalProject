@@ -12,4 +12,8 @@
     <ProjectReference Include="..\Renderer\Renderer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Assets\" />
+  </ItemGroup>
+
 </Project>

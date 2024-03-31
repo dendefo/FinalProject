@@ -2,7 +2,6 @@
 
 namespace ChessDemo.Pieces
 {
-    [Serializable]
     internal class Pawn : ChessObject
     {
     }

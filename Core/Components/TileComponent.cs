@@ -12,52 +12,42 @@ using System.Threading.Tasks;
 
 namespace Core.Components
 {
-    [Serializable]
-    [JsonDerivedType(typeof(CustomComponent))]
-    [JsonDerivedType(typeof(RenderingComponent<char>))]
-
+    /// <summary>
+    /// A class that represents a Component that can be attached to a TileObject
+    /// Similar to Unity's Behavior class
+    /// </summary>
     public class TileComponent
     {
-        [NonSerialized]
-        public TileObject TileObject;
+        // Reference to the TileObject that this component is attached to
+        public TileObject TileObject { get; set; }
 
-        public TileComponent()
+        /// <summary>
+        /// Copies a TileComponent
+        /// Used in Commands as AddComponent and in AssetManager as LoadAsset
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="origin"></param>
+        /// <returns></returns>
+        static internal T Copy<T>(T origin) where T : TileComponent, new()
         {
-            TileObject = Engine.Instantiate<TileObject>(new(), default);
-            TileObject.components.Add(this);
-        }
-        public TileComponent(TileObject tileObject = null)
-        {
-            if (tileObject == null)
+            BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.IgnoreCase;
+            T ret = origin.GetType().GetConstructor(flags, types: new Type[0]).Invoke(new object[0]) as T;
+
+
+            foreach (var property in ret.GetType().GetProperties(flags))
             {
-                TileObject = Engine.Instantiate<TileObject>(new(), default);
-                TileObject.components.Add(this);
+                var properties = ret.GetType().GetProperty(property.Name, flags);
+                if (property.SetMethod == null) continue;
+                properties.SetValue(ret, property.GetValue(origin));
             }
-            else TileObject = tileObject;
-        }
-        public T Copy<T>(T origin) where T : TileComponent
-        {
-            //    BinaryFormatter binaryFormatter = new();
-            //    Stream stream = new MemoryStream();
-            //    binaryFormatter.Serialize(stream, origin);
-            //    return binaryFormatter.Deserialize(stream) as T;
-            var lol = JsonSerializer.Serialize(origin, origin.GetType());
-            JsonSerializerOptions options = new() { IncludeFields = true };
-            var ret = JsonSerializer.Deserialize(lol, origin.GetType(), options) as T;
-            origin.GetType().GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.IgnoreCase).ToList().ForEach(x => origin.GetType().GetProperty(x.Name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy | BindingFlags.Public).SetValue(ret, x.GetValue(origin)));
-            foreach (var field in origin.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.IgnoreCase))
+            foreach (var field in ret.GetType().GetFields(flags))
             {
-                var fields = origin.GetType().GetField(field.Name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy | BindingFlags.Public);
+                var fields = ret.GetType().GetField(field.Name, flags);
                 fields.SetValue(ret, field.GetValue(origin));
             }
             return ret;
         }
-        public T AddComponent<T>() where T : TileComponent => TileObject.AddComponent<T>();
-        public T GetComponent<T>() where T : TileComponent => TileObject.GetComponent<T>();
-
-        public T Clone<T>() where T : TileComponent
-        {
-            return MemberwiseClone() as T;
-        }
+        public T AddComponent<T>() where T : TileComponent, new() => TileObject.AddComponent<T>();
+        public T GetComponent<T>(Type type) where T : TileComponent => TileObject.GetComponent<T>(type);
     }
 }

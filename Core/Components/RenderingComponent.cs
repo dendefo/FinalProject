@@ -1,28 +1,28 @@
-﻿using Renderer;
+﻿using Newtonsoft.Json;
+using Renderer;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Core.Components
 {
-    [Serializable]
-    public class RenderingComponent<T> : TileComponent, IRenderable<T>
+    /// <summary>
+    /// Base component for all components that have a visual representation
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    abstract public class RenderingComponent<T> : TileComponent, IRenderable<T>
     {
-        public Vector2 Position { get { return TileObject.Position; } set { } }
+        /// <summary>
+        /// Reference to the TileObject position
+        /// </summary>
+        [JsonIgnore]
+        public Vector2 Position { get { return TileObject == null ? default : TileObject.Position; } }
+        /// <summary>
+        /// Defines how component should be rendered
+        /// </summary>
         public VisualRepresentation<T> Visuals { get; set; }
-
-        [JsonConstructor]
-        public RenderingComponent(TileObject tileObject = null) : base(tileObject)
-        {
-        }
-        public void SetVisuals(T visual, Color color)
-        {
-            Visuals = new(visual, color);
-        }
     }
 }

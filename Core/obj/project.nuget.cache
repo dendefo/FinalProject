@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "L95Qow2I8juWC5blG+s3Lu7hb5YMGW6hEcmawcyhQtPxfM60ouk5GeaesRjDwCyP35gPSfoHXFPKD9rrrm4jUA==",
+  "dgSpecHash": "uZjpVt0FlGWJWxtGfk8MvF382V11g9uxdw18eCjNpW/yRLiFeBykCLTSwAEHtYZMg/si7D5jADMRjO6y8C4vkQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\danie\\Documents\\GitHub\\QuarterEngine\\Core\\Core.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\danie\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
   "logs": []
 }

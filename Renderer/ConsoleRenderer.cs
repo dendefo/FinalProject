@@ -2,6 +2,10 @@
 
 namespace Renderer
 {
+    /// <summary>
+    /// Basic Renderer to Console
+    /// Still can't render Multiple Objects on same position
+    /// </summary>
     public class ConsoleRenderer : IRenderer<char>
     {
         public void RenderObject(IRenderable<char> @object, IRenderable<char> BackgroundObject)
@@ -14,13 +18,6 @@ namespace Renderer
             Console.ForegroundColor = ConsoleColor.White;
 
         }
-        public void RenderBackGroundObject(IRenderable<char> @object)
-        {
-            Console.SetCursorPosition((int)@object.Position.X, (int)@object.Position.Y);
-            Console.BackgroundColor = FromColor(@object.Visuals.Color);
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.Write(@object.Visuals.Visual);
-        }
         public static ConsoleColor FromColor(Color c)
         {
             int index = c.R > 128 | c.G > 128 | c.B > 128 ? 8 : 0; // Bright bit
@@ -32,6 +29,10 @@ namespace Renderer
 
 
     }
+    /// <summary>
+    /// A struct that holds a visual representation of an object
+    /// </summary>
+    /// <typeparam name="T"> Renderable Object Of Same type as IRenderer type</typeparam>
     public struct VisualRepresentation<T>
     {
         public T Visual;

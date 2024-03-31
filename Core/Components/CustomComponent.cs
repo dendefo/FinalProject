@@ -7,9 +7,16 @@ using System.Threading.Tasks;
 
 namespace Core.Components
 {
-    [Serializable]
+    /// <summary>
+    /// To implement custom components, inherit from this class.
+    /// Similar to Unity's Monobehaviour, this class will be used to add custom logic to the game.
+    /// It is recommended to use the [JsonProperty] and [JsonIgnore] attributes from the Newtonsoft.Json namespace.
+    /// [JsonProperty] is the Equivilant of [SerizalizeField] in Unity.
+    /// [JsonIgnore] is the Equivilant of [NonSerialized] in Unity.
+    /// 
+    /// </summary>
     public class CustomComponent : TileComponent
     {
-        public CustomComponent():base() { }
+        //Will Add here calls as Updata, Start, Awake, etc.
     }
 }

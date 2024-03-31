@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace Renderer
 {
+    /// <summary>
+    /// Interface for Creating your own Renderer
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IRenderer<T>
     {
         public void RenderObject(IRenderable<T> map, IRenderable<T> BackGround);
-        public void RenderBackGroundObject(IRenderable<T> @object);
     }
 }
