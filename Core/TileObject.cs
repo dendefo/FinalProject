@@ -4,6 +4,8 @@ using Renderer;
 namespace Core
 {
     using Components;
+    using Newtonsoft.Json;
+
     /// <summary>
     /// A class that represents a tile object
     /// The core of the engine
@@ -12,7 +14,29 @@ namespace Core
     public class TileObject
     {
         public List<TileComponent> components = new();
-        public Vector2 Position { get; set; }
+        [JsonIgnore]
+        private Vector2 position;
+        public Vector2 Position
+        {
+            get { return position; }
+            set
+            {
+                if (value.X < 0 || value.Y < 0 || value.X >= Engine.CurrentScene.Width || value.Y >= Engine.CurrentScene.Height)
+                {
+                    return;
+                }
+                if (Engine.CurrentScene.floorTiles[(int)position.X, (int)position.Y].TileObject == this)
+                    Engine.CurrentScene.floorTiles[(int)position.X, (int)position.Y].TileObject = null;
+                position = value;
+                if (Engine.CurrentScene.floorTiles[(int)position.X, (int)position.Y].TileObject == null)
+                    Engine.CurrentScene.floorTiles[(int)position.X, (int)position.Y].TileObject = this;
+            }
+        }
+        internal TileObject() { }
+        internal TileObject(int x, int y)
+        {
+            Position = new Vector2(x, y);
+        }
 
         /// <summary>
         /// Adds a component to the tile object

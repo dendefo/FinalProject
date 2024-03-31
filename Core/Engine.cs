@@ -29,30 +29,23 @@ namespace Core
             renderer = new ConsoleRenderer();
         }
 
-        public void EndTurn()
+        public void StartGame()
         {
-            foreach (var item in CurrentScene.Objects)
+            foreach (var item in CurrentScene.floorTiles)
             {
-                foreach (var component in item.components)
-                {
-                    if (component is IRenderable<char> renderable)
-                    {
-                        renderer.RenderObject(renderable, renderable);
-                    }
-                }
+                renderer.RenderObject(item.TileObject?.components.Find(x => x is IRenderable<char>) as IRenderable<char>, item);
             }
             Console.SetCursorPosition(CurrentScene.Width, CurrentScene.Height);
+            Console.ReadKey();
         }
-        public TileObject[] tileObjects => CurrentScene.Objects.ToArray();
-        static public T Instantiate<T>() where T : TileObject, new()
+        static public TileObject Instantiate(Vector2 position)
         {
-            var tileObject = new T();
-            CurrentScene.Objects.Add(tileObject);
+            var tileObject = new TileObject((int)position.X,(int)position.Y);
             return tileObject;
         }
         static public TileObject Instantiate(TileObject origin)
         {
-            var tileObject = Instantiate<TileObject>();
+            var tileObject = Instantiate(origin.Position);
             foreach (var component in origin.components)
             {
                 var newComponent = tileObject.AddComponent(component);
@@ -62,7 +55,7 @@ namespace Core
         }
         static public T Instantiate<T>(T origin) where T : TileComponent, new()
         {
-            var NewObject = Instantiate<TileObject>();
+            var NewObject = Instantiate(origin.TileObject.Position);
             T toReturn = null;
             foreach (var OriginalComponent in origin.TileObject.components)
             {
@@ -76,7 +69,8 @@ namespace Core
         }
         static public void Destroy<T>(T obj) where T : TileObject
         {
-            CurrentScene.Objects.Remove(obj);
+            if (obj == null) return;
+            CurrentScene.floorTiles[(int)obj.Position.X, (int)obj.Position.Y].TileObject = null;
         }
     }
 }

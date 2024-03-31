@@ -4,16 +4,23 @@ namespace Renderer
 {
     /// <summary>
     /// Basic Renderer to Console
-    /// Still can't render Multiple Objects on same position
     /// </summary>
     public class ConsoleRenderer : IRenderer<char>
     {
         public void RenderObject(IRenderable<char> @object, IRenderable<char> BackgroundObject)
         {
-            Console.SetCursorPosition((int)@object.Position.X, (int)@object.Position.Y);
-            Console.ForegroundColor = FromColor(@object.Visuals.Color);
-            //Console.BackgroundColor = FromColor(BackgroundObject.Visuals.Color);
-            Console.Write(@object.Visuals.Visual);
+            Console.BackgroundColor = FromColor(BackgroundObject.Visuals.Color);
+            if (@object == null)
+            {
+                Console.SetCursorPosition((int)BackgroundObject.Position.X, (int)BackgroundObject.Position.Y);
+                Console.Write(BackgroundObject.Visuals.Visual);
+            }
+            else
+            {
+                Console.SetCursorPosition((int)@object.Position.X, (int)@object.Position.Y);
+                Console.ForegroundColor = FromColor(@object.Visuals.Color);
+                Console.Write(@object.Visuals.Visual);
+            }
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
 
