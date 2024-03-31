@@ -19,3 +19,4 @@ C:\Users\danie\Documents\GitHub\QuarterEngine\Core\obj\Debug\net6.0\refint\Core.
 C:\Users\danie\Documents\GitHub\QuarterEngine\Core\obj\Debug\net6.0\Core.pdb
 C:\Users\danie\Documents\GitHub\QuarterEngine\Core\obj\Debug\net6.0\Core.genruntimeconfig.cache
 C:\Users\danie\Documents\GitHub\QuarterEngine\Core\obj\Debug\net6.0\ref\Core.dll
+C:\Users\danie\Documents\GitHub\QuarterEngine\Core\bin\Debug\net6.0\Newtonsoft.Json.dll

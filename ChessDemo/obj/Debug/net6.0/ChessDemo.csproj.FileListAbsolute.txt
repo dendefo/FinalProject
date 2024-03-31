@@ -24,3 +24,4 @@ C:\Users\danie\Documents\GitHub\QuarterEngine\ChessDemo\obj\Debug\net6.0\refint\
 C:\Users\danie\Documents\GitHub\QuarterEngine\ChessDemo\obj\Debug\net6.0\ChessDemo.pdb
 C:\Users\danie\Documents\GitHub\QuarterEngine\ChessDemo\obj\Debug\net6.0\ChessDemo.genruntimeconfig.cache
 C:\Users\danie\Documents\GitHub\QuarterEngine\ChessDemo\obj\Debug\net6.0\ref\ChessDemo.dll
+C:\Users\danie\Documents\GitHub\QuarterEngine\ChessDemo\bin\Debug\net6.0\Newtonsoft.Json.dll
