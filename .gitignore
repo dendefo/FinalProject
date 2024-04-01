@@ -1,0 +1,25 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/FinalProject/FileContentIndex/91aee4af-f6e5-4831-8950-57cfcd510973.vsidx
+*.lock
+/.vs/FinalProject/v17/.suo
+/ChessDemo/obj/Debug/net6.0/ChessDemo.AssemblyInfo.cs
+/ChessDemo/obj/Debug/net6.0/ChessDemo.AssemblyInfoInputs.cache
+/ChessDemo/obj/Debug/net6.0/ChessDemo.assets.cache
+/ChessDemo/obj/Debug/net6.0/ChessDemo.csproj.AssemblyReference.cache
+/ChessDemo/obj/Debug/net6.0/ChessDemo.GeneratedMSBuildEditorConfig.editorconfig
+/ChessDemo/obj/ChessDemo.csproj.nuget.dgspec.json
+/ChessDemo/obj/ChessDemo.csproj.nuget.g.props
+/ChessDemo/obj/project.assets.json
+/ChessDemo/obj/project.nuget.cache
+/Core/obj/Core.csproj.nuget.dgspec.json
+/Core/obj/Core.csproj.nuget.g.props
+/Core/obj/Debug/net6.0/Core.AssemblyInfo.cs
+/Core/obj/Debug/net6.0/Core.AssemblyInfoInputs.cache
+/Core/obj/Debug/net6.0/Core.assets.cache
+/Core/obj/Debug/net6.0/Core.csproj.AssemblyReference.cache
+/Core/obj/Debug/net6.0/Core.GeneratedMSBuildEditorConfig.editorconfig
+/Core/obj/project.assets.json
+/Core/obj/project.nuget.cache
