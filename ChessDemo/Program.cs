@@ -13,6 +13,7 @@ namespace ChessDemo
         {
             Engine engine = Start(8, 8);
             Scene scene = CurrentScene;
+
             // Load the assets
             var RookPrefab = AssetManager.LoadAsset<Rook>("Rook");
             var PawnPrefab = AssetManager.LoadAsset<Pawn>("Pawn");
