@@ -19,24 +19,9 @@ namespace Core
         public Position2D Position
         {
             get { return position; }
-            set
-            {
-                if (value.x < 0 || value.y < 0 || value.x >= Engine.CurrentScene.Width || value.y >= Engine.CurrentScene.Height)
-                {
-                    return;
-                }
-                if (Engine.CurrentScene[position].TileObject == this)
-                    Engine.CurrentScene[position].TileObject = null;
-                position = value;
-                if (Engine.CurrentScene[position].TileObject == null)
-                    Engine.CurrentScene[position].TileObject = this;
-            }
+            set { position = value; }
         }
         internal TileObject() { }
-        internal TileObject(int x, int y)
-        {
-            Position = new Position2D(x, y);
-        }
 
         /// <summary>
         /// Adds a component to the tile object
@@ -54,7 +39,7 @@ namespace Core
                 return newComponent.GetComponent<T>(origin.GetType());
             }
             var ctr = new T();
-            Engine.Destroy(ctr.TileObject);
+            if (ctr.TileObject != null) ctr.TileObject.Dispose();
             ctr.TileObject = this;
             components.Add(ctr);
             return ctr.GetComponent<T>(typeof(T));

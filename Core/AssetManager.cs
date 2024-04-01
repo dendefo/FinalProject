@@ -33,7 +33,7 @@ namespace Core
             var obj = ser.Deserialize<TileObject>(jsonReader);
             foreach (var component in obj.components)
             {
-                Engine.Destroy(component.TileObject);
+                if (component.TileObject != null) component.TileObject.Dispose();
                 component.TileObject = obj;
             }
             return obj.GetComponent<T>(typeof(T));

@@ -10,30 +10,48 @@ namespace Core
     /// Has the main methods to interact with the engine
     /// Should be included in using as "using static Core.Engine;"
     /// </summary>
-    public class Engine
+    public class Engine<TVisual>
     {
-        private readonly IRenderer<char> renderer;
-        public static Scene CurrentScene;
-        public static Engine Start(int width, int height)
+        private readonly IRenderer<TVisual> renderer;
+        public static Scene<TVisual> CurrentScene;
+        public static Engine<TVisual> Start(int width, int height, IRenderer<TVisual> renderer)
         {
-            return new Engine(width, height);
+            return new Engine<TVisual>(width, height, renderer);
         }
 
         /// <summary>
         /// Hides constructor
         /// </summary>
         private Engine() { }
-        private Engine(int width, int height)
+        private Engine(int width, int height, IRenderer<TVisual> renderer)
         {
-            CurrentScene = new Scene(width, height);
-            renderer = new ConsoleRenderer();
+            CurrentScene = new Scene<TVisual>(width, height);
+            this.renderer = renderer;
         }
 
+        public static bool SetPosition(TileObject obj, Position2D position)
+        {
+            if (position.x < 0 || position.y < 0 || position.x >= CurrentScene.Width || position.y >= CurrentScene.Height)
+            {
+                return false;
+            }
+            if (CurrentScene[obj.Position].TileObject == obj)
+            {
+                CurrentScene[obj.Position].TileObject = null;
+            }
+            if (CurrentScene[position].TileObject == null)
+            {
+                CurrentScene[position].TileObject = obj;
+                obj.Position = position;
+                return true;
+            }
+            return false;
+        }
         public void StartGame()
         {
             foreach (var item in CurrentScene)
             {
-                renderer.RenderObject(item.TileObject?.components.Find(x => x is IRenderable<char>) as IRenderable<char>, item);
+                renderer.RenderObject(item.TileObject?.components.Find(x => x is IRenderable<TVisual>) as IRenderable<TVisual>, item);
             }
             Console.SetCursorPosition(0, CurrentScene.Height);
             Console.ReadKey();
@@ -46,7 +64,8 @@ namespace Core
         /// <returns></returns>
         static public TileObject Instantiate(Position2D position)
         {
-            var tileObject = new TileObject(position.x, position.y);
+            var tileObject = new TileObject();
+            SetPosition(tileObject, position);
             return tileObject;
         }
         /// <summary>

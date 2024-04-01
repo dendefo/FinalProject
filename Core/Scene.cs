@@ -8,16 +8,16 @@ namespace Core
     /// A class that represents a Tile Map
     /// Still not finished
     /// </summary>
-    public class Scene :IEnumerable<Tile<char>>
+    public class Scene<T> :IEnumerable<Tile<T>>
     {
-        private Tile<char>[,] floorTiles;
-        public Tile<char> this[int x, int y] => floorTiles[x, y];
-        public Tile<char> this[Position2D position] => floorTiles[position.x, position.y];
+        private Tile<T>[,] floorTiles;
+        public Tile<T> this[int x, int y] => floorTiles[x, y];
+        public Tile<T> this[Position2D position] => floorTiles[position.x, position.y];
         public int Height => floorTiles.GetLength(0);
         public int Width => floorTiles.GetLength(1);
         public Scene(int width, int height)
         {
-            floorTiles = new Tile<char>[width, height];
+            floorTiles = new Tile<T>[width, height];
             ChessFloor();
         }
         private void ChessFloor()
@@ -27,16 +27,16 @@ namespace Core
                 for (int j = 0; j < floorTiles.GetLength(1); j++)
                 {
                     if ((i + j) % 2 == 0)
-                        floorTiles[i, j] = new Tile<char>(new Position2D(i, j), new VisualRepresentation<char>(' ', System.Drawing.Color.Black));
+                        floorTiles[i, j] = new Tile<T>(new Position2D(i, j), new VisualRepresentation<T>(default, System.Drawing.Color.Black));
                     else
-                        floorTiles[i, j] = new Tile<char>(new Position2D(i, j), new VisualRepresentation<char>(' ', System.Drawing.Color.Gray));
+                        floorTiles[i, j] = new Tile<T>(new Position2D(i, j), new VisualRepresentation<T>(default, System.Drawing.Color.Gray));
                 }
             }
         }
 
-        public IEnumerator<Tile<char>> GetEnumerator()
+        public IEnumerator<Tile<T>> GetEnumerator()
         {
-            return new SceneEnumerator(this);
+            return new SceneEnumerator<T>(this);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -44,16 +44,16 @@ namespace Core
             return GetEnumerator();
         }
     }
-    internal class SceneEnumerator: IEnumerator<Tile<char>>
+    internal class SceneEnumerator<T>: IEnumerator<Tile<T>>
     {
-        private Scene scene;
+        private Scene<T> scene;
         private int x = -1;
         private int y = 0;
-        public SceneEnumerator(Scene scene)
+        public SceneEnumerator(Scene<T> scene)
         {
             this.scene = scene;
         }
-        public Tile<char> Current => scene[x, y];
+        public Tile<T> Current => scene[x, y];
 
         object IEnumerator.Current => scene[x, y];
 
