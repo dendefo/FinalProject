@@ -2,11 +2,12 @@
 namespace ChessDemo
 {
     using ChessDemo.Pieces;
-    using Core;
     using static Core.Engine<char>;
     using System.Numerics;
     using Core.Components;
     using Renderer;
+    using Core.AssetManagement;
+    using Core.Commands;
 
     public class Programm
     {
@@ -48,9 +49,13 @@ namespace ChessDemo
             //Add the renderer to the object
             newrook.AddComponent<CharacterRenderer>().Visuals = new('R', Color.Red);
 
-            Instantiate(newrook,new Position2D(7,7));
+            Instantiate(newrook, new Position2D(7, 7));
+
             //Just to show the board rn
-            engine.StartGame();
+            engine.Render();
+            while (true)
+                CommandSystem.Listen(() => Console.ReadLine());
+            MoveObject(newrook, new Position2D(0, 0));
         }
     }
 }

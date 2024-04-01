@@ -1,7 +1,8 @@
 ﻿using System.Drawing;
 using System.Numerics;
+using Renderer;
 
-namespace Renderer
+namespace Core.Rendering
 {
     /// <summary>
     /// Interface for objects that can be rendered

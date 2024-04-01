@@ -1,6 +1,9 @@
-﻿using System.Numerics;
+﻿global using static Core.Engine<char>;
+using System.Numerics;
 using System.Text.Json;
+using Core.Commands;
 using Core.Components;
+using Core.Rendering;
 using Renderer;
 
 namespace Core
@@ -13,6 +16,7 @@ namespace Core
     public class Engine<TVisual>
     {
         private readonly IRenderer<TVisual> renderer;
+        public static CommandSystem<string> CommandSystem = new();
         public static Scene<TVisual> CurrentScene;
         public static Engine<TVisual> Start(int width, int height, IRenderer<TVisual> renderer)
         {
@@ -29,7 +33,7 @@ namespace Core
             this.renderer = renderer;
         }
 
-        public static bool SetPosition(TileObject obj, Position2D position)
+        internal static bool SetPosition(TileObject obj, Position2D position)
         {
             if (position.x < 0 || position.y < 0 || position.x >= CurrentScene.Width || position.y >= CurrentScene.Height)
             {
@@ -47,14 +51,37 @@ namespace Core
             }
             return false;
         }
-        public void StartGame()
+        public static bool IsEmpty(Position2D position) => CurrentScene[position].TileObject == null;
+        public static bool IsEmpty(int x, int y) => CurrentScene[x, y].TileObject == null;
+        /// <summary>
+        /// Moves object to new Tile If it's empty
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="position"></param>
+        /// <param name="DestroyIfOccupied"> Specify if Object in <paramref name="position"/> shoud be destroyed </param>
+        /// <returns> Returns true if object changed it's position </returns>
+        public static bool MoveObject(TileObject obj, Position2D position, bool DestroyIfOccupied = false)
+        {
+            if (IsEmpty(position))
+            {
+                SetPosition(obj, position);
+                return true;
+            }
+            else if (DestroyIfOccupied)
+            {
+                Destroy(CurrentScene[position].TileObject);
+                SetPosition(obj, position);
+                return true;
+            }
+            return false;
+        }
+        public void Render()
         {
             foreach (var item in CurrentScene)
             {
                 renderer.RenderObject(item.TileObject?.components.Find(x => x is IRenderable<TVisual>) as IRenderable<TVisual>, item);
             }
             Console.SetCursorPosition(0, CurrentScene.Height);
-            Console.ReadKey();
         }
         #region Instantiation functions
         /// <summary>
@@ -116,6 +143,10 @@ namespace Core
             if (obj == null) return;
             CurrentScene[obj.Position].TileObject = null;
             obj.Dispose();
+        }
+        static public void ShowInterface()
+        {
+
         }
     }
 }

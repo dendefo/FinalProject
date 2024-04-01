@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Renderer
+namespace Core.Rendering
 {
     /// <summary>
     /// A struct that holds a visual representation of an object

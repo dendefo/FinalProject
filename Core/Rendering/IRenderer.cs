@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Renderer
+namespace Core.Rendering
 {
     /// <summary>
     /// Interface for Creating your own Renderer

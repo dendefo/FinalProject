@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Core
+namespace Core.AssetManagement
 {
     /// <summary>
     /// Asset Manager is a class that is used to load and save assets.

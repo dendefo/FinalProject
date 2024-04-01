@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using Core.Rendering;
 
 namespace Renderer
 {
@@ -25,6 +26,7 @@ namespace Renderer
             Console.ForegroundColor = ConsoleColor.White;
 
         }
+
         public static ConsoleColor FromColor(Color c)
         {
             int index = c.R > 128 | c.G > 128 | c.B > 128 ? 8 : 0; // Bright bit
