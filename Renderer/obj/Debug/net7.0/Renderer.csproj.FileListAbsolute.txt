@@ -13,3 +13,18 @@ C:\Users\danie\Documents\GitHub\QuarterEngine\Renderer\obj\Debug\net7.0\refint\R
 C:\Users\danie\Documents\GitHub\QuarterEngine\Renderer\obj\Debug\net7.0\Renderer.pdb
 C:\Users\danie\Documents\GitHub\QuarterEngine\Renderer\obj\Debug\net7.0\Renderer.genruntimeconfig.cache
 C:\Users\danie\Documents\GitHub\QuarterEngine\Renderer\obj\Debug\net7.0\ref\Renderer.dll
+C:\Unity Projects Git\FinalProject\Renderer\bin\Debug\net7.0\Renderer.exe
+C:\Unity Projects Git\FinalProject\Renderer\bin\Debug\net7.0\Renderer.deps.json
+C:\Unity Projects Git\FinalProject\Renderer\bin\Debug\net7.0\Renderer.runtimeconfig.json
+C:\Unity Projects Git\FinalProject\Renderer\bin\Debug\net7.0\Renderer.dll
+C:\Unity Projects Git\FinalProject\Renderer\bin\Debug\net7.0\Renderer.pdb
+C:\Unity Projects Git\FinalProject\Renderer\obj\Debug\net7.0\Renderer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Unity Projects Git\FinalProject\Renderer\obj\Debug\net7.0\Renderer.AssemblyInfoInputs.cache
+C:\Unity Projects Git\FinalProject\Renderer\obj\Debug\net7.0\Renderer.AssemblyInfo.cs
+C:\Unity Projects Git\FinalProject\Renderer\obj\Debug\net7.0\Renderer.csproj.CoreCompileInputs.cache
+C:\Unity Projects Git\FinalProject\Renderer\obj\Debug\net7.0\Renderer.sourcelink.json
+C:\Unity Projects Git\FinalProject\Renderer\obj\Debug\net7.0\Renderer.dll
+C:\Unity Projects Git\FinalProject\Renderer\obj\Debug\net7.0\refint\Renderer.dll
+C:\Unity Projects Git\FinalProject\Renderer\obj\Debug\net7.0\Renderer.pdb
+C:\Unity Projects Git\FinalProject\Renderer\obj\Debug\net7.0\Renderer.genruntimeconfig.cache
+C:\Unity Projects Git\FinalProject\Renderer\obj\Debug\net7.0\ref\Renderer.dll
