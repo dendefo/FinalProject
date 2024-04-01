@@ -23,3 +23,12 @@
 /Core/obj/Debug/net6.0/Core.GeneratedMSBuildEditorConfig.editorconfig
 /Core/obj/project.assets.json
 /Core/obj/project.nuget.cache
+/Renderer/obj/Debug/net6.0/Renderer.AssemblyInfo.cs
+/Renderer/obj/Debug/net6.0/Renderer.AssemblyInfoInputs.cache
+/Renderer/obj/Debug/net6.0/Renderer.assets.cache
+/Renderer/obj/Debug/net6.0/Renderer.csproj.AssemblyReference.cache
+/Renderer/obj/Debug/net6.0/Renderer.GeneratedMSBuildEditorConfig.editorconfig
+/Renderer/obj/project.assets.json
+/Renderer/obj/project.nuget.cache
+/Renderer/obj/Renderer.csproj.nuget.dgspec.json
+/Renderer/obj/Renderer.csproj.nuget.g.props
