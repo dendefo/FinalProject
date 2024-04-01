@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "ZK89qFfpHNEvBLuu86HeP0W5z4F+Qe4sDaTWeJdxG9A1M9TDVAfoHNlSjzPWUrSU1uVRTy72NCoyNWt8W6PPaQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\danie\\Documents\\GitHub\\QuarterEngine\\Core\\Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\danie\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

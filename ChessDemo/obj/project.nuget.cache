@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "c3538BvzWshLdV0IA+kA0AQovSbd/cEnlRfMMh5Su/D7USNGRA+woz2b8FiRZGg1ZzIbpmJH3ZAXbLIcah9BdQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\danie\\Documents\\GitHub\\QuarterEngine\\ChessDemo\\ChessDemo.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\danie\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
