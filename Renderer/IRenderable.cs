@@ -9,7 +9,7 @@ namespace Renderer
     /// <typeparam name="T"></typeparam>
     public interface IRenderable<T>
     {
-        Vector2 Position { get; }
+        Position2D Position { get; }
         VisualRepresentation<T> Visuals { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace Core.Components
         /// Reference to the TileObject position
         /// </summary>
         [JsonIgnore]
-        public Vector2 Position { get { return TileObject == null ? default : TileObject.Position; } }
+        public Position2D Position { get { return TileObject == null ? default : TileObject.Position; } }
         /// <summary>
         /// Defines how component should be rendered
         /// </summary>

@@ -11,7 +11,7 @@ namespace Core
     public class Tile<T> : IRenderable<T>
     {
         public event Action<Tile<T>,TileObject> ObjectEntered;
-        public Vector2 Position { get; set; }
+        public Position2D Position { get; set; }
         private TileObject tileObject;
         public TileObject TileObject
         {
@@ -26,7 +26,7 @@ namespace Core
             }
         }
         public VisualRepresentation<T> Visuals { get; set; }
-        public Tile(Vector2 position, VisualRepresentation<T> visuals)
+        public Tile(Position2D position, VisualRepresentation<T> visuals)
         {
             Position = position;
             Visuals = visuals;

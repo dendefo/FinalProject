@@ -6,6 +6,7 @@ namespace ChessDemo
     using static Core.Engine;
     using System.Numerics;
     using Core.Components;
+    using Renderer;
 
     public class Programm
     {
@@ -23,29 +24,33 @@ namespace ChessDemo
             //AssetManager.SaveAsset(PawnPrefab, "Pawn");
 
             //Example of Adding assets to scene by reference to prefab component
-            Instantiate(RookPrefab).TileObject.Position = new Vector2(0, 0);
-            Instantiate(RookPrefab).TileObject.Position = new Vector2(7, 0);
+            Instantiate(RookPrefab).TileObject.Position = new Position2D(7, 0);
 
 
             for (int i = 0; i < 8; i++)
             {
-                Instantiate<Pawn>(PawnPrefab).TileObject.Position = new Vector2(i, 1);
+                Instantiate(PawnPrefab).TileObject.Position = new Position2D(i, 1);
             }
+
+            var RedPawn = Instantiate(PawnPrefab);
+            RedPawn.TileObject.Position = new Position2D(0, 6);
+            RedPawn.TileObject.AddComponent<CharacterRenderer>().Visuals = new('P', Color.Red);
+
             for (int i = 0; i < 8; i++)
             {
-                var pawn = Instantiate<Pawn>(PawnPrefab);
-                pawn.TileObject.Position = new Vector2(i, 6);
-                pawn.TileObject.AddComponent<CharacterRenderer>().Visuals = new('P', Color.Red);
+                Instantiate(RedPawn).TileObject.Position = new Position2D(i, 6);
             }
+
             //Example of Adding assets to scene by creating new instance
-            var newrook = Instantiate(new Vector2(0, 7));
+            var newrook = Instantiate(new Position2D(0, 7));
             //Add the component to the object
             newrook.AddComponent<Rook>();
             //Add the renderer to the object
             newrook.AddComponent<CharacterRenderer>().Visuals = new('R', Color.Red);
 
             //Example of Adding assets to scene by reference to prefab
-            Instantiate(newrook).Position = new Vector2(7, 7);
+            Instantiate(newrook, new Position2D(7, 7));
+            Instantiate(RookPrefab, new Position2D(0, 0));
 
             //Just to show the board rn
             engine.StartGame();

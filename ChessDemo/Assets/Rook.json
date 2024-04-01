@@ -17,8 +17,8 @@
     ]
   },
   "Position": {
-    "$type": "System.Numerics.Vector2, System.Private.CoreLib",
-    "X": 0.0,
-    "Y": 0.0
+    "$type": "Renderer.Position2D, Renderer",
+    "X": 0,
+    "Y": 0
   }
 }

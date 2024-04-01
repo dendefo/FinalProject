@@ -12,12 +12,12 @@ namespace Renderer
             Console.BackgroundColor = FromColor(BackgroundObject.Visuals.Color);
             if (@object == null)
             {
-                Console.SetCursorPosition((int)BackgroundObject.Position.X, (int)BackgroundObject.Position.Y);
+                SetCursorPosition(BackgroundObject.Position);
                 Console.Write(BackgroundObject.Visuals.Visual);
             }
             else
             {
-                Console.SetCursorPosition((int)@object.Position.X, (int)@object.Position.Y);
+                SetCursorPosition(@object.Position);
                 Console.ForegroundColor = FromColor(@object.Visuals.Color);
                 Console.Write(@object.Visuals.Visual);
             }
@@ -33,7 +33,10 @@ namespace Renderer
             index |= c.B > 64 ? 1 : 0; // Blue bit
             return (ConsoleColor)index;
         }
-
+        static public void SetCursorPosition(Position2D pos)
+        {
+            Console.SetCursorPosition(pos.x, pos.y);
+        }
 
     }
     /// <summary>

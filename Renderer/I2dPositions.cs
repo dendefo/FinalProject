@@ -5,23 +5,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChessDemo
+namespace Renderer
 {
-    readonly struct Position2D
+    public readonly struct Position2D
     {
-        readonly int x;
-        readonly int y;
-        readonly int index;
+        public readonly int x;
+        public readonly int y;
 
         /// <summary>
         /// x = X Position, y = Y Position, Index Position
         /// </summary>
         /// <param name=""></param>
-        public Position2D(int x, int y, int index)
+        public Position2D(int x, int y)
         {
             this.x = x;
             this.y = y;
-            this.index = index;
         }
 
         public override readonly int GetHashCode()
@@ -34,15 +32,23 @@ namespace ChessDemo
         }
         public override readonly string ToString()
         {
-            return $"x = {x}, y = {y}, index = {index}";
+            return $"x = {x}, y = {y}";
         }
         public static Position2D operator +(Position2D a, Position2D b)
         {
-            return new Position2D(a.x + b.x, a.y + b.y, 0);
+            return new Position2D(a.x + b.x, a.y + b.y);
         }
         public static Position2D operator -(Position2D a, Position2D b)
         {
-            return new Position2D(a.x - b.x, a.y - b.y, 0);
+            return new Position2D(a.x - b.x, a.y - b.y);
+        }
+        public static bool operator ==(Position2D a, Position2D b)
+        {
+            return a.x == b.x && a.y == b.y;
+        }
+        public static bool operator !=(Position2D a, Position2D b)
+        {
+            return a.x != b.x && a.y != b.y;
         }
     }
     internal interface I2dPositions

@@ -11,31 +11,31 @@ namespace Core
     /// The core of the engine
     /// </summary>
     [Serializable]
-    public class TileObject
+    public class TileObject : IDisposable
     {
         public List<TileComponent> components = new();
         [JsonIgnore]
-        private Vector2 position;
-        public Vector2 Position
+        private Position2D position;
+        public Position2D Position
         {
             get { return position; }
             set
             {
-                if (value.X < 0 || value.Y < 0 || value.X >= Engine.CurrentScene.Width || value.Y >= Engine.CurrentScene.Height)
+                if (value.x < 0 || value.y < 0 || value.x >= Engine.CurrentScene.Width || value.y >= Engine.CurrentScene.Height)
                 {
                     return;
                 }
-                if (Engine.CurrentScene.floorTiles[(int)position.X, (int)position.Y].TileObject == this)
-                    Engine.CurrentScene.floorTiles[(int)position.X, (int)position.Y].TileObject = null;
+                if (Engine.CurrentScene[position].TileObject == this)
+                    Engine.CurrentScene[position].TileObject = null;
                 position = value;
-                if (Engine.CurrentScene.floorTiles[(int)position.X, (int)position.Y].TileObject == null)
-                    Engine.CurrentScene.floorTiles[(int)position.X, (int)position.Y].TileObject = this;
+                if (Engine.CurrentScene[position].TileObject == null)
+                    Engine.CurrentScene[position].TileObject = this;
             }
         }
         internal TileObject() { }
         internal TileObject(int x, int y)
         {
-            Position = new Vector2(x, y);
+            Position = new Position2D(x, y);
         }
 
         /// <summary>
@@ -80,5 +80,16 @@ namespace Core
             return null;
         }
 
+        internal void Dispose()
+        {
+            components.ForEach(c => c.TileObject = null);
+            components.Clear();
+
+        }
+
+        void IDisposable.Dispose()
+        {
+            Dispose();
+        }
     }
 }

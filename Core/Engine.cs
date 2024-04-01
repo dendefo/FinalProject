@@ -31,21 +31,33 @@ namespace Core
 
         public void StartGame()
         {
-            foreach (var item in CurrentScene.floorTiles)
+            foreach (var item in CurrentScene)
             {
                 renderer.RenderObject(item.TileObject?.components.Find(x => x is IRenderable<char>) as IRenderable<char>, item);
             }
-            Console.SetCursorPosition(CurrentScene.Width, CurrentScene.Height);
+            Console.SetCursorPosition(0, CurrentScene.Height);
             Console.ReadKey();
         }
-        static public TileObject Instantiate(Vector2 position)
+        #region Instantiation functions
+        /// <summary>
+        /// Creates a new TileObject and Sets it's position right away
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        static public TileObject Instantiate(Position2D position)
         {
-            var tileObject = new TileObject((int)position.X,(int)position.Y);
+            var tileObject = new TileObject(position.x, position.y);
             return tileObject;
         }
-        static public TileObject Instantiate(TileObject origin)
+        /// <summary>
+        /// Creates a new TileObject based on Origin
+        /// </summary>
+        /// <param name="origin"> Origin to copy from</param>
+        /// <param name="position"> Position on tileMap to place on</param>
+        /// <returns></returns>
+        static public TileObject Instantiate(TileObject origin, Position2D position = default)
         {
-            var tileObject = Instantiate(origin.Position);
+            var tileObject = Instantiate(position);
             foreach (var component in origin.components)
             {
                 var newComponent = tileObject.AddComponent(component);
@@ -53,9 +65,16 @@ namespace Core
             }
             return tileObject;
         }
-        static public T Instantiate<T>(T origin) where T : TileComponent, new()
+        /// <summary>
+        /// Creates a new TileObject based on Origin`s TileObject
+        /// </summary>
+        /// <typeparam name="T"> Type of component </typeparam>
+        /// <param name="origin"> TileComponent to copy TileObject from </param>
+        /// <param name="position"> Position to put new object on TileMap</param>
+        /// <returns> Component of type <typeparamref name="T"/> </returns>
+        static public T Instantiate<T>(T origin, Position2D position = default) where T : TileComponent, new()
         {
-            var NewObject = Instantiate(origin.TileObject.Position);
+            var NewObject = Instantiate(position);
             T toReturn = null;
             foreach (var OriginalComponent in origin.TileObject.components)
             {
@@ -67,10 +86,17 @@ namespace Core
             }
             return toReturn;
         }
+        #endregion
+        /// <summary>
+        /// Deletes object from the scene
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
         static public void Destroy<T>(T obj) where T : TileObject
         {
             if (obj == null) return;
-            CurrentScene.floorTiles[(int)obj.Position.X, (int)obj.Position.Y].TileObject = null;
+            CurrentScene[obj.Position].TileObject = null;
+            obj.Dispose();
         }
     }
 }
