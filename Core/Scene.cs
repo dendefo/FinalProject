@@ -44,6 +44,22 @@ namespace Core
         {
             return GetEnumerator();
         }
+        public bool IsInside(Position2D position)
+        {
+            return position.x >= 0 && position.y >= 0 && position.x < Width && position.y < Height;
+        }
+        public bool IsInside(int x, int y)
+        {
+            return x >= 0 && y >= 0 && x < Width && y < Height;
+        }
+        public bool IsEmpty(Position2D position)
+        {
+            return IsInside(position) && this[position].TileObject == null;
+        }
+        public bool IsEmpty(int x, int y)
+        {
+            return IsInside(x, y) && this[x, y].TileObject == null;
+        }
     }
     internal class SceneEnumerator<T> : IEnumerator<Tile<T>>
     {

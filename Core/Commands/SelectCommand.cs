@@ -3,6 +3,7 @@ using Core.Components;
 using Renderer;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -23,18 +24,18 @@ namespace Core.Commands
                 var obj = CurrentScene[position].TileObject;
                 if (obj == null)
                 {
-                    ShowMessage("No object at this position");
+                    ShowMessage(new("No object at this position", Color.Orange));
                     return;
                 }
                 var comp = obj.GetComponent<PlayerComponent>(typeof(PlayerComponent));
-                if (comp == null) { ShowMessage("This Object can't be controlled"); return; }
+                if (comp == null) { ShowMessage(new("This Object can't be controlled", Color.Orange)); return; }
                 if (comp.ControllerID != CurrentController)
                 {
-                    ShowMessage("This Object can't be controlled by you");
+                    ShowMessage(new("This Object can't be controlled by you", Color.Orange));
                     return;
                 }
                 CommandSystem.Instance.SelectedObject = obj;
-                ShowMessage($"{obj.Position.ToString()} selected");
+                ShowMessage(new($"{obj.Position} selected", Color.Green));
                 base.Activate(parameters);
 
             }

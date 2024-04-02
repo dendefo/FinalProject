@@ -55,11 +55,8 @@ namespace ChessDemo
 
             //Just to show the board rn
             CommandSystem.Instance.AddCommand(new MoveCommand("Move",true));
-            CommandSystem.Instance.AddCommand(new MoveCommand("m",true));
             CommandSystem.Instance.AddCommand(new SelectCommand("Select"));
-            CommandSystem.Instance.AddCommand(new SelectCommand("s"));
             CommandSystem.Instance.AddCommand(new DeselectCommand("Deselect"));
-            CommandSystem.Instance.AddCommand(new DeselectCommand("d"));
             Play();
         }
     }

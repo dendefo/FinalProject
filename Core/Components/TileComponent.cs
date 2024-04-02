@@ -47,7 +47,18 @@ namespace Core.Components
             }
             return ret;
         }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <typeparam name="T"><inheritdoc/></typeparam>
+        /// <returns><inheritdoc/></returns>
         public T AddComponent<T>() where T : TileComponent, new() => TileObject.AddComponent<T>();
+        /// <summary>
+        /// <see cref="TileObject.GetComponent{T}(Type)"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type"><inheritdoc/></param>
+        /// <returns></returns>
         public T GetComponent<T>(Type type) where T : TileComponent => TileObject.GetComponent<T>(type);
     }
 }

@@ -4,6 +4,10 @@
     "$type": "System.Collections.Generic.List`1[[Core.Components.TileComponent, Core]], System.Private.CoreLib",
     "$values": [
       {
+        "$type": "Core.Components.PlayerComponent, Core",
+        "ControllerID": 0
+      },
+      {
         "$type": "ChessDemo.Pieces.Rook, ChessDemo"
       },
       {
@@ -11,7 +15,7 @@
         "Visuals": {
           "$type": "Core.Rendering.VisualRepresentation`1[[System.Char, System.Private.CoreLib]], Core",
           "Visual": "R",
-          "Color": "Green"
+          "Color": "Blue"
         }
       }
     ]

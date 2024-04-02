@@ -15,6 +15,6 @@ namespace Core.Rendering
     {
         public void RenderObject(IRenderable<T> map, IRenderable<T> BackGround);
         public void RenderScene(Scene<T> scene);
-        public void ShowMessage(string message);
+        public void ShowMessage(MessageLine message);
     }
 }

@@ -42,6 +42,10 @@ namespace Renderer
         {
             return new Position2D(a.x - b.x, a.y - b.y);
         }
+        public static Position2D operator *(Position2D a,int b)
+        {
+            return new Position2D(a.x * b, a.y * b);
+        }
         public static bool operator ==(Position2D a, Position2D b)
         {
             return a.x == b.x && a.y == b.y;

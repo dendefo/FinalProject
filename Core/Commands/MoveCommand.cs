@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Core.Commands
 {
+    using System.Drawing;
     public class MoveCommand : Command
     {
         public MoveCommand(string prompt, bool doesEndTurn) : base("Moves object to new position", prompt, doesEndTurn)
@@ -19,19 +20,23 @@ namespace Core.Commands
             {
                 if (CommandSystem.Instance.SelectedObject == null)
                 {
-                    ShowMessage("No object selected");
+                    ShowMessage(new("No object selected",Color.Orange));
                     return;
                 }
-
+                if (CommandSystem.Instance.SelectedObject.Position == position)
+                {
+                    ShowMessage(new("Object already at this position", Color.Orange));
+                    return;
+                }
                 MoveObject(CommandSystem.Instance.SelectedObject, position);
                 if (position == CommandSystem.Instance.SelectedObject.Position)
                 {
-                    ShowMessage("Object moved");
+                    ShowMessage(new("Object moved", Color.Green));
                     base.Activate(parameters);
                 }
                 else
                 {
-                    ShowMessage("Object not moved");
+                    ShowMessage(new("Object not moved", Color.Orange));
                 }
             }
         }

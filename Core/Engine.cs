@@ -20,7 +20,7 @@ namespace Core
     {
         static public IController[] Controllers;
         public static int CurrentController = 0;
-        static private string messageToShow = "";
+        static private Queue<MessageLine> messageToShow = new();
         private static IRenderer<TVisual> Renderer;
         public static Scene<TVisual> CurrentScene;
         public static Engine<TVisual> SetUp(int width, int height, IRenderer<TVisual> renderer)
@@ -98,9 +98,10 @@ namespace Core
         {
             Console.Clear();
             Renderer.RenderScene(CurrentScene);
-            Console.SetCursorPosition(0, CurrentScene.Height);
-            Renderer.ShowMessage(messageToShow);
-            messageToShow = "";
+            while (messageToShow.TryDequeue(out MessageLine message))
+            {
+                Renderer.ShowMessage(message);
+            }
 
         }
         #region Instantiation functions
@@ -187,9 +188,9 @@ namespace Core
             CurrentScene[obj.Position].TileObject = null;
             obj.Dispose();
         }
-        static public void ShowMessage(string message)
+        static public void ShowMessage(MessageLine message)
         {
-            messageToShow += message + "\n";
+            messageToShow.Enqueue(message);
         }
         public static void Play()
         {
@@ -197,7 +198,7 @@ namespace Core
             while (true)
             {
                 var controller = Controllers[CurrentController];
-                ShowMessage($"Player {controller.Name} turn");
+                ShowMessage(new($"{controller.Name} Player turn", controller.Color));
                 Render();
                 controller.StartTurn();
             }
@@ -205,7 +206,11 @@ namespace Core
 
         private static void Command_CommandExecuted(Command obj)
         {
-            if (obj.DoesEndTurn) CurrentController = (CurrentController + 1) % Controllers.Length;
+            if (obj.DoesEndTurn)
+            {
+                CurrentController = (CurrentController + 1) % Controllers.Length;
+                CommandSystem.Instance.SelectedObject = null;
+            }
         }
     }
 }

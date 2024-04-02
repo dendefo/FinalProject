@@ -7,8 +7,8 @@ using Core.Actors;
 
 namespace Core.Components
 {
-    internal class AIComponent : TileComponent, IControllable
+    internal class AIComponent : ControllerComponent, IControllable
     {
-        public int ControllerID { get; set; }
+        public override int ControllerID { get; set; }
     }
 }

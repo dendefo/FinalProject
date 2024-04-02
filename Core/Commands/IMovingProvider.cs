@@ -10,7 +10,7 @@ namespace Core.Commands
     /// <summary>
     /// Interface for providing moving restrictions for objects. Should be implemented onto the componenets
     /// </summary>
-    internal interface IMovingProvider
+    public interface IMovingProvider
     {
         public IEnumerable<Position2D> GetPossibleMoves<T>(Position2D selfPosition,Scene<T> currentGameState);
     }

@@ -1,5 +1,6 @@
 ﻿
 using Renderer;
+using System.Drawing;
 using System.Text.RegularExpressions;
 
 namespace Core.Commands
@@ -94,18 +95,18 @@ namespace Core.Commands
             int pos; uint charvalue = 0;
             if (parameters.Length <= 1)
             {
-                ShowMessage("No parameters provided");
+                ShowMessage(new("No parameters provided", Color.Red));
                 position = default;
                 return false;
             }
             else if (parameters.Length == 2)
             {
                 var match = Regex.Matches(parameters[1], @"[a-zA-Z]+|[0-9]+(?:[0-9]+|)").ToArray();
-                if (match.Length != 2) 
-                { 
-                    ShowMessage("Invalid parameters"); 
+                if (match.Length != 2)
+                {
+                    ShowMessage(new("Invalid parameters", Color.Red));
                     position = default;
-                    return false; 
+                    return false;
                 }
                 int temp;
                 if (int.TryParse(match[0].Value, out pos) && !int.TryParse(match[1].Value, out temp))
@@ -130,7 +131,7 @@ namespace Core.Commands
                 }
                 else
                 {
-                    ShowMessage("Invalid parameters, they should look like a4 or 4a or 4 a");
+                    ShowMessage(new("Invalid parameters, they should look like a4 or 4a or 4 a", Color.Red));
                     position = default;
                     return false;
                 }
@@ -160,20 +161,20 @@ namespace Core.Commands
                 }
                 else
                 {
-                    ShowMessage("Invalid parameters, they should look like a4 or 4a or 4 a");
+                    ShowMessage(new("Invalid parameters, they should look like a4 or 4a or 4 a", Color.Red));
                     position = default;
                     return false;
                 }
             }
-            else 
-            { 
-                ShowMessage("Too Much Parameters"); 
+            else
+            {
+                ShowMessage(new("Too Much Parameters", Color.Red));
                 position = default;
-                return false; 
+                return false;
             }
             if (charvalue >= CurrentScene.Width || pos >= CurrentScene.Height)
             {
-                ShowMessage("Invalid parameters, out of bounds");
+                ShowMessage(new("Invalid parameters, out of bounds", Color.Red));
                 position = default;
                 return false;
             }

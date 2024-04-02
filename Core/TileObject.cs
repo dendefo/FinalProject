@@ -32,6 +32,11 @@ namespace Core
         /// <returns></returns>
         public T AddComponent<T>(T origin = default) where T : TileComponent, new()
         {
+
+            if (origin != null && GetComponent<T>(origin.GetType()) != null && origin.GetType().GetCustomAttributes(true).Any(x => x.GetType() == typeof(AppearOnlyOnceAttribute)))
+            {
+                return GetComponent<T>(origin.GetType());
+            }
             if (origin != null)
             {
                 var newComponent = TileComponent.Copy(origin);
@@ -66,7 +71,8 @@ namespace Core
             foreach (var component in components)
             {
                 var t1 = component.GetType();
-                if (t1 == type)
+                ;
+                if (type.IsInstanceOfType(component) || t1 == type)
                 {
                     return component as T;
                 }
