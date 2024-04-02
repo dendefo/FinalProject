@@ -1,4 +1,6 @@
-﻿using Renderer;
+﻿using Core.Actors;
+using Core.Components;
+using Renderer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +24,13 @@ namespace Core.Commands
                 if (obj == null)
                 {
                     ShowMessage("No object at this position");
+                    return;
+                }
+                var comp = obj.GetComponent<PlayerComponent>(typeof(PlayerComponent));
+                if (comp == null) { ShowMessage("This Object can't be controlled"); return; }
+                if (comp.ControllerID != CurrentController)
+                {
+                    ShowMessage("This Object can't be controlled by you");
                     return;
                 }
                 CommandSystem.Instance.SelectedObject = obj;
