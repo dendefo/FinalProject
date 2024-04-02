@@ -14,7 +14,7 @@ namespace Core.Commands
         public string Prompt;
         public Command(string name, string description, string prompt)
         {
-            Name = name;
+            Name = prompt;
             Description = description;
             Prompt = prompt;
         }

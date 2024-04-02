@@ -24,7 +24,7 @@ namespace Core.Commands
         public CommandSystem()
         {
             Commands = new();
-            HelpCommand = new("Help", "Displays all available commands", default);
+            HelpCommand = new("Help", "Displays all available commands", "Help");
             Commands.Add(HelpCommand);
             Instance = this;
         }
@@ -82,6 +82,13 @@ namespace Core.Commands
         }
         public void StopListening() => cancelToken.Cancel();
 
+        /// <summary>
+        /// Use this method to parse a string into a Position2D object
+        /// String should be in the format of "a1" or "1a" or "1 a" or "a 1". Capitalization does not matter
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         static public bool TryParsePosition(out Position2D position, params string[] parameters)
         {
             int pos; uint charvalue = 0;

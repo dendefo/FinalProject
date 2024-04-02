@@ -14,7 +14,7 @@ namespace Core.Commands
         public override void Activate(params string[] parameters)
         {
             CommandSystem.Instance.SelectedObject = null;
-            Console.WriteLine("Object Deselected");
+            ShowMessage("Object Deselected");
         }
     }
 }
