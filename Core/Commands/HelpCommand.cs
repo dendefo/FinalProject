@@ -13,7 +13,7 @@ namespace Core.Commands
         }
         public override void Activate(params string[] parameters)
         {
-            CommandSystem.Instance.Commands.ForEach(command => Console.WriteLine($"{command.Name} : {command.Description}"));
+            CommandSystem.Instance.Commands.ForEach(command => ShowMessage($"{command.Name} : {command.Description}"));
         }
     }
 }

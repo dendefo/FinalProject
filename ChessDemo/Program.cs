@@ -52,12 +52,15 @@ namespace ChessDemo
             Instantiate(newrook, new Position2D(7, 7));
 
             //Just to show the board rn
-            engine.Render();
+            Render();
             CommandSystem.Instance.AddCommand(new MoveCommand("Move"));
             CommandSystem.Instance.AddCommand(new SelectCommand("Select"));
             CommandSystem.Instance.AddCommand(new DeselectCommand("Deselect"));
             while (true)
+            {
                 CommandSystem.Instance.Listen(() => Console.ReadLine());
+                Render();
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿global using static Core.Engine<char>;
+using System.Linq;
 using System.Numerics;
 using System.Text.Json;
 using Core.Commands;
@@ -15,6 +16,7 @@ namespace Core
     /// </summary>
     public class Engine<TVisual>
     {
+        static private string messageToShow = "";
         private static IRenderer<TVisual> Renderer;
         public static Scene<TVisual> CurrentScene;
         public static Engine<TVisual> Start(int width, int height, IRenderer<TVisual> renderer)
@@ -61,6 +63,12 @@ namespace Core
         /// <returns> Returns true if object changed it's position </returns>
         public static bool MoveObject(TileObject obj, Position2D position, bool DestroyIfOccupied = false)
         {
+            var movProvider = obj.components.FirstOrDefault(comp => comp is IMovingProvider) as IMovingProvider;
+            if (movProvider != null)
+            {
+                var moves = movProvider.GetPossibleMoves(obj.Position, CurrentScene);
+                if (!moves.Contains(position)) return false;
+            }
             if (IsEmpty(position))
             {
                 SetPosition(obj, position);
@@ -74,7 +82,7 @@ namespace Core
             }
             return false;
         }
-        public void Render()
+        static public void Render()
         {
             Console.Clear();
             foreach (var item in CurrentScene)
@@ -82,6 +90,9 @@ namespace Core
                 Renderer.RenderObject(item.TileObject?.components.Find(x => x is IRenderable<TVisual>) as IRenderable<TVisual>, item);
             }
             Console.SetCursorPosition(0, CurrentScene.Height);
+            Renderer.ShowMessage(messageToShow);
+            messageToShow = "";
+
         }
         #region Instantiation functions
         /// <summary>
@@ -146,7 +157,7 @@ namespace Core
         }
         static public void ShowMessage(string message)
         {
-            Renderer.ShowMessage(message);
+            messageToShow += message + "\n";
         }
     }
 }
