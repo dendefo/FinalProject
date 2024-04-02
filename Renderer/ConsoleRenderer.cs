@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using Core;
 using Core.Rendering;
 
 namespace Renderer
@@ -43,6 +44,15 @@ namespace Renderer
         public void ShowMessage(string message)
         {
             Console.WriteLine(message);
+        }
+
+        public void RenderScene(Scene<char> scene)
+        {
+
+            foreach (var item in scene)
+            {
+                RenderObject(item.TileObject?.components.Find(x => x is IRenderable<char>) as IRenderable<char>, item);
+            }
         }
     }
 }

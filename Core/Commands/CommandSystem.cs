@@ -24,7 +24,7 @@ namespace Core.Commands
         public CommandSystem()
         {
             Commands = new();
-            HelpCommand = new("Help", "Displays all available commands", "Help");
+            HelpCommand = new("Displays all available commands", "Help");
             Commands.Add(HelpCommand);
             Instance = this;
         }

@@ -9,7 +9,7 @@ namespace Core
     /// A class that represents a Tile Map
     /// Still not finished
     /// </summary>
-    public class Scene<T> :IEnumerable<Tile<T>>
+    public class Scene<T> : IEnumerable<Tile<T>>
     {
         private Tile<T>[,] floorTiles;
         public Tile<T> this[int x, int y] => floorTiles[x, y];
@@ -28,9 +28,9 @@ namespace Core
                 for (int j = 0; j < floorTiles.GetLength(1); j++)
                 {
                     if ((i + j) % 2 == 0)
-                        floorTiles[i, j] = new Tile<T>(new Position2D(i, j), new VisualRepresentation<T>(default, System.Drawing.Color.Black));
+                        floorTiles[i, j] = new Tile<T>(new Position2D(i, j), new VisualRepresentation<T>(visual: default, System.Drawing.Color.Black));
                     else
-                        floorTiles[i, j] = new Tile<T>(new Position2D(i, j), new VisualRepresentation<T>(default, System.Drawing.Color.Gray));
+                        floorTiles[i, j] = new Tile<T>(new Position2D(i, j), new VisualRepresentation<T>(visual: default, System.Drawing.Color.Gray));
                 }
             }
         }
@@ -45,7 +45,7 @@ namespace Core
             return GetEnumerator();
         }
     }
-    internal class SceneEnumerator<T>: IEnumerator<Tile<T>>
+    internal class SceneEnumerator<T> : IEnumerator<Tile<T>>
     {
         private Scene<T> scene;
         private int x = -1;
@@ -65,12 +65,12 @@ namespace Core
 
         public bool MoveNext()
         {
-            if (x < scene.Width-1)
+            if (x < scene.Width - 1)
             {
                 x++;
                 return true;
             }
-            else if (y < scene.Height-1)
+            else if (y < scene.Height - 1)
             {
                 x = 0;
                 y++;

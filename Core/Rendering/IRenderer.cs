@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Rendering
 {
+    
     /// <summary>
     /// Interface for Creating your own Renderer
     /// </summary>
@@ -13,6 +14,7 @@ namespace Core.Rendering
     public interface IRenderer<T>
     {
         public void RenderObject(IRenderable<T> map, IRenderable<T> BackGround);
+        public void RenderScene(Scene<T> scene);
         public void ShowMessage(string message);
     }
 }

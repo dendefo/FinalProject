@@ -12,14 +12,17 @@ namespace Core.Commands
         public string Name { get; protected set; }
         public string Description { get; protected set; }
         public string Prompt;
-        public Command(string name, string description, string prompt)
+        public bool DoesEndTurn { get; protected set; } = false;
+        public static event Action<Command> CommandExecuted;
+        public Command(string description, string prompt, bool doesEndTurn)
         {
             Name = prompt;
             Description = description;
             Prompt = prompt;
+            DoesEndTurn = doesEndTurn;
         }
 
-        abstract public void Activate(params string[] parameters);
+        virtual public void Activate(params string[] parameters) => CommandExecuted?.Invoke(this);
 
 
     }

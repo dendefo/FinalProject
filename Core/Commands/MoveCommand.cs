@@ -9,7 +9,7 @@ namespace Core.Commands
 {
     public class MoveCommand : Command
     {
-        public MoveCommand(string prompt) : base("Move", "Moves object to new position", prompt)
+        public MoveCommand(string prompt, bool doesEndTurn) : base("Moves object to new position", prompt, doesEndTurn)
         {
         }
         public override void Activate(params string[] parameters)
@@ -27,6 +27,7 @@ namespace Core.Commands
                 if (position == CommandSystem.Instance.SelectedObject.Position)
                 {
                     ShowMessage("Object moved");
+                    base.Activate(parameters);
                 }
                 else
                 {

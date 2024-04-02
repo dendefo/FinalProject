@@ -1,7 +1,9 @@
 ﻿global using static Core.Engine<char>;
+using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Text.Json;
+using Core.Actors;
 using Core.Commands;
 using Core.Components;
 using Core.Rendering;
@@ -16,12 +18,22 @@ namespace Core
     /// </summary>
     public class Engine<TVisual>
     {
+        static public IController[] Controllers;
+        public static int CurrentController = 0;
         static private string messageToShow = "";
         private static IRenderer<TVisual> Renderer;
         public static Scene<TVisual> CurrentScene;
-        public static Engine<TVisual> Start(int width, int height, IRenderer<TVisual> renderer)
+        public static Engine<TVisual> SetUp(int width, int height, IRenderer<TVisual> renderer)
         {
             return new Engine<TVisual>(width, height, renderer);
+        }
+        public static void DefinePlayers(params IController[] controllers)
+        {
+            Controllers = controllers;
+            for (int i = 0; i < Controllers.Length; i++)
+            {
+                Controllers[i].ControllerID = i;
+            }
         }
 
         /// <summary>
@@ -85,10 +97,7 @@ namespace Core
         static public void Render()
         {
             Console.Clear();
-            foreach (var item in CurrentScene)
-            {
-                Renderer.RenderObject(item.TileObject?.components.Find(x => x is IRenderable<TVisual>) as IRenderable<TVisual>, item);
-            }
+            Renderer.RenderScene(CurrentScene);
             Console.SetCursorPosition(0, CurrentScene.Height);
             Renderer.ShowMessage(messageToShow);
             messageToShow = "";
@@ -100,9 +109,22 @@ namespace Core
         /// </summary>
         /// <param name="position"></param>
         /// <returns></returns>
-        static public TileObject Instantiate(Position2D position)
+        static public TileObject Instantiate(Position2D position, IController controller = null)
         {
             var tileObject = new TileObject();
+            if (controller != null)
+            {
+                if (controller is AIActor c)
+                {
+                    var comp = tileObject.AddComponent<AIComponent>();
+                    comp.ControllerID = c.ControllerID;
+                }
+                else if (controller is PlayerActor p)
+                {
+                    var comp = tileObject.AddComponent<PlayerComponent>();
+                    comp.ControllerID = p.ControllerID;
+                }
+            }
             SetPosition(tileObject, position);
             return tileObject;
         }
@@ -112,13 +134,18 @@ namespace Core
         /// <param name="origin"> Origin to copy from</param>
         /// <param name="position"> Position on tileMap to place on</param>
         /// <returns></returns>
-        static public TileObject Instantiate(TileObject origin, Position2D position = default)
+        static public TileObject Instantiate(TileObject origin, Position2D position = default, IController controller = null)
         {
-            var tileObject = Instantiate(position);
+            var tileObject = Instantiate(position, controller);
             foreach (var component in origin.components)
             {
                 var newComponent = tileObject.AddComponent(component);
                 newComponent.TileObject = tileObject;
+            }
+            if (tileObject.components.First(x => x is RenderingComponent<TVisual>) is RenderingComponent<TVisual> rend)
+            {
+                var Color = Controllers[(tileObject.components.First((x => x is PlayerComponent || x is AIComponent)) as IControllable).ControllerID].Color;
+                if (Color != default) rend.Visuals = new(rend.Visuals, Color);
             }
             return tileObject;
         }
@@ -129,9 +156,9 @@ namespace Core
         /// <param name="origin"> TileComponent to copy TileObject from </param>
         /// <param name="position"> Position to put new object on TileMap</param>
         /// <returns> Component of type <typeparamref name="T"/> </returns>
-        static public T Instantiate<T>(T origin, Position2D position = default) where T : TileComponent, new()
+        static public T Instantiate<T>(T origin, Position2D position = default, IController controller = null) where T : TileComponent, new()
         {
-            var NewObject = Instantiate(position);
+            var NewObject = Instantiate(position, controller);
             T toReturn = null;
             foreach (var OriginalComponent in origin.TileObject.components)
             {
@@ -140,6 +167,11 @@ namespace Core
                 var component = NewObject.AddComponent(OriginalComponent);
                 component.TileObject = NewObject;
                 if (t == typeof(T)) toReturn = component as T;
+            }
+            if (NewObject.components.First(x => x is RenderingComponent<TVisual>) is RenderingComponent<TVisual> rend)
+            {
+                var Color = Controllers[(NewObject.components.First((x => x is PlayerComponent || x is AIComponent)) as IControllable).ControllerID].Color;
+                if (Color != default) rend.Visuals = new(rend.Visuals, Color);
             }
             return toReturn;
         }
@@ -158,6 +190,22 @@ namespace Core
         static public void ShowMessage(string message)
         {
             messageToShow += message + "\n";
+        }
+        public static void Play()
+        {
+            Command.CommandExecuted += Command_CommandExecuted;
+            while (true)
+            {
+                var controller = Controllers[CurrentController];
+                ShowMessage($"Player {controller.Name} turn");
+                Render();
+                controller.StartTurn();
+            }
+        }
+
+        private static void Command_CommandExecuted(Command obj)
+        {
+            if (obj.DoesEndTurn) CurrentController = (CurrentController + 1) % Controllers.Length;
         }
     }
 }

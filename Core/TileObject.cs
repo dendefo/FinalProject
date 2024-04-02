@@ -4,6 +4,7 @@ using Renderer;
 namespace Core
 {
     using Components;
+    using Core.Actors;
     using Newtonsoft.Json;
 
     /// <summary>
@@ -36,15 +37,24 @@ namespace Core
                 var newComponent = TileComponent.Copy(origin);
                 components.Add(newComponent);
                 newComponent.TileObject = this;
+                UpdateColorByController<char>();
                 return newComponent.GetComponent<T>(origin.GetType());
             }
             var ctr = new T();
             if (ctr.TileObject != null) ctr.TileObject.Dispose();
             ctr.TileObject = this;
             components.Add(ctr);
+            UpdateColorByController<char>();
             return ctr.GetComponent<T>(typeof(T));
         }
-
+        public void UpdateColorByController<T>()
+        {
+            if (GetComponent<RenderingComponent<T>>(typeof(RenderingComponent<T>)) is RenderingComponent<T> rend)
+            {
+                var Color = Controllers[(components.First((x => x is PlayerComponent || x is AIComponent)) as IControllable).ControllerID].Color;
+                if (Color != default) rend.Visuals = new(rend.Visuals, Color);
+            }
+        }
         /// <summary>
         /// Gets a component of type T
         /// </summary>
@@ -55,7 +65,6 @@ namespace Core
         {
             foreach (var component in components)
             {
-                var t = typeof(T);
                 var t1 = component.GetType();
                 if (t1 == type)
                 {
@@ -63,6 +72,21 @@ namespace Core
                 }
             }
             return null;
+        }
+
+        public bool RemoveComponent<T>(Type type) where T : TileComponent
+        {
+            foreach (var component in components)
+            {
+                var t1 = component.GetType();
+                if (t1 == type)
+                {
+                    components.Remove(component);
+                    component.TileObject = null;
+                    return true;
+                }
+            }
+            return false;
         }
 
         internal void Dispose()

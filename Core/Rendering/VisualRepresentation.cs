@@ -15,5 +15,14 @@ namespace Core.Rendering
             Visual = visual;
             Color = color;
         }
+        public VisualRepresentation(VisualRepresentation<T> origin, Color newColor)
+        {
+            Visual = origin.Visual;
+            Color = newColor;
+        }
+        public void SetColor(Color color)
+        {
+            this.Color = color;
+        }
     }
 }

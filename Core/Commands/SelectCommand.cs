@@ -11,7 +11,7 @@ namespace Core.Commands
     using static Core.Engine<char>;
     public class SelectCommand : Command
     {
-        public SelectCommand(string prompt) : base("Select", "Selects object in coordinated", prompt)
+        public SelectCommand(string prompt) : base("Selects object in coordinated", prompt, false)
         {
         }
         public override void Activate(params string[] parameters)
@@ -26,6 +26,8 @@ namespace Core.Commands
                 }
                 CommandSystem.Instance.SelectedObject = obj;
                 ShowMessage($"{obj.Position.ToString()} selected");
+                base.Activate(parameters);
+
             }
         }
     }
