@@ -53,9 +53,11 @@ namespace ChessDemo
 
             //Just to show the board rn
             engine.Render();
+            CommandSystem.Instance.AddCommand(new MoveCommand("Move"));
+            CommandSystem.Instance.AddCommand(new SelectCommand("Select"));
+            CommandSystem.Instance.AddCommand(new DeselectCommand("Deselect"));
             while (true)
-                CommandSystem.Listen(() => Console.ReadLine());
-            MoveObject(newrook, new Position2D(0, 0));
+                CommandSystem.Instance.Listen(() => Console.ReadLine());
         }
     }
 }

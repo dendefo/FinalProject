@@ -15,8 +15,7 @@ namespace Core
     /// </summary>
     public class Engine<TVisual>
     {
-        private readonly IRenderer<TVisual> renderer;
-        public static CommandSystem<string> CommandSystem = new();
+        private static IRenderer<TVisual> Renderer;
         public static Scene<TVisual> CurrentScene;
         public static Engine<TVisual> Start(int width, int height, IRenderer<TVisual> renderer)
         {
@@ -30,7 +29,7 @@ namespace Core
         private Engine(int width, int height, IRenderer<TVisual> renderer)
         {
             CurrentScene = new Scene<TVisual>(width, height);
-            this.renderer = renderer;
+            Renderer = renderer;
         }
 
         internal static bool SetPosition(TileObject obj, Position2D position)
@@ -77,9 +76,10 @@ namespace Core
         }
         public void Render()
         {
+            Console.Clear();
             foreach (var item in CurrentScene)
             {
-                renderer.RenderObject(item.TileObject?.components.Find(x => x is IRenderable<TVisual>) as IRenderable<TVisual>, item);
+                Renderer.RenderObject(item.TileObject?.components.Find(x => x is IRenderable<TVisual>) as IRenderable<TVisual>, item);
             }
             Console.SetCursorPosition(0, CurrentScene.Height);
         }
@@ -144,9 +144,9 @@ namespace Core
             CurrentScene[obj.Position].TileObject = null;
             obj.Dispose();
         }
-        static public void ShowInterface()
+        static public void ShowMessage(string message)
         {
-
+            Renderer.ShowMessage(message);
         }
     }
 }

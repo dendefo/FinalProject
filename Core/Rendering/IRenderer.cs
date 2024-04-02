@@ -13,5 +13,6 @@ namespace Core.Rendering
     public interface IRenderer<T>
     {
         public void RenderObject(IRenderable<T> map, IRenderable<T> BackGround);
+        public void ShowMessage(string message);
     }
 }

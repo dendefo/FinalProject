@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Core.Commands
 {
-    public class MoveCommand : Command
+    public class DeselectCommand:Command
     {
-        public MoveCommand(string prompt):base("Move", "Moves object to new position",prompt)
+        public DeselectCommand(string prompt):base("Deselect", "Deselects the Object",prompt)
         {
         }
         public override void Activate(params string[] parameters)
         {
-
-            Console.WriteLine("Move Command Activated");
+            CommandSystem.Instance.SelectedObject = null;
+            Console.WriteLine("Object Deselected");
         }
     }
 }

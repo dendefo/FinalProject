@@ -7,20 +7,19 @@ using System.Threading.Tasks;
 
 namespace Core.Commands
 {
-    abstract public class Command<T>
+    abstract public class Command
     {
         public string Name { get; protected set; }
         public string Description { get; protected set; }
-        public T Prompt;
-        public static event Action<Command<T>> OnCommand;
-        public Command(string name, string description, T prompt)
+        public string Prompt;
+        public Command(string name, string description, string prompt)
         {
             Name = name;
             Description = description;
             Prompt = prompt;
         }
 
-        virtual public void Activate() => OnCommand?.Invoke(this);
+        abstract public void Activate(params string[] parameters);
 
 
     }

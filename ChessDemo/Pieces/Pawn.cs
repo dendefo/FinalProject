@@ -2,7 +2,11 @@
 
 namespace ChessDemo.Pieces
 {
-    internal class Pawn : ChessObject
+    internal class Pawn : ChessComponent
     {
+        public override string ToString()
+        {
+            return $"Pawn at Position {TileObject.Position}";
+        }
     }
 }

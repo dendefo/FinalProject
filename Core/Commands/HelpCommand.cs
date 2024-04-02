@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 
 namespace Core.Commands
 {
-    public class HelpCommand<T> : Command<T>
+    public class HelpCommand : Command
     {
-        public HelpCommand(string name, string description, T prompt) : base(name, description, prompt)
+        public HelpCommand(string name, string description, string prompt) : base(name, description, prompt)
         {
         }
-        public override void Activate()
+        public override void Activate(params string[] parameters)
         {
-            base.Activate();
-            CommandSystem.Commands.ForEach(command => Console.WriteLine($"{command.Name} : {command.Description}"));
+            CommandSystem.Instance.Commands.ForEach(command => Console.WriteLine($"{command.Name} : {command.Description}"));
         }
     }
 }

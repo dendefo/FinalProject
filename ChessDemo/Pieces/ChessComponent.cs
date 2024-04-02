@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace ChessDemo.Pieces
 {
-    internal abstract class ChessObject : CustomComponent
+    internal abstract class ChessComponent : CustomComponent
     {
     }
 }

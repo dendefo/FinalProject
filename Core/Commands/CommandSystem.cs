@@ -1,33 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Collections.Specialized.BitVector32;
+﻿
+using Renderer;
 
 namespace Core.Commands
 {
-    public class CommandSystem<T>
+    public class CommandSystem
     {
         private CancellationTokenSource cancelToken;
-        private Func<T> currentAction;
-        public List<Command<T>> Commands { get; private set; }
-        public HelpCommand<T> HelpCommand { get; set; }
+        private Func<string> currentAction;
+        public List<Command> Commands { get; private set; }
+        public HelpCommand HelpCommand { get; set; }
+        private static CommandSystem instance;
+        public static CommandSystem Instance
+        {
+            get
+            {
+                if (instance == null) instance = new();
+                return instance;
+            }
+            private set { instance = value; }
+        }
+        public TileObject SelectedObject;
         public CommandSystem()
         {
             Commands = new();
             HelpCommand = new("Help", "Displays all available commands", default);
             Commands.Add(HelpCommand);
+            Instance = this;
         }
-        public void AddCommand(Command<T> command)
+        public void AddCommand(Command command)
         {
             Commands.Add(command);
         }
-        public void RemoveCommand(Command<T> command)
+        public void RemoveCommand(Command command)
         {
             Commands.Remove(command);
         }
-        async public void StartListeningAsync(Func<T> action)
+        async public void StartListeningAsync(Func<string> action)
         {
             cancelToken = new CancellationTokenSource();
 
@@ -46,27 +54,29 @@ namespace Core.Commands
                 HelpCommand.Activate();
             }
         }
-        public void Listen(Func<T> action)
+        public void Listen(Func<string> action)
         {
-            T value;
             if (currentAction != null) return;
 
             currentAction = action;
             action += (currentAction = null);
-            value = action();
+            var value = action();
 
             int activated = 0;
+            string[] parameters = value.Split(' ');
+            if (parameters.Length == 0) return;
+
             foreach (var command in Commands)
             {
-                if (value.Equals(command.Prompt))
+                if (parameters[0] == command.Prompt)
                 {
                     activated++;
-                    command.Activate();
+                    command.Activate(parameters);
                 }
             }
             if (activated == 0)
             {
-                HelpCommand.Activate();
+                HelpCommand.Activate(parameters);
             }
         }
         public void StopListening() => cancelToken.Cancel();

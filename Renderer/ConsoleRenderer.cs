@@ -40,5 +40,9 @@ namespace Renderer
             Console.SetCursorPosition(pos.x, pos.y);
         }
 
+        public void ShowMessage(string message)
+        {
+            Console.WriteLine(message);
+        }
     }
 }
