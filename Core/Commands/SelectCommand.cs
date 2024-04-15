@@ -17,6 +17,11 @@ namespace Core.Commands
         public SelectCommand(string prompt) : base("Selects object in coordinated", prompt, false)
         {
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parameters"></param>
         public override void Activate(params string[] parameters)
         {
             if (CommandSystem.TryParsePosition(out Position2D position, parameters))

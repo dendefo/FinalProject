@@ -14,5 +14,6 @@ namespace Core.Commands
     {
         public IEnumerable<Position2D> GetPossibleMoves<T>(Position2D selfPosition,Scene<T> currentGameState);
         public IEnumerable<Position2D> GetPossibleDestroyMoves<T>(Position2D selfPosition, Scene<T> currentGameState);
+        abstract public void MoveCallback(Position2D lastPosition, Position2D newPostion);
     }
 }

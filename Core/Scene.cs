@@ -27,7 +27,7 @@ namespace Core
             {
                 for (int j = 0; j < floorTiles.GetLength(1); j++)
                 {
-                    if ((i + j) % 2 == 0)
+                    if ((i + j) % 2 != 0)
                         floorTiles[i, j] = new Tile<T>(new Position2D(i, j), new VisualRepresentation<T>(visual: default, System.Drawing.Color.Black));
                     else
                         floorTiles[i, j] = new Tile<T>(new Position2D(i, j), new VisualRepresentation<T>(visual: default, System.Drawing.Color.Gray));

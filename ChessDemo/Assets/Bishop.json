@@ -8,13 +8,13 @@
         "ControllerID": 1
       },
       {
-        "$type": "ChessDemo.Pieces.Pawn, ChessDemo"
+        "$type": "ChessDemo.Pieces.Bishop, ChessDemo"
       },
       {
         "$type": "Core.Components.CharacterRenderer, Core",
         "Visuals": {
           "$type": "Core.Rendering.VisualRepresentation`1[[System.Char, System.Private.CoreLib]], Core",
-          "Visual": "P",
+          "Visual": "B",
           "Color": "Red"
         }
       }
@@ -22,7 +22,7 @@
   },
   "Position": {
     "$type": "Renderer.Position2D, Core",
-    "x": 0,
-    "y": 6
+    "x": 2,
+    "y": 7
   }
 }

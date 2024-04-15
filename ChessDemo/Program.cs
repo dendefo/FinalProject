@@ -22,6 +22,7 @@ namespace ChessDemo
             var RookPrefab = AssetManager.LoadAsset<Rook>("Rook");
             var PawnPrefab = AssetManager.LoadAsset<Pawn>("Pawn");
             var QueenPrefab = AssetManager.LoadAsset<Queen>("Queen");
+            var BishopPrefab = AssetManager.LoadAsset<Bishop>("Bishop");
 
             // Example of saving assets
             //AssetManager.SaveAsset(RookPrefab, "Rook");
@@ -30,31 +31,22 @@ namespace ChessDemo
             //Example of Adding assets to scene by reference to prefab component
             Instantiate(RookPrefab, new(0, 0), Controllers[0]);
             Instantiate(RookPrefab, new(7, 0), Controllers[0]);
-            Instantiate(QueenPrefab, new(4,7), Controllers[1]);
-            Instantiate(QueenPrefab, new(4,0), Controllers[0]);
-
-
+            Instantiate(QueenPrefab, new(3, 0), Controllers[0]);
+            Instantiate(BishopPrefab, new(2, 0), Controllers[0]);
+            Instantiate(BishopPrefab, new(5, 0), Controllers[0]);
             for (int i = 0; i < 8; i++)
             {
                 Instantiate(PawnPrefab, new(i, 1), Controllers[0]);
             }
-
-            var RedPawn = Instantiate(PawnPrefab, new(0, 6), Controllers[1]);
-            RedPawn.TileObject.AddComponent<CharacterRenderer>().Visuals = new('P', Color.Red);
-
-            for (int i = 1; i < 8; i++)
+            Instantiate(RookPrefab, new(0, 7), Controllers[1]);
+            Instantiate(RookPrefab, new(7, 7), Controllers[1]);
+            Instantiate(QueenPrefab, new(3, 7), Controllers[1]);
+            Instantiate(BishopPrefab, new(2, 7), Controllers[1]);
+            Instantiate(BishopPrefab, new(5, 7), Controllers[1]);
+            for (int i = 0; i < 8; i++)
             {
-                Instantiate(RedPawn, new(i, 6), Controllers[1]);
+                Instantiate(PawnPrefab, new(i, 6), Controllers[1]);
             }
-
-            //Example of Adding assets to scene by creating new instance
-            var newrook = Instantiate(new Position2D(0, 7), Controllers[1]);
-            //Add the component to the object
-            newrook.AddComponent<Rook>();
-            //Add the renderer to the object
-            newrook.AddComponent<CharacterRenderer>().Visuals = new('R', Color.Red);
-
-            Instantiate(newrook, new Position2D(7, 7), Controllers[1]);
 
             CommandSystem.Instance.AddCommand(new MoveCommand("Move", true));
             CommandSystem.Instance.AddCommand(new SelectCommand("Select"));

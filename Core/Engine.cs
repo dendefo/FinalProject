@@ -86,11 +86,13 @@ namespace Core
 
                 if (IsEmpty(position) && isMovingPosition)
                 {
+                    movProvider.MoveCallback(obj.Position, position);
                     SetPosition(obj, position);
                     return true;
                 }
                 else if (DestroyIfOccupied && isDestroyingPosition)
                 {
+                    movProvider.MoveCallback(obj.Position, position);
                     Destroy(CurrentScene[position].TileObject);
                     SetPosition(obj, position);
 

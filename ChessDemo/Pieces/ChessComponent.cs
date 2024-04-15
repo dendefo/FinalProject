@@ -40,6 +40,12 @@ namespace ChessDemo.Pieces
             }
             return possibleMoves;
         }
-        virtual public IEnumerable<Position2D> GetPossibleDestroyMoves<T>(Position2D selfPosition, Scene<T> currentGameState) => GetPossibleMoves(selfPosition, currentGameState);
+        virtual public IEnumerable<Position2D> GetPossibleDestroyMoves<T>(Position2D selfPosition, Scene<T> currentGameState) => 
+            GetPossibleMoves(selfPosition, currentGameState);
+
+        virtual public void MoveCallback(Position2D lastPosition, Position2D newPostion)
+        {
+            
+        }
     }
 }
