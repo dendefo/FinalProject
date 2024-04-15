@@ -101,6 +101,7 @@ namespace Core
             components.Clear();
 
         }
+        
 
         void IDisposable.Dispose()
         {

@@ -79,17 +79,37 @@ namespace Core
             if (movProvider != null)
             {
                 var moves = movProvider.GetPossibleMoves(obj.Position, CurrentScene);
-                if (!moves.Contains(position)) return false;
+                bool isMovingPosition = moves.Contains(position);
+                bool isDestroyingPosition = movProvider.GetPossibleDestroyMoves(obj.Position, CurrentScene).Contains(position);
+                if (!isMovingPosition && !isDestroyingPosition)
+                    return false;
+
+                if (IsEmpty(position) && isMovingPosition)
+                {
+                    SetPosition(obj, position);
+                    return true;
+                }
+                else if (DestroyIfOccupied && isDestroyingPosition)
+                {
+                    Destroy(CurrentScene[position].TileObject);
+                    SetPosition(obj, position);
+
+                    return true;
+                }
             }
-            if (IsEmpty(position))
+            return false;
+        }
+        public static bool ShowMoves(TileObject obj)
+        {
+            var movProvider = obj.components.FirstOrDefault(comp => comp is IMovingProvider) as IMovingProvider;
+            if (movProvider != null)
             {
-                SetPosition(obj, position);
-                return true;
-            }
-            else if (DestroyIfOccupied)
-            {
-                Destroy(CurrentScene[position].TileObject);
-                SetPosition(obj, position);
+                var moves = movProvider.GetPossibleMoves(obj.Position, CurrentScene);
+                ShowMessage(new("Possible moves: ", Color.Green));
+                foreach (var move in moves)
+                {
+                    ShowMessage(new($"{move}", Color.Green));
+                }
                 return true;
             }
             return false;

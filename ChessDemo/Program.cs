@@ -16,7 +16,7 @@ namespace ChessDemo
         {
             var engine = SetUp(8, 8, new ConsoleRenderer());
             var scene = CurrentScene;
-            DefinePlayers(new PlayerActor() { Name = "First", Color = Color.Blue }, new PlayerActor() { Name = "Second", Color = Color.Red });
+            DefinePlayers(new ChessPlayerActor() { Name = "First", Color = Color.Blue, WinningDirection = 1 }, new ChessPlayerActor() { Name = "Second", Color = Color.Red, WinningDirection = -1 });
 
             // Load the assets
             var RookPrefab = AssetManager.LoadAsset<Rook>("Rook");
@@ -53,10 +53,10 @@ namespace ChessDemo
 
             Instantiate(newrook, new Position2D(7, 7), Controllers[1]);
 
-            //Just to show the board rn
-            CommandSystem.Instance.AddCommand(new MoveCommand("Move",true));
+            CommandSystem.Instance.AddCommand(new MoveCommand("Move", true));
             CommandSystem.Instance.AddCommand(new SelectCommand("Select"));
             CommandSystem.Instance.AddCommand(new DeselectCommand("Deselect"));
+            CommandSystem.Instance.AddCommand(new EatCommand("Eat"));
             Play();
         }
     }

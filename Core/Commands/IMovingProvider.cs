@@ -13,5 +13,6 @@ namespace Core.Commands
     public interface IMovingProvider
     {
         public IEnumerable<Position2D> GetPossibleMoves<T>(Position2D selfPosition,Scene<T> currentGameState);
+        public IEnumerable<Position2D> GetPossibleDestroyMoves<T>(Position2D selfPosition, Scene<T> currentGameState);
     }
 }

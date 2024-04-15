@@ -70,7 +70,7 @@ namespace Core.Commands
 
             foreach (var command in Commands)
             {
-                if (parameters[0] == command.Prompt)
+                if (parameters[0].ToLower() == command.Prompt.ToLower())
                 {
                     activated++;
                     command.Activate(parameters);

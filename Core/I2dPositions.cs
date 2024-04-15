@@ -34,6 +34,10 @@ namespace Renderer
         {
             return $"x = {x}, y = {y}";
         }
+        public float Distance(Position2D other)
+        {
+            return (float)MathF.Sqrt(MathF.Pow(x - other.x, 2) + MathF.Pow(y - other.y, 2));
+        }
         public static Position2D operator +(Position2D a, Position2D b)
         {
             return new Position2D(a.x + b.x, a.y + b.y);
@@ -42,7 +46,7 @@ namespace Renderer
         {
             return new Position2D(a.x - b.x, a.y - b.y);
         }
-        public static Position2D operator *(Position2D a,int b)
+        public static Position2D operator *(Position2D a, int b)
         {
             return new Position2D(a.x * b, a.y * b);
         }

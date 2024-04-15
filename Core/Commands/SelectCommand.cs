@@ -36,6 +36,7 @@ namespace Core.Commands
                 }
                 CommandSystem.Instance.SelectedObject = obj;
                 ShowMessage(new($"{obj.Position} selected", Color.Green));
+                ShowMoves(obj);
                 base.Activate(parameters);
 
             }

@@ -13,6 +13,15 @@ namespace ChessDemo.Pieces
     internal abstract class ChessComponent : CustomComponent, IMovingProvider
     {
         abstract public IEnumerable<Position2D> GetPossibleMoves<T>(Position2D selfPosition, Scene<T> currentGameState);
+        /// <summary>
+        /// Returns all possible moves in a given direction
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="startPos"> Starting position</param>
+        /// <param name="direction"> Direction to check the moves</param>
+        /// <param name="currentGameState"> Current Map</param>
+        /// <param name="thisControllerComponent"></param>
+        /// <returns></returns>
         public static IEnumerable<Position2D> CheckInDirection<T>(Position2D startPos, Position2D direction, Scene<T> currentGameState, ControllerComponent thisControllerComponent)
         {
             int i = 0;
@@ -31,5 +40,6 @@ namespace ChessDemo.Pieces
             }
             return possibleMoves;
         }
+        virtual public IEnumerable<Position2D> GetPossibleDestroyMoves<T>(Position2D selfPosition, Scene<T> currentGameState) => GetPossibleMoves(selfPosition, currentGameState);
     }
 }
