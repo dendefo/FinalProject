@@ -21,6 +21,7 @@ namespace ChessDemo
             // Load the assets
             var RookPrefab = AssetManager.LoadAsset<Rook>("Rook");
             var PawnPrefab = AssetManager.LoadAsset<Pawn>("Pawn");
+            var QueenPrefab = AssetManager.LoadAsset<Queen>("Queen");
 
             // Example of saving assets
             //AssetManager.SaveAsset(RookPrefab, "Rook");
@@ -29,6 +30,8 @@ namespace ChessDemo
             //Example of Adding assets to scene by reference to prefab component
             Instantiate(RookPrefab, new(0, 0), Controllers[0]);
             Instantiate(RookPrefab, new(7, 0), Controllers[0]);
+            Instantiate(QueenPrefab, new(4,7), Controllers[1]);
+            Instantiate(QueenPrefab, new(4,0), Controllers[0]);
 
 
             for (int i = 0; i < 8; i++)
