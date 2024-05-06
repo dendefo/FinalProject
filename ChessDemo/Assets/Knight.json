@@ -1,0 +1,28 @@
+{
+  "$type": "Core.TileObject, Core",
+  "components": {
+    "$type": "System.Collections.Generic.List`1[[Core.Components.TileComponent, Core]], System.Private.CoreLib",
+    "$values": [
+      {
+        "$type": "Core.Components.PlayerComponent, Core",
+        "ControllerID": 0
+      },
+      {
+        "$type": "ChessDemo.Pieces.Knight, ChessDemo"
+      },
+      {
+        "$type": "Core.Components.CharacterRenderer, Core",
+        "Visuals": {
+          "$type": "Core.Rendering.VisualRepresentation`1[[System.Char, System.Private.CoreLib]], Core",
+          "Visual": "N",
+          "Color": "White"
+        }
+      }
+    ]
+  },
+  "Position": {
+    "$type": "Renderer.Position2D, Core",
+    "x": 0,
+    "y": 1
+  }
+}

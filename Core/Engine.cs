@@ -108,6 +108,7 @@ namespace Core
             {
                 var moves = movProvider.GetPossibleMoves(obj.Position, CurrentScene);
                 ShowMessage(new("Possible moves: ", Color.Green));
+                
                 foreach (var move in moves)
                 {
                     ShowMessage(new($"{move}", Color.Green));

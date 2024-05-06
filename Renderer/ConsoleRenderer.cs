@@ -15,13 +15,13 @@ namespace Renderer
             Console.SetCursorPosition(1, 0);
             for (int i = 0; i < scene.Width; i++)
             {
-                Console.Write(i);
+                Console.Write(ConvertIntToString(i + 1));
             }
 
             for (int i = 0; i < scene.Height; i++)
             {
                 Console.SetCursorPosition(0, i + 1);
-                Console.Write(ConvertIntToString(i + 1));
+                Console.Write(i + 1);
             }
             foreach (var item in scene)
             {

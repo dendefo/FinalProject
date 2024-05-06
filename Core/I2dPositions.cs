@@ -32,7 +32,27 @@ namespace Renderer
         }
         public override readonly string ToString()
         {
-            return $"x = {x}, y = {y}";
+            switch (x)
+            {
+                case 0:
+                    return $"A{y + 1}";
+                case 1:
+                    return $"B{y + 1}";
+                case 2:
+                    return $"C{y + 1}";
+                case 3:
+                    return $"D{y + 1}";
+                case 4:
+                    return $"E{y + 1}";
+                case 5:
+                    return $"F{y + 1}";
+                case 6:
+                    return $"G{y + 1}";
+                case 7:
+                    return $"H{y + 1}";
+                default:
+                    return $"x = {x}, y = {y}";
+            }
         }
         public float Distance(Position2D other)
         {

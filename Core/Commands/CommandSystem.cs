@@ -178,7 +178,7 @@ namespace Core.Commands
                 position = default;
                 return false;
             }
-            position = new(pos, (int)charvalue);
+            position = new((int)charvalue, pos - 1);
             return true;
         }
     }

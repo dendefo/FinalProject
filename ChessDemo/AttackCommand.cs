@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace ChessDemo
 {
     using static Core.Engine<char>;
-    internal class EatCommand : Command
+    internal class AttackCommand : Command
     {
-        public EatCommand(string prompt) : base("Eat another piece", prompt, true)
+        public AttackCommand(string prompt) : base("Move Chess piece", prompt, true)
         {
         }
         public override void Activate(params string[] parameters)
