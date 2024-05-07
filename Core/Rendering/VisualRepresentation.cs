@@ -5,17 +5,17 @@ namespace Core.Rendering
     /// <summary>
     /// A struct that holds a visual representation of an object
     /// </summary>
-    /// <typeparam name="T"> Renderable Object Of Same type as IRenderer type</typeparam>
-    public struct VisualRepresentation<T>
+    public struct VisualRepresentation
     {
-        public T Visual;
-        public Color Color;
-        public VisualRepresentation(T visual, Color color)
+        public object Visual { get; set; }
+        public Color Color { get; set; }
+
+        public VisualRepresentation(object visual, Color color)
         {
             Visual = visual;
             Color = color;
         }
-        public VisualRepresentation(VisualRepresentation<T> origin, Color newColor)
+        public VisualRepresentation(VisualRepresentation origin, Color newColor)
         {
             Visual = origin.Visual;
             Color = newColor;

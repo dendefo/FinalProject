@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Core.Commands
 {
-    using static Core.Engine<char>;
+    using static Core.Engine;
     public class SelectCommand : Command
     {
         public SelectCommand(string prompt) : base("Selects object in coordinated", prompt, false)

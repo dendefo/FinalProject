@@ -10,7 +10,7 @@ namespace Core.Components
     /// <summary>
     /// Basic component for rendering characters
     /// </summary>
-    public class CharacterRenderer : RenderingComponent<char>
+    public class CharacterRenderer : RenderingComponent
     {
         public CharacterRenderer() : base()
         {

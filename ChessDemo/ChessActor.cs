@@ -14,7 +14,7 @@ namespace ChessDemo
     {
         public int WinningDirection { get; set; }
 
-        public bool IsInCheck<T>(Scene<T> gameState)
+        public bool IsInCheck(Scene gameState)
         {
             King thisPlayerKing = null;
             gameState.First(x => x.TileObject != null && x.TileObject.TryGetComponent<ControllerComponent>(typeof(ControllerComponent), out var controller) && controller.ControllerID == ControllerID

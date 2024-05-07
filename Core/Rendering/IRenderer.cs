@@ -11,10 +11,10 @@ namespace Core.Rendering
     /// Interface for Creating your own Renderer
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IRenderer<T>
+    public interface IRenderer<T> : IRenderer
     {
-        public void RenderObject(IRenderable<T> map, IRenderable<T> BackGround);
-        public void RenderScene(Scene<T> scene);
+        public void RenderObject(IRenderable map, IRenderable BackGround);
+        public void RenderScene(Scene scene);
         public void ShowMessage(MessageLine message);
     }
 }

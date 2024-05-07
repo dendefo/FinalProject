@@ -1,4 +1,4 @@
-﻿global using static Core.Engine<char>;
+﻿global using static Core.Engine;
 using System.Drawing;
 using System.Linq;
 using System.Numerics;
@@ -16,16 +16,17 @@ namespace Core
     /// Has the main methods to interact with the engine
     /// Should be included in using as "using static Core.Engine;"
     /// </summary>
-    public class Engine<TVisual>
+    public static class Engine
     {
         static public IController[] Controllers;
         public static int CurrentController = 0;
         static private Queue<MessageLine> messageToShow = new();
-        private static IRenderer<TVisual> Renderer;
-        public static Scene<TVisual> CurrentScene;
-        public static Engine<TVisual> SetUp(int width, int height, IRenderer<TVisual> renderer)
+        private static IRenderer Renderer;
+        public static Scene CurrentScene;
+        public static void SetUp(int width, int height, IRenderer renderer)
         {
-            return new Engine<TVisual>(width, height, renderer);
+            CurrentScene = new Scene(width, height);
+            Renderer = renderer;
         }
         public static void DefinePlayers(params IController[] controllers)
         {
@@ -35,17 +36,6 @@ namespace Core
                 Controllers[i].ControllerID = i;
             }
         }
-
-        /// <summary>
-        /// Hides constructor
-        /// </summary>
-        private Engine() { }
-        private Engine(int width, int height, IRenderer<TVisual> renderer)
-        {
-            CurrentScene = new Scene<TVisual>(width, height);
-            Renderer = renderer;
-        }
-
         internal static bool SetPosition(TileObject obj, Position2D position)
         {
             if (position.x < 0 || position.y < 0 || position.x >= CurrentScene.Width || position.y >= CurrentScene.Height)
@@ -82,7 +72,7 @@ namespace Core
                 var controller = obj.GetComponent<ControllerComponent>(typeof(ControllerComponent));
                 moves = movProvider.FilterMoves(moves, CurrentScene, controller, obj.Position);
                 bool isMovingPosition = moves.Contains(position);
-                bool isDestroyingPosition =movProvider.FilterMoves(movProvider.GetPossibleDestroyMoves(obj.Position, CurrentScene),CurrentScene,controller,obj.Position).Contains(position);
+                bool isDestroyingPosition = movProvider.FilterMoves(movProvider.GetPossibleDestroyMoves(obj.Position, CurrentScene), CurrentScene, controller, obj.Position).Contains(position);
                 if (!isMovingPosition && !isDestroyingPosition)
                     return false;
 
@@ -90,6 +80,7 @@ namespace Core
                 {
                     movProvider.MoveCallback(obj.Position, position);
                     SetPosition(obj, position);
+                    Tile.ObjectEntered?.Invoke(CurrentScene[position], obj);
                     return true;
                 }
                 else if (DestroyIfOccupied && isDestroyingPosition)
@@ -97,7 +88,7 @@ namespace Core
                     movProvider.MoveCallback(obj.Position, position);
                     Destroy(CurrentScene[position].TileObject);
                     SetPosition(obj, position);
-
+                    Tile.ObjectEntered?.Invoke(CurrentScene[position], obj);
                     return true;
                 }
             }
@@ -114,7 +105,7 @@ namespace Core
                 string movesString = "";
                 foreach (var move in moves)
                 {
-                    movesString+= $"{new Position2D(move.x, CurrentScene.Height - move.y-1)} ";
+                    movesString += $"{new Position2D(move.x, CurrentScene.Height - move.y - 1)} ";
                 }
                 ShowMessage(new(movesString, Color.Green));
                 CurrentScene.HighLightMoves(moves);
@@ -164,7 +155,7 @@ namespace Core
                 var newComponent = tileObject.AddComponent(component);
                 newComponent.TileObject = tileObject;
             }
-            if (tileObject.components.First(x => x is RenderingComponent<TVisual>) is RenderingComponent<TVisual> rend)
+            if (tileObject.components.First(x => x is RenderingComponent) is RenderingComponent rend)
             {
                 var Color = Controllers[(tileObject.components.First((x => x is ControllerComponent)) as IControllable).ControllerID].Color;
                 if (Color != default) rend.Visuals = new(rend.Visuals, Color);
@@ -190,7 +181,7 @@ namespace Core
                 component.TileObject = NewObject;
                 if (t == typeof(T)) toReturn = component as T;
             }
-            if (NewObject.components.First(x => x is RenderingComponent<TVisual>) is RenderingComponent<TVisual> rend)
+            if (NewObject.components.First(x => x is RenderingComponent) is RenderingComponent rend)
             {
                 var Color = Controllers[(NewObject.components.First((x => x is ControllerComponent)) as IControllable).ControllerID].Color;
                 if (Color != default) rend.Visuals = new(rend.Visuals, Color);

@@ -1,1 +1,28 @@
-{"$type":"Core.TileObject, Core","components":{"$type":"System.Collections.Generic.List`1[[Core.Components.TileComponent, Core]], System.Private.CoreLib","$values":[{"$type":"Core.Components.PlayerComponent, Core","ControllerID":0},{"$type":"ChessDemo.Pieces.King, ChessDemo"},{"$type":"Core.Components.CharacterRenderer, Core","Visuals":{"$type":"Core.Rendering.VisualRepresentation`1[[System.Char, System.Private.CoreLib]], Core","Visual":"K","Color":"Red"}}]},"Position":{"$type":"Renderer.Position2D, Core","x":4,"y":0}}
+{
+  "$type": "Core.TileObject, Core",
+  "components": {
+    "$type": "System.Collections.Generic.List`1[[Core.Components.TileComponent, Core]], System.Private.CoreLib",
+    "$values": [
+      {
+        "$type": "Core.Components.PlayerComponent, Core",
+        "ControllerID": 0
+      },
+      {
+        "$type": "ChessDemo.Pieces.King, ChessDemo"
+      },
+      {
+        "$type": "Core.Components.CharacterRenderer, Core",
+        "Visuals": {
+          "$type": "Core.Rendering.VisualRepresentation, Core",
+          "Visual": "K",
+          "Color": "Red"
+        }
+      }
+    ]
+  },
+  "Position": {
+    "$type": "Renderer.Position2D, Core",
+    "x": 4,
+    "y": 0
+  }
+}

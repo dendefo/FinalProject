@@ -46,19 +46,19 @@ namespace Core
                 var newComponent = TileComponent.Copy(origin);
                 components.Add(newComponent);
                 newComponent.TileObject = this;
-                UpdateColorByController<char>();
+                UpdateColorByController();
                 return newComponent.GetComponent<T>(origin.GetType());
             }
             var ctr = new T();
             if (ctr.TileObject != null) ctr.TileObject.Dispose();
             ctr.TileObject = this;
             components.Add(ctr);
-            UpdateColorByController<char>();
+            UpdateColorByController();
             return ctr.GetComponent<T>(typeof(T));
         }
-        public void UpdateColorByController<T>()
+        public void UpdateColorByController()
         {
-            if (GetComponent<RenderingComponent<T>>(typeof(RenderingComponent<T>)) is RenderingComponent<T> rend)
+            if (GetComponent<RenderingComponent>(typeof(RenderingComponent)) is RenderingComponent rend)
             {
                 var Color = Controllers[(components.First((x => x is ControllerComponent)) as IControllable).ControllerID].Color;
                 if (Color != default) rend.Visuals = new(rend.Visuals, Color);

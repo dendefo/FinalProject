@@ -13,7 +13,7 @@
       {
         "$type": "Core.Components.CharacterRenderer, Core",
         "Visuals": {
-          "$type": "Core.Rendering.VisualRepresentation`1[[System.Char, System.Private.CoreLib]], Core",
+          "$type": "Core.Rendering.VisualRepresentation, Core",
           "Visual": "N",
           "Color": "White"
         }

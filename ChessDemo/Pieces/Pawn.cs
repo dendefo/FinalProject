@@ -5,11 +5,11 @@ using Renderer;
 
 namespace ChessDemo.Pieces
 {
-    using static Core.Engine<char>;
+    using static Core.Engine;
     internal class Pawn : ChessComponent
     {
         bool isFirstMove = true;
-        public override IEnumerable<Position2D> GetPossibleMoves<T>(Position2D selfPosition, Scene<T> currentGameState)
+        public override IEnumerable<Position2D> GetPossibleMoves(Position2D selfPosition, Scene currentGameState)
         {
             var thisControllerComponent = currentGameState[selfPosition].TileObject.GetComponent<ControllerComponent>(typeof(ControllerComponent));
             var controller = Controllers[thisControllerComponent.ControllerID] as ChessPlayerActor;
@@ -17,7 +17,7 @@ namespace ChessDemo.Pieces
             moves = moves.Where(x => selfPosition.Distance(x) <= (isFirstMove ? 2f : 1f));
             return moves.Concat(GetPossibleDestroyMoves(selfPosition,currentGameState));
         }
-        public override IEnumerable<Position2D> GetPossibleDestroyMoves<T>(Position2D selfPosition, Scene<T> currentGameState)
+        public override IEnumerable<Position2D> GetPossibleDestroyMoves(Position2D selfPosition, Scene currentGameState)
         {
             var thisControllerComponent = currentGameState[selfPosition].TileObject.GetComponent<ControllerComponent>(typeof(ControllerComponent));
             var controller = Controllers[thisControllerComponent.ControllerID] as ChessPlayerActor;

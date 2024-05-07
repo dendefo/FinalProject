@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ChessDemo
 {
-    using static Core.Engine<char>;
+    using static Core.Engine;
     internal class AttackCommand : Command
     {
         public AttackCommand(string prompt) : base("Move Chess piece", prompt, true)

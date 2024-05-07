@@ -7,10 +7,9 @@ namespace Core.Rendering
     /// <summary>
     /// Interface for objects that can be rendered
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public interface IRenderable<T>
+    public interface IRenderable
     {
         Position2D Position { get; }
-        VisualRepresentation<T> Visuals { get; set; }
+        public VisualRepresentation Visuals { get; set; }
     }
 }

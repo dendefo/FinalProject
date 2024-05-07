@@ -13,8 +13,7 @@ namespace Core.Components
     /// <summary>
     /// Base component for all components that have a visual representation
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    abstract public class RenderingComponent<T> : TileComponent, IRenderable<T>
+    abstract public class RenderingComponent : TileComponent, IRenderable
     {
         /// <summary>
         /// Reference to the TileObject position
@@ -24,7 +23,7 @@ namespace Core.Components
         /// <summary>
         /// Defines how component should be rendered
         /// </summary>
-        public VisualRepresentation<T> Visuals { get; set; }
+        public VisualRepresentation Visuals { get; set; }
         public bool isHighLighted { get; set; }
         public Color HighlightColor { get; set; }
     }

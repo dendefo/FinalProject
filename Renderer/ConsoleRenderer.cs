@@ -10,14 +10,14 @@ namespace Renderer
     public class ConsoleRenderer : IRenderer<char>
     {
         static Position2D borders = new(1, 1);
-        public void RenderScene(Scene<char> scene)
+        public void RenderScene(Scene scene)
         {
             Console.SetCursorPosition(1, 0);
             for (int i = 0; i < scene.Width; i++)
             {
                 Console.Write(ConvertIntToString(i + 1));
             }
-            Console.SetCursorPosition(1, scene.Height+1);
+            Console.SetCursorPosition(1, scene.Height + 1);
             for (int i = 0; i < scene.Width; i++)
             {
                 Console.Write(ConvertIntToString(i + 1));
@@ -25,23 +25,23 @@ namespace Renderer
 
             for (int i = 0; i < scene.Height; i++)
             {
-                Console.SetCursorPosition(0, scene.Height -(i));
+                Console.SetCursorPosition(0, scene.Height - (i));
                 Console.Write(i + 1);
             }
             for (int i = 0; i < scene.Height; i++)
             {
-                Console.SetCursorPosition(scene.Width+1, scene.Height - (i));
+                Console.SetCursorPosition(scene.Width + 1, scene.Height - (i));
                 Console.Write(i + 1);
             }
             foreach (var item in scene)
             {
-                RenderObject(item.TileObject?.components.Find(x => x is IRenderable<char>) as IRenderable<char>, item);
+                RenderObject(item.TileObject?.components.Find(x => x is IRenderable) as IRenderable, item);
             }
             Console.SetCursorPosition(0, Console.GetCursorPosition().Top + 1);
         }
-        public void RenderObject(IRenderable<char> @object, IRenderable<char> BackgroundObject)
+        public void RenderObject(IRenderable @object, IRenderable BackgroundObject)
         {
-            if (BackgroundObject is Tile<char> tile)
+            if (BackgroundObject is Tile tile)
             {
                 if (tile.isHighLighted)
                     Console.BackgroundColor = FromColor(tile.HighlightColor);

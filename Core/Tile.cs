@@ -10,9 +10,10 @@ using System.Threading.Tasks;
 
 namespace Core
 {
-    public class Tile<T> : IRenderable<T>
+    public class Tile : IRenderable
     {
-        public event Action<Tile<T>, TileObject> ObjectEntered;
+        public static Action<Tile, TileObject> ObjectEntered;
+        public static Action<Tile, TileObject> ObjectPassedOver;
         public Position2D Position { get; set; }
         public bool isHighLighted;
         public Color HighlightColor { get; set; }
@@ -28,8 +29,8 @@ namespace Core
                 tileObject = value;
             }
         }
-        public VisualRepresentation<T> Visuals { get; set; }
-        public Tile(Position2D position, VisualRepresentation<T> visuals)
+        public VisualRepresentation Visuals { get; set; }
+        public Tile(Position2D position, VisualRepresentation visuals)
         {
             Position = position;
             Visuals = visuals;

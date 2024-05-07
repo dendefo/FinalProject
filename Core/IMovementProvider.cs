@@ -13,9 +13,9 @@ namespace Core
     /// </summary>
     public interface IMovementProvider
     {
-        public IEnumerable<Position2D> GetPossibleMoves<T>(Position2D selfPosition, Scene<T> currentGameState);
-        public IEnumerable<Position2D> GetPossibleDestroyMoves<T>(Position2D selfPosition, Scene<T> currentGameState);
-        public IEnumerable<Position2D> FilterMoves<T>(IEnumerable<Position2D> moves, Scene<T> currentGameState, ControllerComponent controller, Position2D startPosition);
+        public IEnumerable<Position2D> GetPossibleMoves(Position2D selfPosition, Scene currentGameState);
+        public IEnumerable<Position2D> GetPossibleDestroyMoves(Position2D selfPosition, Scene currentGameState);
+        public IEnumerable<Position2D> FilterMoves(IEnumerable<Position2D> moves, Scene currentGameState, ControllerComponent controller, Position2D startPosition);
         abstract public void MoveCallback(Position2D lastPosition, Position2D newPostion);
     }
 }

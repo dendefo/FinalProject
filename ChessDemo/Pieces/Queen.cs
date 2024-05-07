@@ -8,7 +8,7 @@ namespace ChessDemo.Pieces
 {
     internal class Queen : ChessComponent
     {
-        public override IEnumerable<Position2D> GetPossibleMoves<T>(Position2D selfPosition, Scene<T> currentGameState)
+        public override IEnumerable<Position2D> GetPossibleMoves(Position2D selfPosition, Scene currentGameState)
         {
             IEnumerable<Position2D> possibleMoves = new List<Position2D>();
             int i = 0;

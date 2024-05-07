@@ -22,7 +22,7 @@ namespace ChessDemo.Pieces
             new Position2D(-2, 1),
             new Position2D(-1, 2)
         };
-        public override IEnumerable<Position2D> GetPossibleMoves<T>(Position2D selfPosition, Scene<T> currentGameState)
+        public override IEnumerable<Position2D> GetPossibleMoves(Position2D selfPosition, Scene currentGameState)
         {
             var thisControllerComponent = currentGameState[selfPosition].TileObject.GetComponent<ControllerComponent>(typeof(ControllerComponent));
             List<Position2D> _moves = new();

@@ -12,7 +12,7 @@ namespace ChessDemo.Pieces
     [AppearOnlyOnce]
     internal abstract class ChessComponent : CustomComponent, IMovementProvider
     {
-        abstract public IEnumerable<Position2D> GetPossibleMoves<T>(Position2D selfPosition, Scene<T> currentGameState);
+        abstract public IEnumerable<Position2D> GetPossibleMoves(Position2D selfPosition, Scene currentGameState);
         /// <summary>
         /// Returns all possible moves in a given direction
         /// </summary>
@@ -22,7 +22,7 @@ namespace ChessDemo.Pieces
         /// <param name="currentGameState"> Current Map</param>
         /// <param name="thisControllerComponent"></param>
         /// <returns></returns>
-        public static IEnumerable<Position2D> CheckInDirection<T>(Position2D startPos, Position2D direction, Scene<T> currentGameState, ControllerComponent thisControllerComponent)
+        public static IEnumerable<Position2D> CheckInDirection(Position2D startPos, Position2D direction, Scene currentGameState, ControllerComponent thisControllerComponent)
         {
             int i = 0;
             List<Position2D> possibleMoves = new();
@@ -40,13 +40,13 @@ namespace ChessDemo.Pieces
             }
             return possibleMoves;
         }
-        virtual public IEnumerable<Position2D> GetPossibleDestroyMoves<T>(Position2D selfPosition, Scene<T> currentGameState) =>
+        virtual public IEnumerable<Position2D> GetPossibleDestroyMoves(Position2D selfPosition, Scene currentGameState) =>
             GetPossibleMoves(selfPosition, currentGameState);
 
-        virtual public IEnumerable<Position2D> FilterMoves<T>(IEnumerable<Position2D> possibleMoves, Scene<T> gameState, ControllerComponent thisControllerComponent, Position2D startPos)
+        virtual public IEnumerable<Position2D> FilterMoves(IEnumerable<Position2D> possibleMoves, Scene gameState, ControllerComponent thisControllerComponent, Position2D startPos)
         {
             //This is a lot of if statements, but it's the obly way i could think of to make it work
-            ChessActor actor = Engine<char>.Controllers[thisControllerComponent.ControllerID] as ChessActor;
+            ChessActor actor = Engine.Controllers[thisControllerComponent.ControllerID] as ChessActor;
             bool isInCheck = actor.IsInCheck(gameState);
             if (!isInCheck)
             {
@@ -74,7 +74,7 @@ namespace ChessDemo.Pieces
             }
 
         }
-        private IEnumerable<Position2D> CheckSimulation<T>(IEnumerable<Position2D> attemptedMoves, Scene<T> gameState, Position2D startPos, ChessActor actor)
+        private IEnumerable<Position2D> CheckSimulation(IEnumerable<Position2D> attemptedMoves, Scene gameState, Position2D startPos, ChessActor actor)
         {
             List<Position2D> notCheckMoves = new();
             var temp = gameState[startPos].TileObject;

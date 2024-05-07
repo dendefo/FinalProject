@@ -2,7 +2,7 @@
 namespace ChessDemo
 {
     using ChessDemo.Pieces;
-    using static Core.Engine<char>;
+    using static Core.Engine;
     using System.Numerics;
     using Core.Components;
     using Renderer;
@@ -17,7 +17,7 @@ namespace ChessDemo
 
         static void Main(string[] args)
         {
-            var engine = SetUp(8, 8, new ConsoleRenderer());
+            SetUp(8, 8, new ConsoleRenderer());
             var scene = CurrentScene;
             DefinePlayers(new ChessPlayerActor() { Name = "White", Color = Color.Blue, WinningDirection = -1 }, new ChessPlayerActor() { Name = "Black", Color = Color.Red, WinningDirection = 1 });
 
