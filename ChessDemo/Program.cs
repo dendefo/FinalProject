@@ -23,7 +23,7 @@ namespace ChessDemo
         {
             SetUp(8, 8, new ConsoleRenderer());
             CurrentScene.ChessFloor();
-            DefinePlayers(new ChessPlayerActor() { Name = "White", Color = Color.Blue, WinningDirection = -1 }, new StockFish() { Name = "Black", Color = Color.Red, WinningDirection = 1 });
+            DefinePlayers(new ChessPlayerActor() { Name = "Blue", Color = Color.Blue, WinningDirection = -1 }, new StockFish() { Name = "Red", Color = Color.Red, WinningDirection = 1 });
 
             // Load the assets
             var RookPrefab = AssetManager.LoadAsset<Rook>("Rook");
