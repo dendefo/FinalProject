@@ -78,5 +78,9 @@ namespace Renderer
         {
             return a.x != b.x && a.y != b.y;
         }
+        public Position2D Abs()
+        {
+            return new Position2D(Math.Abs(x), Math.Abs(y));
+        }
     }
 }

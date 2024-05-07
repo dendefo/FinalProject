@@ -14,7 +14,9 @@ namespace Core
     [Serializable]
     public class TileObject : IDisposable
     {
-        public List<TileComponent> components = new();
+        public Action<TileObject> OnPassedOn;
+        public Action<TileObject> OnPassedOver;
+        public List<TileObjectComponent> components = new();
         [JsonIgnore]
         private Position2D position;
         public Position2D Position
@@ -34,7 +36,7 @@ namespace Core
         /// <typeparam name="T"> Type of new Component</typeparam>
         /// <param name="origin"> If provided, copies the value of origin to new component</param>
         /// <returns></returns>
-        public T AddComponent<T>(T origin = default) where T : TileComponent, new()
+        public T AddComponent<T>(T origin = default) where T : TileObjectComponent, new()
         {
 
             if (origin != null && GetComponent<T>(origin.GetType()) != null && origin.GetType().GetCustomAttributes(true).Any(x => x.GetType() == typeof(AppearOnlyOnceAttribute)))
@@ -43,7 +45,7 @@ namespace Core
             }
             if (origin != null)
             {
-                var newComponent = TileComponent.Copy(origin);
+                T newComponent = origin.Clone() as T;
                 components.Add(newComponent);
                 newComponent.TileObject = this;
                 UpdateColorByController();
@@ -54,7 +56,7 @@ namespace Core
             ctr.TileObject = this;
             components.Add(ctr);
             UpdateColorByController();
-            return ctr.GetComponent<T>(typeof(T));
+            return ctr;
         }
         public void UpdateColorByController()
         {
@@ -70,7 +72,7 @@ namespace Core
         /// <typeparam name="T"></typeparam>
         /// <param name="type"></param>
         /// <returns> First instance of T component in TileObject</returns>
-        public T GetComponent<T>(Type type) where T : TileComponent
+        public T GetComponent<T>(Type type) where T : TileObjectComponent
         {
             foreach (var component in components)
             {
@@ -83,7 +85,7 @@ namespace Core
             return null;
         }
 
-        public bool TryGetComponent<T>(Type type, out T component) where T : TileComponent
+        public bool TryGetComponent<T>(Type type, out T component) where T : TileObjectComponent
         {
             foreach (var c in components)
             {
@@ -97,7 +99,7 @@ namespace Core
             return false;
         }
 
-        public bool RemoveComponent<T>(Type type) where T : TileComponent
+        public bool RemoveComponent<T>(Type type) where T : TileObjectComponent
         {
             foreach (var component in components)
             {
@@ -106,6 +108,7 @@ namespace Core
                 {
                     components.Remove(component);
                     component.TileObject = null;
+                    component.Dispose();
                     return true;
                 }
             }
@@ -114,13 +117,16 @@ namespace Core
 
         internal void Dispose()
         {
-            components.ForEach(c => c.TileObject = null);
+            components.ForEach(c => c.Dispose());
             components.Clear();
+            OnPassedOn = null;
+            OnPassedOver = null;
 
         }
         void IDisposable.Dispose()
         {
             Dispose();
+
         }
     }
 }

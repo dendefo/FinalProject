@@ -18,7 +18,7 @@ namespace ChessDemo
         static void Main(string[] args)
         {
             SetUp(8, 8, new ConsoleRenderer());
-            var scene = CurrentScene;
+            CurrentScene.ChessFloor();
             DefinePlayers(new ChessPlayerActor() { Name = "White", Color = Color.Blue, WinningDirection = -1 }, new ChessPlayerActor() { Name = "Black", Color = Color.Red, WinningDirection = 1 });
 
             // Load the assets

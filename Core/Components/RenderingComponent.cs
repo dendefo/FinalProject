@@ -13,7 +13,7 @@ namespace Core.Components
     /// <summary>
     /// Base component for all components that have a visual representation
     /// </summary>
-    abstract public class RenderingComponent : TileComponent, IRenderable
+    abstract public class RenderingComponent : TileObjectComponent, IRenderable
     {
         /// <summary>
         /// Reference to the TileObject position

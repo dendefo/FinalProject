@@ -1,7 +1,7 @@
 {
   "$type": "Core.TileObject, Core",
   "components": {
-    "$type": "System.Collections.Generic.List`1[[Core.Components.TileComponent, Core]], System.Private.CoreLib",
+    "$type": "System.Collections.Generic.List`1[[Core.Components.TileObjectComponent, Core]], System.Private.CoreLib",
     "$values": [
       {
         "$type": "Core.Components.PlayerComponent, Core",

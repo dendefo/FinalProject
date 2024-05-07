@@ -7,7 +7,7 @@ using Core.Actors;
 
 namespace Core.Components
 {
-    internal class PlayerComponent : ControllerComponent, IControllable
+    internal class PlayerComponent : ControllerComponent
     {
         public override int ControllerID { get; set; }
     }

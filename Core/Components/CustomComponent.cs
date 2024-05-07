@@ -15,7 +15,7 @@ namespace Core.Components
     /// [JsonIgnore] is the Equivilant of [NonSerialized] in Unity.
     /// 
     /// </summary>
-    public class CustomComponent : TileComponent
+    public class CustomComponent : TileObjectComponent
     {
         //Will Add here calls as Updata, Start, Awake, etc.
     }

@@ -75,17 +75,42 @@ namespace Core
                 bool isDestroyingPosition = movProvider.FilterMoves(movProvider.GetPossibleDestroyMoves(obj.Position, CurrentScene), CurrentScene, controller, obj.Position).Contains(position);
                 if (!isMovingPosition && !isDestroyingPosition)
                     return false;
+                //Checks if object will move at all
+                if ((IsEmpty(position) && isMovingPosition) || DestroyIfOccupied && isDestroyingPosition)
+                {
+                    float distance = position.Distance(obj.Position);
+                    if (distance >= 2)
+                    {
+                        var AbsDifference = (position - obj.Position).Abs();
+                        //On the same row or column or diagonal
+                        if (position.x == obj.Position.x || position.y == obj.Position.y||AbsDifference.x==AbsDifference.y)
+                        {
+                            for (int i = 0; i < distance - 1; i++)
+                            {
+                                Position2D temp = new(obj.Position.x + (position.x - obj.Position.x) * (i + 1), obj.Position.y + (position.y - obj.Position.y) * (i + 1));
+                                if (!(temp != position && temp != obj.Position)) continue;
 
+                                Tile.ObjectPassedOver(CurrentScene[temp], obj);
+                                if (CurrentScene[temp].TileObject != null)
+                                {
+                                    CurrentScene[temp].TileObject.OnPassedOn?.Invoke(obj);
+                                }
+                            }
+                        }
+                    }
+                }
                 if (IsEmpty(position) && isMovingPosition)
                 {
                     movProvider.MoveCallback(obj.Position, position);
                     SetPosition(obj, position);
                     Tile.ObjectEntered?.Invoke(CurrentScene[position], obj);
+
                     return true;
                 }
                 else if (DestroyIfOccupied && isDestroyingPosition)
                 {
                     movProvider.MoveCallback(obj.Position, position);
+                    CurrentScene[position].TileObject.OnPassedOn?.Invoke(obj);
                     Destroy(CurrentScene[position].TileObject);
                     SetPosition(obj, position);
                     Tile.ObjectEntered?.Invoke(CurrentScene[position], obj);
@@ -169,7 +194,7 @@ namespace Core
         /// <param name="origin"> TileComponent to copy TileObject from </param>
         /// <param name="position"> Position to put new object on TileMap</param>
         /// <returns> Component of type <typeparamref name="T"/> </returns>
-        static public T Instantiate<T>(T origin, Position2D position = default, IController controller = null) where T : TileComponent, new()
+        static public T Instantiate<T>(T origin, Position2D position = default, IController controller = null) where T : TileObjectComponent, new()
         {
             var NewObject = Instantiate(position, controller);
             T toReturn = null;

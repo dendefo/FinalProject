@@ -17,50 +17,50 @@ namespace Core.Components
     /// A class that represents a Component that can be attached to a TileObject
     /// Similar to Unity's Behavior class
     /// </summary>
-    public class TileComponent
+    public class TileObjectComponent:ICloneable,IDisposable
     {
         // Reference to the TileObject that this component is attached to
         public TileObject TileObject { get; set; }
         public Position2D Position => TileObject.Position;
 
         /// <summary>
-        /// Copies a TileComponent
-        /// Used in Commands as AddComponent and in AssetManager as LoadAsset
+        /// <inheritdoc/>
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="origin"></param>
-        /// <returns></returns>
-        static internal T Copy<T>(T origin) where T : TileComponent, new()
+        /// <typeparam name="T"><inheritdoc/></typeparam>
+        /// <returns><inheritdoc/></returns>
+        public T AddComponent<T>() where T : TileObjectComponent, new() => TileObject.AddComponent<T>();
+
+        public object Clone()
         {
             BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.IgnoreCase;
-            T ret = origin.GetType().GetConstructor(flags, types: new Type[0]).Invoke(new object[0]) as T;
+            var ret = GetType().GetConstructor(flags, types: new Type[0]).Invoke(new object[0]);
 
 
             foreach (var property in ret.GetType().GetProperties(flags))
             {
                 var properties = ret.GetType().GetProperty(property.Name, flags);
                 if (property.SetMethod == null) continue;
-                properties.SetValue(ret, property.GetValue(origin));
+                properties.SetValue(ret, property.GetValue(this));
             }
             foreach (var field in ret.GetType().GetFields(flags))
             {
                 var fields = ret.GetType().GetField(field.Name, flags);
-                fields.SetValue(ret, field.GetValue(origin));
+                fields.SetValue(ret, field.GetValue(this));
             }
             return ret;
         }
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        /// <typeparam name="T"><inheritdoc/></typeparam>
-        /// <returns><inheritdoc/></returns>
-        public T AddComponent<T>() where T : TileComponent, new() => TileObject.AddComponent<T>();
+
+        public void Dispose()
+        {
+            TileObject = null;
+        }
+
         /// <summary>
         /// <see cref="TileObject.GetComponent{T}(Type)"/>
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="type"><inheritdoc/></param>
         /// <returns></returns>
-        public T GetComponent<T>(Type type) where T : TileComponent => TileObject.GetComponent<T>(type);
+        public T GetComponent<T>(Type type) where T : TileObjectComponent => TileObject.GetComponent<T>(type);
     }
 }

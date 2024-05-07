@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Core.Components
 {
     [AppearOnlyOnce]
-    abstract public class ControllerComponent : TileComponent, IControllable
+    abstract public class ControllerComponent : TileObjectComponent, IControllable
     {
         abstract public int ControllerID { get; set; }
     }

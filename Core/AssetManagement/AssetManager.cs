@@ -20,7 +20,7 @@ namespace Core.AssetManagement
         /// <typeparam name="T"> Type of TileComponent you want to get in return after Loading the asset</typeparam>
         /// <param name="path"> Path to the Asset is "Assets" Folder</param>
         /// <returns></returns>
-        public static T LoadAsset<T>(string path) where T : TileComponent
+        public static T LoadAsset<T>(string path) where T : TileObjectComponent
         {
             path = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "/Assets/" + path + ".json";
             TextReader reader = new StringReader(File.ReadAllText(path));
@@ -44,7 +44,7 @@ namespace Core.AssetManagement
         /// </summary>
         /// <param name="asset"> Asset as Component, that you want to save</param>
         /// <param name="path"> Path to save an asset there (Must include file name)</param>
-        public static void SaveAsset(TileComponent asset, string path)
+        public static void SaveAsset(TileObjectComponent asset, string path)
         {
             TextWriter writer = new StringWriter();
             Newtonsoft.Json.JsonSerializerSettings options = new();

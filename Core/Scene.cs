@@ -11,17 +11,24 @@ namespace Core
     /// </summary>
     public class Scene : IEnumerable<Tile>
     {
-        private Tile[,] floorTiles;
+        protected Tile[,] floorTiles;
         public Tile this[int x, int y] => floorTiles[x, y];
         public Tile this[Position2D position] => floorTiles[position.x, position.y];
         public int Height => floorTiles.GetLength(0);
         public int Width => floorTiles.GetLength(1);
-        public Scene(int width, int height)
+        internal Scene(int width, int height)
         {
             floorTiles = new Tile[width, height];
-            ChessFloor();
+            for (int i = 0; i < floorTiles.GetLength(0); i++)
+            {
+                for (int j = 0; j < floorTiles.GetLength(1); j++)
+                {
+                    floorTiles[i, j] = new Tile(new(i,j),default);
+                }
+            }
         }
-        private void ChessFloor()
+
+        public void ChessFloor()
         {
             for (int i = 0; i < floorTiles.GetLength(0); i++)
             {
@@ -34,7 +41,6 @@ namespace Core
                 }
             }
         }
-
         public IEnumerator<Tile> GetEnumerator()
         {
             return new SceneEnumerator(this);
