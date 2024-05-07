@@ -67,7 +67,7 @@ namespace Core
                 if (IsInside(item))
                 {
                     this[item].isHighLighted = true;
-                    this[item].HighlightColor = System.Drawing.Color.Blue;
+                    this[item].HighlightColor = System.Drawing.Color.Green;
                 }
             }
         }

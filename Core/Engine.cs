@@ -75,7 +75,7 @@ namespace Core
         /// <returns> Returns true if object changed it's position </returns>
         public static bool MoveObject(TileObject obj, Position2D position, bool DestroyIfOccupied = false)
         {
-            var movProvider = obj.components.FirstOrDefault(comp => comp is IMovingProvider) as IMovingProvider;
+            var movProvider = obj.components.FirstOrDefault(comp => comp is IMovementProvider) as IMovementProvider;
             if (movProvider != null)
             {
                 var moves = movProvider.GetPossibleMoves(obj.Position, CurrentScene);
@@ -105,7 +105,7 @@ namespace Core
         }
         public static bool ShowMoves(TileObject obj)
         {
-            var movProvider = obj.components.FirstOrDefault(comp => comp is IMovingProvider) as IMovingProvider;
+            var movProvider = obj.components.FirstOrDefault(comp => comp is IMovementProvider) as IMovementProvider;
             if (movProvider != null)
             {
                 var moves = movProvider.GetPossibleMoves(obj.Position, CurrentScene).Union(movProvider.GetPossibleDestroyMoves(obj.Position, CurrentScene));

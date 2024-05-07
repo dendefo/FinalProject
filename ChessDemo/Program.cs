@@ -62,6 +62,7 @@ namespace ChessDemo
             CommandSystem.Instance.AddCommand(new SelectCommand("Select"));
             CommandSystem.Instance.AddCommand(new DeselectCommand("Deselect"));
             CommandSystem.Instance.AddCommand(new AttackCommand("Move"));
+            CommandSystem.Instance.AddCommand(new ShowCommand("Show"));
 
             Command.CommandExecuted += CommandsCallback;
             Play();
@@ -103,6 +104,8 @@ namespace ChessDemo
                         }
 
                     }
+                    break;
+                default:
                     break;
             }
         }

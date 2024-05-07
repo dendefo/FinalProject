@@ -7,11 +7,10 @@ using System.Text.Json.Serialization;
 namespace ChessDemo.Pieces
 {
     using Core.Actors;
-    using Core.Commands;
     using System.Collections.Generic;
 
     [AppearOnlyOnce]
-    internal abstract class ChessComponent : CustomComponent, IMovingProvider
+    internal abstract class ChessComponent : CustomComponent, IMovementProvider
     {
         abstract public IEnumerable<Position2D> GetPossibleMoves<T>(Position2D selfPosition, Scene<T> currentGameState);
         /// <summary>

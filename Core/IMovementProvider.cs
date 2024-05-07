@@ -6,14 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Commands
+namespace Core
 {
     /// <summary>
     /// Interface for providing moving restrictions for objects. Should be implemented onto the componenets
     /// </summary>
-    public interface IMovingProvider
+    public interface IMovementProvider
     {
-        public IEnumerable<Position2D> GetPossibleMoves<T>(Position2D selfPosition,Scene<T> currentGameState);
+        public IEnumerable<Position2D> GetPossibleMoves<T>(Position2D selfPosition, Scene<T> currentGameState);
         public IEnumerable<Position2D> GetPossibleDestroyMoves<T>(Position2D selfPosition, Scene<T> currentGameState);
         public IEnumerable<Position2D> FilterMoves<T>(IEnumerable<Position2D> moves, Scene<T> currentGameState, ControllerComponent controller, Position2D startPosition);
         abstract public void MoveCallback(Position2D lastPosition, Position2D newPostion);
