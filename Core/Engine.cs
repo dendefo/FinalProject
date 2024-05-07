@@ -89,8 +89,8 @@ namespace Core
                             {
                                 Position2D temp = new(obj.Position.x + (position.x - obj.Position.x) * (i + 1), obj.Position.y + (position.y - obj.Position.y) * (i + 1));
                                 if (!(temp != position && temp != obj.Position)) continue;
-
-                                Tile.ObjectPassedOver(CurrentScene[temp], obj);
+                                if (!CurrentScene.IsInside(temp)) continue;
+                                Tile.ObjectPassedOver?.Invoke(CurrentScene[temp], obj);
                                 if (CurrentScene[temp].TileObject != null)
                                 {
                                     CurrentScene[temp].TileObject.OnPassedOn?.Invoke(obj);

@@ -1,4 +1,8 @@
 ﻿global using System.Drawing;
+using ChessDemo.Pieces;
+using Core;
+using Core.Components;
+
 namespace ChessDemo
 {
     using ChessDemo.Pieces;
@@ -19,7 +23,7 @@ namespace ChessDemo
         {
             SetUp(8, 8, new ConsoleRenderer());
             CurrentScene.ChessFloor();
-            DefinePlayers(new ChessPlayerActor() { Name = "White", Color = Color.Blue, WinningDirection = -1 }, new ChessPlayerActor() { Name = "Black", Color = Color.Red, WinningDirection = 1 });
+            DefinePlayers(new ChessPlayerActor() { Name = "White", Color = Color.Blue, WinningDirection = -1 }, new StockFish() { Name = "Black", Color = Color.Red, WinningDirection = 1 });
 
             // Load the assets
             var RookPrefab = AssetManager.LoadAsset<Rook>("Rook");
@@ -63,10 +67,13 @@ namespace ChessDemo
             CommandSystem.Instance.AddCommand(new DeselectCommand("Deselect"));
             CommandSystem.Instance.AddCommand(new AttackCommand("Move"));
             CommandSystem.Instance.AddCommand(new ShowCommand("Show"));
+            CommandSystem.Instance.AddCommand(new SelectAndMoveCommand("StockFish"));
+            CommandSystem.Instance.AddCommand(new FenCommand("FEN"));
 
             Command.CommandExecuted += CommandsCallback;
-            Play();
             
+            Play();
+
         }
         public static void CommandsCallback(Command c)
         {
@@ -88,7 +95,7 @@ namespace ChessDemo
                             foreach (var tile in CurrentScene)
                             {
                                 if (tile.TileObject == null) continue;
-                                if (tile.TileObject.TryGetComponent<ControllerComponent>(typeof(ControllerComponent), out var contTemp) && 
+                                if (tile.TileObject.TryGetComponent<ControllerComponent>(typeof(ControllerComponent), out var contTemp) &&
                                     contTemp.ControllerID == controller.ControllerID)
                                 {
                                     var movProvider = tile.TileObject.GetComponent<ChessComponent>(typeof(ChessComponent));
@@ -104,10 +111,57 @@ namespace ChessDemo
                         }
 
                     }
+                    
                     break;
                 default:
                     break;
             }
         }
+    }
+}
+public static class ChessExtentionMethods
+{
+    public static string ToFENFromat(this Scene scene)
+    {
+        string output = "";
+        for (int i = 0; i < scene.Height; i++)
+        {
+            int empty = 0;
+            for (int j = 0; j < scene.Width; j++)
+            {
+                if (scene[j,i].TileObject != null && scene[j,i].TileObject.TryGetComponent(typeof(ChessComponent),out ChessComponent component))
+                {
+                    var piece = component.ToString();
+                    if (scene[j, i].TileObject.TryGetComponent<ControllerComponent>(typeof(ControllerComponent), out var controller))
+                    {
+                        if (controller.ControllerID != 0)
+                        {
+                            piece = piece.ToLower();
+                        }
+                        else piece = piece.ToUpper();
+                    }
+                    if (empty > 0)
+                    {
+                        output += empty;
+                        empty = 0;
+                    }
+                    output += piece;
+                }
+                else
+                {
+                    empty++;
+                }
+            }
+            if (empty > 0)
+            {
+                output += empty;
+                empty = 0;
+            }
+            output += "/";
+        }
+        output = output.Remove(output.Length - 1);
+        output += Engine.CurrentController == 0 ? " w " : " b ";
+        output += "- - 0 1";
+        return output;
     }
 }

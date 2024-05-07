@@ -22,7 +22,7 @@ namespace ChessDemo.Pieces
 
         public override string ToString()
         {
-            return $"Rook at Position {TileObject.Position}";
+            return "r";
         }
     }
 }

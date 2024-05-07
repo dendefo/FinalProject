@@ -43,5 +43,9 @@ namespace ChessDemo.Pieces
             }
             return _moves;
         }
+        override public string ToString()
+        {
+            return "n";
+        }
     }
 }

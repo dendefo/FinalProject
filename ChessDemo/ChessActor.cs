@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ChessDemo
 {
-    internal abstract class ChessActor : Actor
+    public abstract class ChessActor : Actor
     {
         public int WinningDirection { get; set; }
 

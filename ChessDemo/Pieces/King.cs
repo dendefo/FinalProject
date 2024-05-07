@@ -43,5 +43,10 @@ namespace ChessDemo.Pieces
             }
             return _moves;
         }
+
+        public override string ToString()
+        {
+            return "k";
+        }
     }
 }

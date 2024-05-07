@@ -28,7 +28,7 @@ namespace ChessDemo.Pieces
 
         public override string ToString()
         {
-            return $"Queen at Position {TileObject.Position}";
+            return $"q";
         }
     }
 }

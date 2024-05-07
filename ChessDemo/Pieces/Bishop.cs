@@ -23,7 +23,7 @@ namespace ChessDemo.Pieces
 
         public override string ToString()
         {
-            return $"Bishop at Position {TileObject.Position}";
+            return "b";
         }
     }
 }
