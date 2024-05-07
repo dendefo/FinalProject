@@ -27,7 +27,7 @@ namespace Core
         /// <returns>A new string with all white spaces removed and all characters in lower case.</returns>
         public static string TrimAndLower(this string input)
         {
-            return new string(input.Where(c => !char.IsWhiteSpace(c)).ToArray()).ToLower();
+            return new string(input.TrimAndLower());
         }
 
         /// <summary>
