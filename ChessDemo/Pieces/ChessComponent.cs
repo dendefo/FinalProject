@@ -10,7 +10,7 @@ namespace ChessDemo.Pieces
     using System.Collections.Generic;
 
     [AppearOnlyOnce]
-    internal abstract class ChessComponent : CustomComponent, IMovementProvider
+    internal abstract class ChessComponent : TileObjectComponent, IMovementProvider
     {
         abstract public IEnumerable<Position2D> GetPossibleMoves(Position2D selfPosition, Scene currentGameState);
         /// <summary>

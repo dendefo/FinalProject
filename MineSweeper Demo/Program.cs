@@ -9,7 +9,7 @@
     {
         static void Main(string[] args)
         {
-            SetUp(9, 9, new ConsoleRenderer());
+            SetUp(16, 16, new ConsoleRenderer());
             DefinePlayers(new MineSweeperActor());
 
             foreach (var tile in CurrentScene)

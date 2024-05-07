@@ -12,6 +12,7 @@ namespace Renderer
         static Position2D borders = new(1, 1);
         public void RenderScene(Scene scene)
         {
+            borders = new Position2D((scene.Width/10)+1, 1);
             Console.SetCursorPosition(1, 0);
             for (int i = 0; i < scene.Width; i++)
             {
@@ -32,7 +33,7 @@ namespace Renderer
             }
             for (int i = 0; i < scene.Height; i++)
             {
-                Console.SetCursorPosition(3 * scene.Width + 1, scene.Height - (i));
+                Console.SetCursorPosition(3 * scene.Width + borders.x, scene.Height - (i));
                 Console.Write(i + 1);
             }
             foreach (var item in scene)
