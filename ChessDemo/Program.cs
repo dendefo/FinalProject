@@ -80,10 +80,8 @@ namespace ChessDemo
             switch (c)
             {
                 case SelectCommand s:
-                    //Debug.WriteLine("Selected");
                     break;
                 case DeselectCommand d:
-                    //Debug.WriteLine("Deselected");
                     break;
                 case AttackCommand a:
                     foreach (var controller in Controllers)
@@ -114,6 +112,10 @@ namespace ChessDemo
                     
                     break;
                 default:
+                    if (CommandSystem.Instance.SelectedObject != null)
+                    {
+                        ShowMessage(new(("Selected Piece: " +CommandSystem.Instance.SelectedObject.PositionToPrint.ToString()), Color.Green));
+                    }
                     break;
             }
         }

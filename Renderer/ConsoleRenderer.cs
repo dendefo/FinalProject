@@ -7,7 +7,7 @@ namespace Renderer
     /// <summary>
     /// Basic Renderer to Console
     /// </summary>
-    public class ConsoleRenderer : IRenderer<char>
+    public class ConsoleRenderer : IRenderer
     {
         static Position2D borders = new(1, 1);
         public void RenderScene(Scene scene)
@@ -15,12 +15,14 @@ namespace Renderer
             Console.SetCursorPosition(1, 0);
             for (int i = 0; i < scene.Width; i++)
             {
-                Console.Write(ConvertIntToString(i + 1));
+                Console.SetCursorPosition((i + 1) * 3 - 1, 0);
+                Console.Write(IRenderer.ConvertIntToString(i + 1));
             }
             Console.SetCursorPosition(1, scene.Height + 1);
             for (int i = 0; i < scene.Width; i++)
             {
-                Console.Write(ConvertIntToString(i + 1));
+                Console.SetCursorPosition((i + 1) * 3 - 1, scene.Height + 1);
+                Console.Write(IRenderer.ConvertIntToString(i + 1));
             }
 
             for (int i = 0; i < scene.Height; i++)
@@ -30,7 +32,7 @@ namespace Renderer
             }
             for (int i = 0; i < scene.Height; i++)
             {
-                Console.SetCursorPosition(scene.Width + 1, scene.Height - (i));
+                Console.SetCursorPosition(3 * scene.Width + 1, scene.Height - (i));
                 Console.Write(i + 1);
             }
             foreach (var item in scene)
@@ -52,14 +54,31 @@ namespace Renderer
             }
             if (@object == null)
             {
-                SetCursorPosition(BackgroundObject.Position);
+                Position2D position = new(BackgroundObject.Position.x * 3, BackgroundObject.Position.y);
+                SetCursorPosition(position);
+                Console.Write(' ');
+                position = new(position.x + 1, position.y);
+                SetCursorPosition(position);
+                Console.Write(' ');
+                position = new(position.x + 1, position.y);
+                SetCursorPosition(position);
                 Console.Write(' ');
             }
             else
             {
-                SetCursorPosition(@object.Position);
                 Console.ForegroundColor = FromColor(@object.Visuals.Color);
+                Position2D position = new(@object.Position.x * 3, @object.Position.y);
+
+                SetCursorPosition(position);
+                Console.Write(" ");
+
+                position = new(position.x + 1, position.y);
+                SetCursorPosition(position);
                 Console.Write(@object.Visuals.Visual);
+
+                position = new(position.x + 1, position.y);
+                SetCursorPosition(position);
+                Console.Write(" ");
             }
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
@@ -86,16 +105,6 @@ namespace Renderer
             Console.ForegroundColor = FromColor(message.Color);
             Console.WriteLine(message);
             Console.ForegroundColor = col;
-        }
-        static string ConvertIntToString(int value)
-        {
-            string result = string.Empty;
-            while (--value >= 0)
-            {
-                result = (char)('A' + value % 26) + result;
-                value /= 26;
-            }
-            return result;
         }
     }
 }
