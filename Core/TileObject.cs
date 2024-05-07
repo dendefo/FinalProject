@@ -30,6 +30,16 @@ namespace Core
         }
         internal TileObject() { }
 
+        public void UpdateColorByController()
+        {
+            if (TryGetComponent<RenderingComponent>(typeof(RenderingComponent),out var rend))
+            {
+                if (TryGetComponent<ControllerComponent>(typeof(ControllerComponent), out var controller))
+                {
+                    rend.Visuals = new(rend.Visuals, Controllers[controller.ControllerID].Color);
+                }
+            }
+        }
         /// <summary>
         /// Adds a component to the tile object
         /// </summary>
@@ -57,14 +67,6 @@ namespace Core
             components.Add(ctr);
             UpdateColorByController();
             return ctr;
-        }
-        public void UpdateColorByController()
-        {
-            if (GetComponent<RenderingComponent>(typeof(RenderingComponent)) is RenderingComponent rend)
-            {
-                var Color = Controllers[(components.First((x => x is ControllerComponent)) as IControllable).ControllerID].Color;
-                if (Color != default) rend.Visuals = new(rend.Visuals, Color);
-            }
         }
         /// <summary>
         /// Gets a component of type T

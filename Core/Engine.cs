@@ -23,6 +23,7 @@ namespace Core
         static private Queue<MessageLine> messageToShow = new();
         private static IRenderer Renderer;
         public static Scene CurrentScene;
+        public static bool isRunning = true;
         public static void SetUp(int width, int height, IRenderer renderer)
         {
             CurrentScene = new Scene(width, height);
@@ -232,7 +233,7 @@ namespace Core
         public static void Play()
         {
             Command.CommandExecuted += Command_CommandExecuted;
-            while (true)
+            while (isRunning)
             {
                 var controller = Controllers[CurrentController];
                 ShowMessage(new($"{controller.Name} Player turn", controller.Color));

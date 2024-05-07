@@ -105,6 +105,7 @@ namespace ChessDemo
                             if (countPossibleMoves == 0)
                             {
                                 ShowMessage(new("Player " + controller.Name + " is in CheckMate! ", Color.Red));
+                                isRunning = false;
                             }
                         }
 
