@@ -60,6 +60,25 @@ namespace Core
         {
             return IsInside(x, y) && this[x, y].TileObject == null;
         }
+        public void HighLightMoves(IEnumerable<Position2D> moves)
+        {
+            foreach (var item in moves)
+            {
+                if (IsInside(item))
+                {
+                    this[item].isHighLighted = true;
+                    this[item].HighlightColor = System.Drawing.Color.Blue;
+                }
+            }
+        }
+        public void ClearHighlights()
+        {
+            foreach (var item in this)
+            {
+                item.isHighLighted = false;
+            }
+        }
+
     }
     internal class SceneEnumerator<T> : IEnumerator<Tile<T>>
     {

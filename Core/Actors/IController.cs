@@ -12,6 +12,6 @@ namespace Core.Actors
         int ControllerID { get; set; }
         string Name { get; set; }
         Color Color { get; set; }
-        public void StartTurn();
+        abstract public void StartTurn();
     }
 }

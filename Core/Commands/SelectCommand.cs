@@ -32,7 +32,7 @@ namespace Core.Commands
                     ShowMessage(new("No object at this position", Color.Orange));
                     return;
                 }
-                var comp = obj.GetComponent<PlayerComponent>(typeof(PlayerComponent));
+                var comp = obj.GetComponent<ControllerComponent>(typeof(ControllerComponent));
                 if (comp == null) { ShowMessage(new("This Object can't be controlled", Color.Orange)); return; }
                 if (comp.ControllerID != CurrentController)
                 {
@@ -40,7 +40,7 @@ namespace Core.Commands
                     return;
                 }
                 CommandSystem.Instance.SelectedObject = obj;
-                ShowMessage(new($"{obj.Position} selected", Color.Green));
+                ShowMessage(new($"{obj.PositionToPrint} selected", Color.Green));
                 ShowMoves(obj);
                 base.Activate(parameters);
 

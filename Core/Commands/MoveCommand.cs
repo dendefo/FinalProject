@@ -31,6 +31,7 @@ namespace Core.Commands
                 MoveObject(CommandSystem.Instance.SelectedObject, position);
                 if (position == CommandSystem.Instance.SelectedObject.Position)
                 {
+                    //Object moved
                     ShowMessage(new("Object moved", Color.Green));
                     base.Activate(parameters);
                 }

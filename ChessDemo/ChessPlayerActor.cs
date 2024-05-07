@@ -1,4 +1,5 @@
 ﻿using Core.Actors;
+using Core.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,11 @@ using System.Threading.Tasks;
 
 namespace ChessDemo
 {
-    internal class ChessPlayerActor : PlayerActor
+    internal class ChessPlayerActor : ChessActor
     {
-        public int WinningDirection { get; set; }
+        override public void StartTurn()
+        {
+            CommandSystem.Instance.Listen(() => Console.ReadLine());
+        }
     }
 }

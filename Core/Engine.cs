@@ -79,8 +79,10 @@ namespace Core
             if (movProvider != null)
             {
                 var moves = movProvider.GetPossibleMoves(obj.Position, CurrentScene);
+                var controller = obj.GetComponent<ControllerComponent>(typeof(ControllerComponent));
+                moves = movProvider.FilterMoves(moves, CurrentScene, controller, obj.Position);
                 bool isMovingPosition = moves.Contains(position);
-                bool isDestroyingPosition = movProvider.GetPossibleDestroyMoves(obj.Position, CurrentScene).Contains(position);
+                bool isDestroyingPosition =movProvider.FilterMoves(movProvider.GetPossibleDestroyMoves(obj.Position, CurrentScene),CurrentScene,controller,obj.Position).Contains(position);
                 if (!isMovingPosition && !isDestroyingPosition)
                     return false;
 
@@ -106,13 +108,17 @@ namespace Core
             var movProvider = obj.components.FirstOrDefault(comp => comp is IMovingProvider) as IMovingProvider;
             if (movProvider != null)
             {
-                var moves = movProvider.GetPossibleMoves(obj.Position, CurrentScene);
+                var moves = movProvider.GetPossibleMoves(obj.Position, CurrentScene).Union(movProvider.GetPossibleDestroyMoves(obj.Position, CurrentScene));
+                moves = movProvider.FilterMoves(moves, CurrentScene, obj.GetComponent<ControllerComponent>(typeof(ControllerComponent)), obj.Position);
                 ShowMessage(new("Possible moves: ", Color.Green));
-                
+                string movesString = "";
                 foreach (var move in moves)
                 {
-                    ShowMessage(new($"{move}", Color.Green));
+                    movesString+= $"{new Position2D(move.x, CurrentScene.Height - move.y-1)} ";
                 }
+                ShowMessage(new(movesString, Color.Green));
+                CurrentScene.HighLightMoves(moves);
+
                 return true;
             }
             return false;
@@ -138,16 +144,8 @@ namespace Core
             var tileObject = new TileObject();
             if (controller != null)
             {
-                if (controller is AIActor c)
-                {
-                    var comp = tileObject.AddComponent<AIComponent>();
-                    comp.ControllerID = c.ControllerID;
-                }
-                else if (controller is PlayerActor p)
-                {
-                    var comp = tileObject.AddComponent<PlayerComponent>();
-                    comp.ControllerID = p.ControllerID;
-                }
+                var comp = tileObject.AddComponent<PlayerComponent>();
+                comp.ControllerID = controller.ControllerID;
             }
             SetPosition(tileObject, position);
             return tileObject;
@@ -168,7 +166,7 @@ namespace Core
             }
             if (tileObject.components.First(x => x is RenderingComponent<TVisual>) is RenderingComponent<TVisual> rend)
             {
-                var Color = Controllers[(tileObject.components.First((x => x is PlayerComponent || x is AIComponent)) as IControllable).ControllerID].Color;
+                var Color = Controllers[(tileObject.components.First((x => x is ControllerComponent)) as IControllable).ControllerID].Color;
                 if (Color != default) rend.Visuals = new(rend.Visuals, Color);
             }
             return tileObject;
@@ -194,7 +192,7 @@ namespace Core
             }
             if (NewObject.components.First(x => x is RenderingComponent<TVisual>) is RenderingComponent<TVisual> rend)
             {
-                var Color = Controllers[(NewObject.components.First((x => x is PlayerComponent || x is AIComponent)) as IControllable).ControllerID].Color;
+                var Color = Controllers[(NewObject.components.First((x => x is ControllerComponent)) as IControllable).ControllerID].Color;
                 if (Color != default) rend.Visuals = new(rend.Visuals, Color);
             }
             return toReturn;
@@ -223,6 +221,7 @@ namespace Core
                 var controller = Controllers[CurrentController];
                 ShowMessage(new($"{controller.Name} Player turn", controller.Color));
                 Render();
+                CurrentScene.ClearHighlights();
                 controller.StartTurn();
             }
         }

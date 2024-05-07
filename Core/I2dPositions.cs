@@ -79,8 +79,4 @@ namespace Renderer
             return a.x != b.x && a.y != b.y;
         }
     }
-    internal interface I2dPositions
-    {
-        //צריך להחזיק position2D
-    }
 }

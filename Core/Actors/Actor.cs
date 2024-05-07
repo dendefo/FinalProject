@@ -8,14 +8,11 @@ using System.Threading.Tasks;
 
 namespace Core.Actors
 {
-    public class PlayerActor : IController
+    abstract public class Actor : IController
     {
         public int ControllerID { get; set; }
         public string Name { get; set; }
         public Color Color { get; set; }
-        public void StartTurn()
-        {
-            CommandSystem.Instance.Listen(() => Console.ReadLine());
-        }
+        abstract public void StartTurn();
     }
 }

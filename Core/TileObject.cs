@@ -22,6 +22,10 @@ namespace Core
             get { return position; }
             set { position = value; }
         }
+        public Position2D PositionToPrint
+        {
+            get { return new Position2D(Position.x, CurrentScene.Height - Position.y-1); }
+        }
         internal TileObject() { }
 
         /// <summary>
@@ -56,7 +60,7 @@ namespace Core
         {
             if (GetComponent<RenderingComponent<T>>(typeof(RenderingComponent<T>)) is RenderingComponent<T> rend)
             {
-                var Color = Controllers[(components.First((x => x is PlayerComponent || x is AIComponent)) as IControllable).ControllerID].Color;
+                var Color = Controllers[(components.First((x => x is ControllerComponent)) as IControllable).ControllerID].Color;
                 if (Color != default) rend.Visuals = new(rend.Visuals, Color);
             }
         }
@@ -71,13 +75,26 @@ namespace Core
             foreach (var component in components)
             {
                 var t1 = component.GetType();
-                ;
                 if (type.IsInstanceOfType(component) || t1 == type)
                 {
                     return component as T;
                 }
             }
             return null;
+        }
+
+        public bool TryGetComponent<T>(Type type, out T component) where T : TileComponent
+        {
+            foreach (var c in components)
+            {
+                if (c.GetType() == type || type.IsInstanceOfType(c))
+                {
+                    component = c as T;
+                    return true;
+                }
+            }
+            component = null;
+            return false;
         }
 
         public bool RemoveComponent<T>(Type type) where T : TileComponent
@@ -101,8 +118,6 @@ namespace Core
             components.Clear();
 
         }
-        
-
         void IDisposable.Dispose()
         {
             Dispose();

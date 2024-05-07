@@ -172,13 +172,13 @@ namespace Core.Commands
                 position = default;
                 return false;
             }
-            if (charvalue >= CurrentScene.Width || pos >= CurrentScene.Height)
+            if (charvalue >= CurrentScene.Width || pos-1 >= CurrentScene.Height)
             {
                 ShowMessage(new("Invalid parameters, out of bounds", Color.Red));
                 position = default;
                 return false;
             }
-            position = new((int)charvalue, pos - 1);
+            position = new((int)charvalue, CurrentScene.Height - (pos));
             return true;
         }
     }

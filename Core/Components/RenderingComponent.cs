@@ -25,5 +25,7 @@ namespace Core.Components
         /// Defines how component should be rendered
         /// </summary>
         public VisualRepresentation<T> Visuals { get; set; }
+        public bool isHighLighted { get; set; }
+        public Color HighlightColor { get; set; }
     }
 }

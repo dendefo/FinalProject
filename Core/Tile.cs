@@ -2,6 +2,7 @@
 using Renderer;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -13,6 +14,8 @@ namespace Core
     {
         public event Action<Tile<T>, TileObject> ObjectEntered;
         public Position2D Position { get; set; }
+        public bool isHighLighted;
+        public Color HighlightColor { get; set; }
         private TileObject tileObject;
         public TileObject TileObject
         {
@@ -20,7 +23,7 @@ namespace Core
             {
                 return tileObject;
             }
-            internal set
+            set
             {
                 tileObject = value;
             }

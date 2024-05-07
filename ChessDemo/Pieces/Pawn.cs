@@ -15,7 +15,7 @@ namespace ChessDemo.Pieces
             var controller = Controllers[thisControllerComponent.ControllerID] as ChessPlayerActor;
             var moves = CheckInDirection(selfPosition, new(0, controller.WinningDirection), currentGameState, thisControllerComponent);
             moves = moves.Where(x => selfPosition.Distance(x) <= (isFirstMove ? 2f : 1f));
-            return moves;
+            return moves.Concat(GetPossibleDestroyMoves(selfPosition,currentGameState));
         }
         public override IEnumerable<Position2D> GetPossibleDestroyMoves<T>(Position2D selfPosition, Scene<T> currentGameState)
         {

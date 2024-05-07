@@ -1,4 +1,5 @@
 ﻿using Core;
+using Renderer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace Core.Components
     {
         // Reference to the TileObject that this component is attached to
         public TileObject TileObject { get; set; }
+        public Position2D Position => TileObject.Position;
 
         /// <summary>
         /// Copies a TileComponent

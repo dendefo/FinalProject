@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace ChessDemo.Pieces
 {
+    using Core.Actors;
     using Core.Commands;
     using System.Collections.Generic;
 
@@ -40,12 +41,68 @@ namespace ChessDemo.Pieces
             }
             return possibleMoves;
         }
-        virtual public IEnumerable<Position2D> GetPossibleDestroyMoves<T>(Position2D selfPosition, Scene<T> currentGameState) => 
+        virtual public IEnumerable<Position2D> GetPossibleDestroyMoves<T>(Position2D selfPosition, Scene<T> currentGameState) =>
             GetPossibleMoves(selfPosition, currentGameState);
 
+        virtual public IEnumerable<Position2D> FilterMoves<T>(IEnumerable<Position2D> possibleMoves, Scene<T> gameState, ControllerComponent thisControllerComponent, Position2D startPos)
+        {
+            //This is a lot of if statements, but it's the obly way i could think of to make it work
+            ChessActor actor = Engine<char>.Controllers[thisControllerComponent.ControllerID] as ChessActor;
+            bool isInCheck = actor.IsInCheck(gameState);
+            if (!isInCheck)
+            {
+                var temp = gameState[startPos].TileObject;
+                if (temp.TryGetComponent<King>(typeof(King), out var king))
+                {
+                    King EnemyKing = null;
+                    gameState.First(x => x.TileObject != null && x.TileObject.TryGetComponent<ControllerComponent>(typeof(ControllerComponent), out var controller) &&
+                    controller.ControllerID != thisControllerComponent.ControllerID && x.TileObject.TryGetComponent<King>(typeof(King), out EnemyKing));
+                    if (EnemyKing == null) { throw new Exception("No King on the Board!"); }
+                    possibleMoves = possibleMoves.Where(x => x.Distance(EnemyKing.Position) >= 2);
+                    //This is dirty and slow, but works
+                    possibleMoves = CheckSimulation(possibleMoves, gameState, startPos, actor);
+                    return possibleMoves;
+                }
+                //If piece that wants to move is not a player's king
+                else
+                {
+                    return CheckSimulation(possibleMoves, gameState, startPos, actor);
+                }
+            }
+            else
+            {
+                return CheckSimulation(possibleMoves, gameState, startPos, actor);
+            }
+
+        }
+        private IEnumerable<Position2D> CheckSimulation<T>(IEnumerable<Position2D> attemptedMoves, Scene<T> gameState, Position2D startPos, ChessActor actor)
+        {
+            List<Position2D> notCheckMoves = new();
+            var temp = gameState[startPos].TileObject;
+            foreach (var move in attemptedMoves)
+            {
+                gameState[startPos].TileObject = null;
+                var tempPiece = gameState[move].TileObject;
+                gameState[move].TileObject = temp;
+                temp.Position = move;
+                if (actor.IsInCheck(gameState))
+                {
+                    gameState[startPos].TileObject = temp;
+                    gameState[move].TileObject = tempPiece;
+                }
+                else
+                {
+                    gameState[startPos].TileObject = temp;
+                    gameState[move].TileObject = tempPiece;
+                    notCheckMoves.Add(move);
+                }
+                temp.Position = startPos;
+            }
+            return notCheckMoves;
+        }
         virtual public void MoveCallback(Position2D lastPosition, Position2D newPostion)
         {
-            
+
         }
     }
 }
