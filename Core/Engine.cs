@@ -249,6 +249,12 @@ namespace Core
                 controller.StartTurn();
             }
         }
+        public static void Stop()
+        {
+            isRunning = false;
+            Command.CommandExecuted -= Command_CommandExecuted;
+            Render();
+        }
 
         private static void Command_CommandExecuted(Command obj)
         {

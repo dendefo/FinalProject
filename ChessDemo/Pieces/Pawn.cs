@@ -13,8 +13,13 @@ namespace ChessDemo.Pieces
         {
             var thisControllerComponent = currentGameState[selfPosition].TileObject.GetComponent<ControllerComponent>(typeof(ControllerComponent));
             var controller = Controllers[thisControllerComponent.ControllerID] as ChessActor;
-            var moves = CheckInDirection(selfPosition, new(0, controller.WinningDirection), currentGameState, thisControllerComponent);
-            moves = moves.Where(x => selfPosition.Distance(x) <= (isFirstMove ? 2f : 1f));
+            var moves = new List<Position2D>();
+            if (currentGameState.IsInside(selfPosition + new Position2D(0, controller.WinningDirection)) && currentGameState.IsEmpty(selfPosition + new Position2D(0, controller.WinningDirection)))
+            {
+                moves.Add(selfPosition + new Position2D(0, controller.WinningDirection));
+                if (isFirstMove && currentGameState.IsEmpty(selfPosition + new Position2D(0, controller.WinningDirection * 2)))
+                    moves.Add(selfPosition + new Position2D(0, controller.WinningDirection * 2));
+            }
             return moves.Concat(GetPossibleDestroyMoves(selfPosition,currentGameState));
         }
         public override IEnumerable<Position2D> GetPossibleDestroyMoves(Position2D selfPosition, Scene currentGameState)

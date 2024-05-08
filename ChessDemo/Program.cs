@@ -23,7 +23,7 @@ namespace ChessDemo
         {
             SetUp(8, 8, new ConsoleRenderer());
             CurrentScene.ChessFloor();
-            DefinePlayers(new ChessPlayerActor() { Name = "Blue", Color = Color.Blue, WinningDirection = -1 }, new StockFish() { Name = "Red", Color = Color.Red, WinningDirection = 1 });
+            DefinePlayers(new ChessPlayerActor() { Name = "Blue", Color = Color.Blue, WinningDirection = -1 }, new StockFish() { Name = "Red", Color = Color.Red, WinningDirection = 1,Difficulty = 10 });
             // Example of saving assets
             //AssetManager.SaveAsset(RookPrefab, "Rook");
             //AssetManager.SaveAsset(PawnPrefab, "Pawn");
@@ -71,8 +71,9 @@ namespace ChessDemo
             CommandSystem.Instance.AddCommand(new FenCommand("FEN"));
 
             Command.CommandExecuted += CommandsCallback;
-            
+
             Play();
+            Thread.Sleep(10000);
 
         }
         public static void CommandsCallback(Command c)
@@ -84,6 +85,7 @@ namespace ChessDemo
                 case DeselectCommand d:
                     break;
                 case AttackCommand a:
+                case SelectAndMoveCommand m:
                     foreach (var controller in Controllers)
                     {
                         if ((controller as ChessActor).IsInCheck(CurrentScene))
@@ -104,18 +106,18 @@ namespace ChessDemo
                             }
                             if (countPossibleMoves == 0)
                             {
-                                ShowMessage(new("Player " + controller.Name + " is in CheckMate! ", Color.Red));
-                                isRunning = false;
+                                ShowMessage(new("Player " + controller.Name + " is in Mate! ", Color.Red));
+                                Stop();
                             }
                         }
 
                     }
-                    
+
                     break;
                 default:
                     if (CommandSystem.Instance.SelectedObject != null)
                     {
-                        ShowMessage(new(("Selected Piece: " +CommandSystem.Instance.SelectedObject.PositionToPrint.ToString()), Color.Green));
+                        ShowMessage(new(("Selected Piece: " + CommandSystem.Instance.SelectedObject.PositionToPrint.ToString()), Color.Green));
                     }
                     break;
             }
@@ -132,15 +134,12 @@ public static class ChessExtentionMethods
             int empty = 0;
             for (int j = 0; j < scene.Width; j++)
             {
-                if (scene[j,i].TileObject != null && scene[j,i].TileObject.TryGetComponent(typeof(ChessComponent),out ChessComponent component))
+                if (scene[j, i].TileObject != null && scene[j, i].TileObject.TryGetComponent(typeof(ChessComponent), out ChessComponent component))
                 {
                     var piece = component.ToString();
                     if (scene[j, i].TileObject.TryGetComponent<ControllerComponent>(typeof(ControllerComponent), out var controller))
                     {
-                        if (controller.ControllerID != 0)
-                        {
-                            piece = piece.ToLower();
-                        }
+                        if (controller.ControllerID != 0) piece = piece.ToLower();
                         else piece = piece.ToUpper();
                     }
                     if (empty > 0)
@@ -150,16 +149,9 @@ public static class ChessExtentionMethods
                     }
                     output += piece;
                 }
-                else
-                {
-                    empty++;
-                }
+                else empty++;
             }
-            if (empty > 0)
-            {
-                output += empty;
-                empty = 0;
-            }
+            if (empty > 0) output += empty;
             output += "/";
         }
         output = output.Remove(output.Length - 1);
