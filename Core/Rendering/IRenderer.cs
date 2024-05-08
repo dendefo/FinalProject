@@ -10,8 +10,7 @@ namespace Core.Rendering
 {
     public interface IRenderer
     {
-        public abstract void RenderObject(IRenderable map, IRenderable BackGround);
-        public abstract void RenderScene(Scene scene);
+        public void RenderScene(Scene scene);
         public void ShowMessage(MessageLine message); 
         static string ConvertIntToString(int value)
         {

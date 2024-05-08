@@ -10,9 +10,8 @@ namespace ChessDemo.Pieces
     using System.Collections.Generic;
 
     [AppearOnlyOnce]
-    internal abstract class ChessComponent : TileObjectComponent, IMovementProvider
+    internal abstract class ChessComponent : MovementComponent
     {
-        abstract public IEnumerable<Position2D> GetPossibleMoves(Position2D selfPosition, Scene currentGameState);
         /// <summary>
         /// Returns all possible moves in a given direction
         /// </summary>
@@ -40,10 +39,10 @@ namespace ChessDemo.Pieces
             }
             return possibleMoves;
         }
-        virtual public IEnumerable<Position2D> GetPossibleDestroyMoves(Position2D selfPosition, Scene currentGameState) =>
+        public override IEnumerable<Position2D> GetPossibleDestroyMoves(Position2D selfPosition, Scene currentGameState) =>
             GetPossibleMoves(selfPosition, currentGameState);
 
-        virtual public IEnumerable<Position2D> FilterMoves(IEnumerable<Position2D> possibleMoves, Scene gameState, ControllerComponent thisControllerComponent, Position2D startPos)
+        public override IEnumerable<Position2D> FilterMoves(IEnumerable<Position2D> possibleMoves, Scene gameState, ControllerComponent thisControllerComponent, Position2D startPos)
         {
             //This is a lot of if statements, but it's the obly way i could think of to make it work
             ChessActor actor = Engine.Controllers[thisControllerComponent.ControllerID] as ChessActor;
@@ -99,7 +98,7 @@ namespace ChessDemo.Pieces
             }
             return notCheckMoves;
         }
-        virtual public void MoveCallback(Position2D lastPosition, Position2D newPostion)
+        public override void MoveCallback(Position2D lastPosition, Position2D newPostion)
         {
 
         }

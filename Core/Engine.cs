@@ -84,7 +84,7 @@ namespace Core
                     {
                         var AbsDifference = (position - obj.Position).Abs();
                         //On the same row or column or diagonal
-                        if (position.x == obj.Position.x || position.y == obj.Position.y||AbsDifference.x==AbsDifference.y)
+                        if (position.x == obj.Position.x || position.y == obj.Position.y || AbsDifference.x == AbsDifference.y)
                         {
                             for (int i = 0; i < distance - 1; i++)
                             {
@@ -183,8 +183,11 @@ namespace Core
             }
             if (tileObject.components.First(x => x is RenderingComponent) is RenderingComponent rend)
             {
-                var Color = Controllers[(tileObject.components.First((x => x is ControllerComponent)) as IControllable).ControllerID].Color;
-                if (Color != default) rend.Visuals = new(rend.Visuals, Color);
+                if (tileObject.TryGetComponent<ControllerComponent>(typeof(ControllerComponent), out var comp))
+                {
+                    var color = Controllers[comp.ControllerID].Color;
+                    if (color != default) rend.Visuals = new(rend.Visuals, color);
+                }
             }
             return tileObject;
         }
@@ -209,8 +212,11 @@ namespace Core
             }
             if (NewObject.components.First(x => x is RenderingComponent) is RenderingComponent rend)
             {
-                var Color = Controllers[(NewObject.components.First((x => x is ControllerComponent)) as IControllable).ControllerID].Color;
-                if (Color != default) rend.Visuals = new(rend.Visuals, Color);
+                if (NewObject.TryGetComponent<ControllerComponent>(typeof(ControllerComponent), out var comp))
+                {
+                    var color = Controllers[comp.ControllerID].Color;
+                    if (color != default) rend.Visuals = new(rend.Visuals, color);
+                }
             }
             return toReturn;
         }
@@ -232,6 +238,7 @@ namespace Core
         }
         public static void Play()
         {
+            isRunning = true;
             Command.CommandExecuted += Command_CommandExecuted;
             while (isRunning)
             {

@@ -17,7 +17,7 @@ namespace Core.Components
     /// A class that represents a Component that can be attached to a TileObject
     /// Similar to Unity's Behavior class
     /// </summary>
-    public class TileObjectComponent:ICloneable,IDisposable
+    public class TileObjectComponent : ICloneable, IDisposable
     {
         // Reference to the TileObject that this component is attached to
         public TileObject TileObject { get; set; }
