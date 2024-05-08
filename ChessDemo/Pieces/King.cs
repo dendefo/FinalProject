@@ -72,17 +72,17 @@ namespace ChessDemo.Pieces
             if (isFirstMove)
             {
                 isFirstMove = false;
-            }
-            //if castled (with little error handling)
-            if (lastPosition.Distance(newPostion) > 1.1f)
-            {
-                //Look for the closest rook and move next to king
-                var isMovedLeft = lastPosition.x > newPostion.x;
-                var direction = isMovedLeft ? new Position2D(-2, 0) : new Position2D(1, 0);
-                var rookPosition = newPostion + direction;
-                var rook = Engine.CurrentScene[rookPosition].TileObject.GetComponent<Rook>(typeof(Rook));
-                var newRookPosition = newPostion + new Position2D(isMovedLeft ? 1 : -1, 0);
-                Engine.MoveObject(rook.TileObject, newRookPosition);
+                //if castled (with little error handling)
+                if (lastPosition.Distance(newPostion) > 1.1f)
+                {
+                    //Look for the closest rook and move next to king
+                    var isMovedLeft = lastPosition.x > newPostion.x;
+                    var direction = isMovedLeft ? new Position2D(-2, 0) : new Position2D(1, 0);
+                    var rookPosition = newPostion + direction;
+                    var rook = Engine.CurrentScene[rookPosition].TileObject.GetComponent<Rook>(typeof(Rook));
+                    var newRookPosition = newPostion + new Position2D(isMovedLeft ? 1 : -1, 0);
+                    Engine.MoveObject(rook.TileObject, newRookPosition);
+                }
             }
             base.MoveCallback(lastPosition, newPostion);
         }

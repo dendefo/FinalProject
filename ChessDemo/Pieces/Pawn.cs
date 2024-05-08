@@ -8,6 +8,7 @@ namespace ChessDemo.Pieces
     using static Core.Engine;
     internal class Pawn : ChessComponent
     {
+        static public Position2D CurrentEnPassaunt = default;
         bool isFirstMove = true;
         public override IEnumerable<Position2D> GetPossibleMoves(Position2D selfPosition, Scene currentGameState)
         {
@@ -20,14 +21,21 @@ namespace ChessDemo.Pieces
                 if (isFirstMove && currentGameState.IsEmpty(selfPosition + new Position2D(0, controller.WinningDirection * 2)))
                     moves.Add(selfPosition + new Position2D(0, controller.WinningDirection * 2));
             }
-            return moves.Concat(GetPossibleDestroyMoves(selfPosition,currentGameState));
+            return moves.Concat(GetPossibleDestroyMoves(selfPosition, currentGameState));
         }
         public override IEnumerable<Position2D> GetPossibleDestroyMoves(Position2D selfPosition, Scene currentGameState)
         {
             var thisControllerComponent = currentGameState[selfPosition].TileObject.GetComponent<ControllerComponent>(typeof(ControllerComponent));
             var controller = Controllers[thisControllerComponent.ControllerID] as ChessActor;
             List<Position2D> possibleDestroyPositions = new() { selfPosition + new Position2D(-1, controller.WinningDirection), selfPosition + new Position2D(1, controller.WinningDirection) };
-            return possibleDestroyPositions.Where(x => currentGameState.IsInside(x) && currentGameState[x].TileObject != null && currentGameState[x].TileObject.GetComponent<ControllerComponent>(typeof(ControllerComponent)).ControllerID != thisControllerComponent.ControllerID);
+            possibleDestroyPositions = possibleDestroyPositions.Where(x => currentGameState.IsInside(x) && currentGameState[x].TileObject != null && currentGameState[x].TileObject.GetComponent<ControllerComponent>
+            (typeof(ControllerComponent)).ControllerID != thisControllerComponent.ControllerID).ToList();
+            if (CurrentEnPassaunt != default)
+            {
+                if (selfPosition + new Position2D(-1, controller.WinningDirection) == CurrentEnPassaunt || selfPosition + new Position2D(1, controller.WinningDirection) == CurrentEnPassaunt)
+                    possibleDestroyPositions.Add(CurrentEnPassaunt);
+            }
+            return possibleDestroyPositions;
         }
 
         public override string ToString()
@@ -36,9 +44,16 @@ namespace ChessDemo.Pieces
         }
         public override void MoveCallback(Position2D lastPosition, Position2D newPostion)
         {
+            if (newPostion == CurrentEnPassaunt && newPostion.Distance(lastPosition) > 1)
+            {
+                var direction = (Controllers[CurrentController] as ChessActor).WinningDirection;
+                Destroy(CurrentScene[newPostion + new Position2D(0, -direction)].TileObject);
+            }
             base.MoveCallback(lastPosition, newPostion);
             if (isFirstMove)
             {
+                if (lastPosition.Distance(newPostion) == 2)
+                    CurrentEnPassaunt = lastPosition + (newPostion - lastPosition) / 2;
                 isFirstMove = false;
                 return;
             }

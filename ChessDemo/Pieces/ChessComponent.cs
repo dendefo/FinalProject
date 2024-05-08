@@ -100,7 +100,7 @@ namespace ChessDemo.Pieces
         }
         public override void MoveCallback(Position2D lastPosition, Position2D newPostion)
         {
-
+            Pawn.CurrentEnPassaunt = default;
         }
     }
 }

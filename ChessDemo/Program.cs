@@ -2,6 +2,7 @@
 using ChessDemo.Pieces;
 using Core;
 using Core.Components;
+using Core.Rendering;
 
 namespace ChessDemo
 {
@@ -24,10 +25,10 @@ namespace ChessDemo
             Console.WriteLine("Welcome to Chess Game!");
             Console.WriteLine("Choose Difficulty from 1 to 15");
             uint difficulty;
-            while(!uint.TryParse(Console.ReadLine(),out difficulty));
+            while (!uint.TryParse(Console.ReadLine(), out difficulty)) ;
             SetUp(8, 8, new ConsoleRenderer());
             CurrentScene.ChessFloor();
-            DefinePlayers(new ChessPlayerActor() { Name = "Blue", Color = Color.Blue, WinningDirection = -1 }, new StockFish() { Name = "Red", Color = Color.Red, WinningDirection = 1,Difficulty = difficulty });
+            DefinePlayers(new ChessPlayerActor() { Name = "Blue", Color = Color.Blue, WinningDirection = -1 }, new StockFish() { Name = "Red", Color = Color.Red, WinningDirection = 1, Difficulty = difficulty });
             // Example of saving assets
             //AssetManager.SaveAsset(RookPrefab, "Rook");
             //AssetManager.SaveAsset(PawnPrefab, "Pawn");
@@ -154,7 +155,7 @@ public static class ChessExtentionMethods
                     {
                         if (controller.ControllerID != 0)
                         {
-                            if (component is King king && king.isFirstMove) 
+                            if (component is King king && king.isFirstMove)
                             {
                                 KingSideBlackCastle++;
                                 QueenSideBlackCastle++;
@@ -166,7 +167,7 @@ public static class ChessExtentionMethods
                             }
                             piece = piece.ToLower();
                         }
-                        else 
+                        else
                         {
                             if (component is King king && king.isFirstMove)
                             {
@@ -178,7 +179,7 @@ public static class ChessExtentionMethods
                                 if (rook.Position.x == 0) QueenSideWhiteCastle++;
                                 else if (rook.Position.x == 7) KingSideWhiteCastle++;
                             }
-                            piece = piece.ToUpper(); 
+                            piece = piece.ToUpper();
                         }
                     }
                     if (empty > 0)
@@ -198,7 +199,15 @@ public static class ChessExtentionMethods
         var castlings = (KingSideWhiteCastle == 2 ? "K" : "") + (QueenSideWhiteCastle == 2 ? "Q" : "") + (KingSideBlackCastle == 2 ? "k" : "") + (QueenSideBlackCastle == 2 ? "q" : "");
         output += castlings == "" ? "-" : castlings;
         output += " ";
-        output += "- 0 1";
+        if (Pawn.CurrentEnPassaunt != default)
+        {
+            var enPassaunt = Pawn.CurrentEnPassaunt;
+            output += (IRenderer.ConvertIntToString(enPassaunt.x + 1) + (8 - enPassaunt.y)).ToLower();
+            //Pawn.CurrentEnPassaunt = default;
+        }
+        else output += "-";
+        output += " ";
+        output += "0 1";
         return output;
     }
 }
