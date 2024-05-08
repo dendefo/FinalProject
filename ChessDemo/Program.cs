@@ -24,6 +24,9 @@ namespace ChessDemo
             SetUp(8, 8, new ConsoleRenderer());
             CurrentScene.ChessFloor();
             DefinePlayers(new ChessPlayerActor() { Name = "Blue", Color = Color.Blue, WinningDirection = -1 }, new StockFish() { Name = "Red", Color = Color.Red, WinningDirection = 1 });
+            // Example of saving assets
+            //AssetManager.SaveAsset(RookPrefab, "Rook");
+            //AssetManager.SaveAsset(PawnPrefab, "Pawn");
 
             // Load the assets
             var RookPrefab = AssetManager.LoadAsset<Rook>("Rook");
@@ -32,9 +35,6 @@ namespace ChessDemo
             var BishopPrefab = AssetManager.LoadAsset<Bishop>("Bishop");
             var KnightPrefab = AssetManager.LoadAsset<Knight>("Knight");
             var KingPrefab = AssetManager.LoadAsset<King>("King");
-            // Example of saving assets
-            //AssetManager.SaveAsset(RookPrefab, "Rook");
-            //AssetManager.SaveAsset(PawnPrefab, "Pawn");
 
 
             //Example of Adding assets to scene by reference to prefab component

@@ -12,6 +12,7 @@ namespace Renderer
         static Position2D borders = new(1, 1);
         public void RenderScene(Scene scene)
         {
+            //Prints numbers on the top and bottom side of the screen
             borders = new Position2D((scene.Width/10)+1, 1);
             Console.SetCursorPosition(1, 0);
             for (int i = 0; i < scene.Width; i++)
@@ -25,7 +26,7 @@ namespace Renderer
                 Console.SetCursorPosition((i + 1) * 3 - 1, scene.Height + 1);
                 Console.Write(IRenderer.ConvertIntToString(i + 1));
             }
-
+            //Prints numbers on the right and left side of the screen
             for (int i = 0; i < scene.Height; i++)
             {
                 Console.SetCursorPosition(0, scene.Height - (i));
@@ -40,7 +41,7 @@ namespace Renderer
             {
                 RenderObject(item.TileObject?.components.Find(x => x is IRenderable) as IRenderable, item);
             }
-            Console.SetCursorPosition(0, Console.GetCursorPosition().Top + 1);
+            Console.SetCursorPosition(0, 0);
         }
         public void RenderObject(IRenderable @object, IRenderable BackgroundObject)
         {
@@ -101,11 +102,12 @@ namespace Renderer
 
         public void ShowMessage(MessageLine message)
         {
-            Console.SetCursorPosition(0, Console.GetCursorPosition().Top + 1);
+            Console.SetCursorPosition(Core.Engine.CurrentScene.Width*3+(borders.x*2)+5, Console.GetCursorPosition().Top + 1);
             var col = Console.ForegroundColor;
             Console.ForegroundColor = FromColor(message.Color);
-            Console.WriteLine(message);
+            Console.Write(message);
             Console.ForegroundColor = col;
+            Console.SetCursorPosition(Core.Engine.CurrentScene.Width * 3 + (borders.x * 2) + 5, Console.GetCursorPosition().Top + 1);
         }
     }
 }

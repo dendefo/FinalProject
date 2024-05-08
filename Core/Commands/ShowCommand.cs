@@ -28,8 +28,7 @@ namespace Core.Commands
                     {
                         if (comp.ControllerID == CurrentController)
                         {
-                            var movProvider = tile.TileObject.components.FirstOrDefault(comp => comp is IMovementProvider) as IMovementProvider;
-                            if (movProvider != null)
+                            if (tile.TileObject.TryGetComponent<MovementComponent>(typeof(MovementComponent), out var movProvider))
                             {
                                 var moves = movProvider.FilterMoves(movProvider.GetPossibleMoves(tile.Position, CurrentScene).
                                     Concat(movProvider.GetPossibleDestroyMoves(tile.Position, CurrentScene)), CurrentScene, comp, tile.Position);
