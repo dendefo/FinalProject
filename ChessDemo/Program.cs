@@ -21,13 +21,35 @@ namespace ChessDemo
 
         static void Main(string[] args)
         {
+            Console.WriteLine("Welcome to Chess Game!");
+            Console.WriteLine("Choose Difficulty from 1 to 15");
+            uint difficulty;
+            while(!uint.TryParse(Console.ReadLine(),out difficulty));
             SetUp(8, 8, new ConsoleRenderer());
             CurrentScene.ChessFloor();
-            DefinePlayers(new ChessPlayerActor() { Name = "Blue", Color = Color.Blue, WinningDirection = -1 }, new StockFish() { Name = "Red", Color = Color.Red, WinningDirection = 1,Difficulty = 10 });
+            DefinePlayers(new ChessPlayerActor() { Name = "Blue", Color = Color.Blue, WinningDirection = -1 }, new StockFish() { Name = "Red", Color = Color.Red, WinningDirection = 1,Difficulty = difficulty });
             // Example of saving assets
             //AssetManager.SaveAsset(RookPrefab, "Rook");
             //AssetManager.SaveAsset(PawnPrefab, "Pawn");
 
+            SetUpPiecesForTwoPlayers();
+
+            CommandSystem.Instance.AddCommand(new SelectCommand("Select"));
+            CommandSystem.Instance.AddCommand(new DeselectCommand("Deselect"));
+            CommandSystem.Instance.AddCommand(new AttackCommand("Move"));
+            CommandSystem.Instance.AddCommand(new ShowCommand("Show"));
+            CommandSystem.Instance.AddCommand(new SelectAndMoveCommand("StockFish"));
+            CommandSystem.Instance.AddCommand(new FenCommand("FEN"));
+
+            Command.CommandExecuted += CommandsCallback;
+
+            Play();
+            Command.CommandExecuted -= CommandsCallback;
+            Thread.Sleep(10000);
+
+        }
+        public static void SetUpPiecesForTwoPlayers()
+        {
             // Load the assets
             var RookPrefab = AssetManager.LoadAsset<Rook>("Rook");
             var PawnPrefab = AssetManager.LoadAsset<Pawn>("Pawn");
@@ -62,19 +84,6 @@ namespace ChessDemo
             {
                 Instantiate(PawnPrefab, new(i, 6), Controllers[0]);
             }
-
-            CommandSystem.Instance.AddCommand(new SelectCommand("Select"));
-            CommandSystem.Instance.AddCommand(new DeselectCommand("Deselect"));
-            CommandSystem.Instance.AddCommand(new AttackCommand("Move"));
-            CommandSystem.Instance.AddCommand(new ShowCommand("Show"));
-            CommandSystem.Instance.AddCommand(new SelectAndMoveCommand("StockFish"));
-            CommandSystem.Instance.AddCommand(new FenCommand("FEN"));
-
-            Command.CommandExecuted += CommandsCallback;
-
-            Play();
-            Thread.Sleep(10000);
-
         }
         public static void CommandsCallback(Command c)
         {
