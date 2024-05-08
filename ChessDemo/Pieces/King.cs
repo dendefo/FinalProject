@@ -73,7 +73,7 @@ namespace ChessDemo.Pieces
             {
                 isFirstMove = false;
                 //if castled (with little error handling)
-                if (lastPosition.Distance(newPostion) > 1.1f)
+                if (lastPosition.Distance(newPostion) == 2)
                 {
                     //Look for the closest rook and move next to king
                     var isMovedLeft = lastPosition.x > newPostion.x;
