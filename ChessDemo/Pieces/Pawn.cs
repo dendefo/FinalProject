@@ -1,5 +1,8 @@
-﻿using Core;
+﻿using ChessDemo.Commands;
+using Core;
 using Core.Actors;
+using Core.AssetManagement;
+using Core.Commands;
 using Core.Components;
 using Renderer;
 
@@ -44,9 +47,11 @@ namespace ChessDemo.Pieces
         }
         public override void MoveCallback(Position2D lastPosition, Position2D newPostion)
         {
+            var controller = (Controllers[CurrentController] as ChessActor);
+            
             if (newPostion == CurrentEnPassaunt && newPostion.Distance(lastPosition) > 1)
             {
-                var direction = (Controllers[CurrentController] as ChessActor).WinningDirection;
+                var direction = controller.WinningDirection;
                 Destroy(CurrentScene[newPostion + new Position2D(0, -direction)].TileObject);
             }
             base.MoveCallback(lastPosition, newPostion);
@@ -57,6 +62,17 @@ namespace ChessDemo.Pieces
                 isFirstMove = false;
                 return;
             }
+        }
+
+        public void Promote<T>(string PieceName) where T : ChessComponent, new()
+        {
+            var tileObj = TileObject;
+            TileObject.RemoveComponent<Pawn>(typeof(Pawn));
+            if (AssetManager.LoadAsset<T>(PieceName).TileObject.TryGetComponent<RenderingComponent>(typeof(RenderingComponent), out var rendering))
+            {
+                if (tileObj.TryGetComponent<RenderingComponent>(typeof(RenderingComponent), out var rend2)) rend2.Visuals = new(rendering.Visuals.Visual, rend2.Visuals.Color);
+            }
+            tileObj.AddComponent<T>();
         }
     }
 }

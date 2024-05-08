@@ -16,6 +16,7 @@ namespace ChessDemo
     using Core.Actors;
     using System.Diagnostics;
     using Core;
+    using ChessDemo.Commands;
 
     public class Programm
     {
@@ -203,10 +204,10 @@ public static class ChessExtentionMethods
         {
             var enPassaunt = Pawn.CurrentEnPassaunt;
             output += (IRenderer.ConvertIntToString(enPassaunt.x + 1) + (8 - enPassaunt.y)).ToLower();
-            //Pawn.CurrentEnPassaunt = default;
         }
         else output += "-";
         output += " ";
+        //Implemet Halfmove and Fullmove counter and also Draw Condition!
         output += "0 1";
         return output;
     }

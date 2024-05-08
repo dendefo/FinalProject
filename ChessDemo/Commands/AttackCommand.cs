@@ -1,4 +1,6 @@
-﻿using Core.Commands;
+﻿using ChessDemo.Commands;
+using ChessDemo.Pieces;
+using Core.Commands;
 using Renderer;
 using System;
 using System.Collections.Generic;
@@ -29,7 +31,15 @@ namespace ChessDemo
                     return;
                 }
                 MoveObject(CommandSystem.Instance.SelectedObject, position, true);
+                var controller = Controllers[CurrentController] as ChessActor;
 
+                if (CommandSystem.Instance.SelectedObject.TryGetComponent<Pawn>(typeof(Pawn), out var pawn))
+                {
+                    if (position.y == 0 && controller.WinningDirection == -1 || position.y == CurrentScene.Height - 1 && controller.WinningDirection == 1)
+                    {
+                        PromoteCommand.ChoosePromotion();
+                    }
+                }
                 if (position == CommandSystem.Instance.SelectedObject.Position)
                 {
                     //Object moved

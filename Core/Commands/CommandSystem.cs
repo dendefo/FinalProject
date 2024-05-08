@@ -74,6 +74,7 @@ namespace Core.Commands
                 {
                     activated++;
                     command.Activate(parameters);
+                    break;
                 }
             }
             if (activated == 0)
