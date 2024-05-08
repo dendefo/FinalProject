@@ -59,22 +59,22 @@ namespace ChessDemo.Pieces
                     if (EnemyKing == null) { throw new Exception("No King on the Board!"); }
                     possibleMoves = possibleMoves.Where(x => x.Distance(EnemyKing.Position) >= 2);
                     //This is dirty and slow, but works
-                    possibleMoves = CheckSimulation(possibleMoves, gameState, startPos, actor);
+                    possibleMoves = FilterForSelfCheck(possibleMoves, gameState, startPos, actor);
                     return possibleMoves;
                 }
                 //If piece that wants to move is not a player's king
                 else
                 {
-                    return CheckSimulation(possibleMoves, gameState, startPos, actor);
+                    return FilterForSelfCheck(possibleMoves, gameState, startPos, actor);
                 }
             }
             else
             {
-                return CheckSimulation(possibleMoves, gameState, startPos, actor);
+                return FilterForSelfCheck(possibleMoves, gameState, startPos, actor);
             }
 
         }
-        private IEnumerable<Position2D> CheckSimulation(IEnumerable<Position2D> attemptedMoves, Scene gameState, Position2D startPos, ChessActor actor)
+        private IEnumerable<Position2D> FilterForSelfCheck(IEnumerable<Position2D> attemptedMoves, Scene gameState, Position2D startPos, ChessActor actor)
         {
             List<Position2D> notCheckMoves = new();
             var temp = gameState[startPos].TileObject;
