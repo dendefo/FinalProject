@@ -9,7 +9,7 @@
     {
         static void Main(string[] args)
         {
-            SetUp(16, 16, new ConsoleRenderer());
+            SetUp(10, 10, new ConsoleRenderer());
             DefinePlayers(new MineSweeperActor());
 
             foreach (var tile in CurrentScene)
@@ -38,18 +38,23 @@
             Command.CommandExecuted += CommandListener;
             Play();
 
+            MineSweeperComponent.OnMineHit -= Lose;
+            MineSweeperComponent.OnWin -= Win;
+            Thread.Sleep(100000);
         }
 
         private static void Win()
         {
             isRunning = false;
-            Console.WriteLine("You Won!");
+            ShowMessage(new("You Win!",System.Drawing.Color.Green));
+            Stop();
         }
 
         private static void Lose()
         {
             isRunning = false;
-            Console.WriteLine("You Lost!");
+            ShowMessage(new("You Lost!",System.Drawing.Color.Red));
+            Stop();
         }
 
         private static void CommandListener(Command command)

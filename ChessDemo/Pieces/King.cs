@@ -11,6 +11,7 @@ namespace ChessDemo.Pieces
 {
     internal class King : ChessComponent
     {
+        public bool isFirstMove = true;
         private List<Position2D> _positions = new()
         {
             new Position2D(1, 0),
@@ -41,7 +42,49 @@ namespace ChessDemo.Pieces
                         _moves.Add(newPosition);
                 }
             }
+            //Check fo castling
+            if (isFirstMove)
+            {
+                var rooks = currentGameState.Where(x => x.TileObject != null && x.TileObject.TryGetComponent<Rook>(typeof(Rook), out var rook) && rook.isFirstMove && rook.GetComponent<ControllerComponent>(typeof(ControllerComponent)).ControllerID == thisControllerComponent.ControllerID);
+                foreach (var rook in rooks)
+                {
+                    var direction = rook.Position.x > selfPosition.x ? new Position2D(1, 0) : new Position2D(-1, 0);
+                    var distance = Math.Abs(rook.Position.x - selfPosition.x);
+                    bool canCastle = true;
+                    for (int i = 1; i < distance; i++)
+                    {
+                        if (!currentGameState.IsEmpty(selfPosition + direction * i))
+                        {
+                            canCastle = false;
+                            break;
+                        }
+                    }
+                    if (canCastle)
+                    {
+                        _moves.Add(selfPosition + direction * 2);
+                    }
+                }
+            }
             return _moves;
+        }
+        public override void MoveCallback(Position2D lastPosition, Position2D newPostion)
+        {
+            if (isFirstMove)
+            {
+                isFirstMove = false;
+            }
+            //if castled (with little error handling)
+            if (lastPosition.Distance(newPostion) > 1.1f)
+            {
+                //Look for the closest rook and move next to king
+                var isMovedLeft = lastPosition.x > newPostion.x;
+                var direction = isMovedLeft ? new Position2D(-2, 0) : new Position2D(1, 0);
+                var rookPosition = newPostion + direction;
+                var rook = Engine.CurrentScene[rookPosition].TileObject.GetComponent<Rook>(typeof(Rook));
+                var newRookPosition = newPostion + new Position2D(isMovedLeft ? 1 : -1, 0);
+                Engine.MoveObject(rook.TileObject, newRookPosition);
+            }
+            base.MoveCallback(lastPosition, newPostion);
         }
 
         public override string ToString()

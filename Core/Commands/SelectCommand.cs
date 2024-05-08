@@ -14,7 +14,7 @@ namespace Core.Commands
     using static Core.Engine;
     public class SelectCommand : Command
     {
-        public SelectCommand(string prompt) : base("Selects object in coordinated", prompt, false)
+        public SelectCommand(string prompt) : base("Selects object in coordinates", prompt, false)
         {
         }
 

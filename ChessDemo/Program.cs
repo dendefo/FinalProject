@@ -137,6 +137,10 @@ public static class ChessExtentionMethods
 {
     public static string ToFENFromat(this Scene scene)
     {
+        int KingSideWhiteCastle = 0;
+        int QueenSideWhiteCastle = 0;
+        int KingSideBlackCastle = 0;
+        int QueenSideBlackCastle = 0;
         string output = "";
         for (int i = 0; i < scene.Height; i++)
         {
@@ -148,8 +152,34 @@ public static class ChessExtentionMethods
                     var piece = component.ToString();
                     if (scene[j, i].TileObject.TryGetComponent<ControllerComponent>(typeof(ControllerComponent), out var controller))
                     {
-                        if (controller.ControllerID != 0) piece = piece.ToLower();
-                        else piece = piece.ToUpper();
+                        if (controller.ControllerID != 0)
+                        {
+                            if (component is King king && king.isFirstMove) 
+                            {
+                                KingSideBlackCastle++;
+                                QueenSideBlackCastle++;
+                            }
+                            else if (component is Rook rook && rook.isFirstMove)
+                            {
+                                if (rook.Position.x == 0) QueenSideBlackCastle++;
+                                else if (rook.Position.x == 7) KingSideBlackCastle++;
+                            }
+                            piece = piece.ToLower();
+                        }
+                        else 
+                        {
+                            if (component is King king && king.isFirstMove)
+                            {
+                                KingSideWhiteCastle++;
+                                QueenSideWhiteCastle++;
+                            }
+                            else if (component is Rook rook && rook.isFirstMove)
+                            {
+                                if (rook.Position.x == 0) QueenSideWhiteCastle++;
+                                else if (rook.Position.x == 7) KingSideWhiteCastle++;
+                            }
+                            piece = piece.ToUpper(); 
+                        }
                     }
                     if (empty > 0)
                     {
@@ -165,7 +195,10 @@ public static class ChessExtentionMethods
         }
         output = output.Remove(output.Length - 1);
         output += Engine.CurrentController == 0 ? " w " : " b ";
-        output += "- - 0 1";
+        var castlings = (KingSideWhiteCastle == 2 ? "K" : "") + (QueenSideWhiteCastle == 2 ? "Q" : "") + (KingSideBlackCastle == 2 ? "k" : "") + (QueenSideBlackCastle == 2 ? "q" : "");
+        output += castlings == "" ? "-" : castlings;
+        output += " ";
+        output += "- 0 1";
         return output;
     }
 }

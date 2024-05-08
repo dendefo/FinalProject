@@ -8,6 +8,7 @@ namespace ChessDemo.Pieces
 {
     internal class Rook : ChessComponent
     {
+        public bool isFirstMove = true;
         public override IEnumerable<Position2D> GetPossibleMoves(Position2D selfPosition, Scene currentGameState)
         {
             IEnumerable<Position2D> possibleMoves = new List<Position2D>();
@@ -19,7 +20,15 @@ namespace ChessDemo.Pieces
             possibleMoves = possibleMoves.Concat(CheckInDirection(selfPosition, new Position2D(1, 0), currentGameState, thisControllerComponent));
             return possibleMoves;
         }
-
+        public override void MoveCallback(Position2D lastPosition, Position2D newPostion)
+        {
+            if (isFirstMove)
+            {
+                isFirstMove = false;
+                return;
+            }
+            base.MoveCallback(lastPosition, newPostion);
+        }
         public override string ToString()
         {
             return "r";
