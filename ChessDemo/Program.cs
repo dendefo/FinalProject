@@ -42,6 +42,7 @@ namespace ChessDemo
             CommandSystem.Instance.AddCommand(new ShowCommand("Show"));
             CommandSystem.Instance.AddCommand(new SelectAndMoveCommand("StockFish"));
             CommandSystem.Instance.AddCommand(new FenCommand("FEN"));
+            CommandSystem.Instance.AddCommand(new ResignCommand("Resign"));
 
             Command.CommandExecuted += CommandsCallback;
 
@@ -91,9 +92,9 @@ namespace ChessDemo
         {
             switch (c)
             {
-                case SelectCommand s:
-                    break;
-                case DeselectCommand d:
+                case ResignCommand r:
+                    ShowMessage(new("Player " + Controllers[CurrentController].Name + " has resigned! ", Color.Red));
+                    Stop();
                     break;
                 case AttackCommand a:
                 case SelectAndMoveCommand m:

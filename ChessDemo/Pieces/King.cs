@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace ChessDemo.Pieces
 {
+    using static Core.Engine;
     internal class King : ChessComponent
     {
         public bool isFirstMove = true;
@@ -45,6 +46,7 @@ namespace ChessDemo.Pieces
             //Check fo castling
             if (isFirstMove)
             {
+                if ((Controllers[CurrentController] as ChessActor).IsInCheck(currentGameState)) return _moves;
                 var rooks = currentGameState.Where(x => x.TileObject != null && x.TileObject.TryGetComponent<Rook>(typeof(Rook), out var rook) && rook.isFirstMove && rook.GetComponent<ControllerComponent>(typeof(ControllerComponent)).ControllerID == thisControllerComponent.ControllerID);
                 foreach (var rook in rooks)
                 {
@@ -53,7 +55,11 @@ namespace ChessDemo.Pieces
                     bool canCastle = true;
                     for (int i = 1; i < distance; i++)
                     {
-                        if (!currentGameState.IsEmpty(selfPosition + direction * i))
+                        //Checks if king is gonna walk through checked tile and if there is a piece in the way
+                        if (!currentGameState.IsEmpty(selfPosition + direction * i) ||
+                            FilterForSelfCheck(new List<Position2D>()
+                            { selfPosition + direction * i }, currentGameState, selfPosition,
+                            Controllers[CurrentController] as ChessActor).Count() == 0)
                         {
                             canCastle = false;
                             break;

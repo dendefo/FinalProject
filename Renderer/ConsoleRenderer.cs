@@ -18,13 +18,13 @@ namespace Renderer
             Console.SetCursorPosition(1, 0);
             for (int i = 0; i < scene.Width; i++)
             {
-                Console.SetCursorPosition((i + 1) * 3 - 1, 0);
+                Console.SetCursorPosition((i + 1) * 3 + (scene.Width / 10) - 1, 0);
                 Console.Write(IRenderer.ConvertIntToString(i + 1));
             }
             Console.SetCursorPosition(1, scene.Height + 1);
             for (int i = 0; i < scene.Width; i++)
             {
-                Console.SetCursorPosition((i + 1) * 3 - 1, scene.Height + 1);
+                Console.SetCursorPosition((i + 1) * 3 + (scene.Width / 10) - 1, scene.Height + 1);
                 Console.Write(IRenderer.ConvertIntToString(i + 1));
             }
             //Prints numbers on the right and left side of the screen

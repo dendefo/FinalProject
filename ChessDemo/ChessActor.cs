@@ -27,6 +27,7 @@ namespace ChessDemo
                 //Goes Through all chess pieces on the board
                 if (tile.TileObject.TryGetComponent<ChessComponent>(typeof(ChessComponent), out var comp))
                 {
+                    if (comp is King) continue;
                     //If the piece belongs to the other player
                     if (tile.TileObject.TryGetComponent<ControllerComponent>(typeof(ControllerComponent), out var controller))
                     {

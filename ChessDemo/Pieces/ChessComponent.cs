@@ -73,7 +73,7 @@ namespace ChessDemo.Pieces
             }
 
         }
-        private IEnumerable<Position2D> FilterForSelfCheck(IEnumerable<Position2D> attemptedMoves, Scene gameState, Position2D startPos, ChessActor actor)
+        protected IEnumerable<Position2D> FilterForSelfCheck(IEnumerable<Position2D> attemptedMoves, Scene gameState, Position2D startPos, ChessActor actor)
         {
             List<Position2D> notCheckMoves = new();
             var temp = gameState[startPos].TileObject;

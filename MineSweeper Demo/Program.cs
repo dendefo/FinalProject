@@ -33,7 +33,7 @@
             }
             MineSweeperComponent.OnMineHit += Lose;
             MineSweeperComponent.OnWin += Win;
-            CommandSystem.Instance.AddCommand(new SelectCommand("Select"));
+            CommandSystem.Instance.AddCommand(new SelectCommand("Open"));
             CommandSystem.Instance.AddCommand(new FlagCommand("Flag"));
             Command.CommandExecuted += CommandListener;
             Play();
