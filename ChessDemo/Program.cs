@@ -29,7 +29,7 @@ namespace ChessDemo
             while (!uint.TryParse(Console.ReadLine(), out difficulty)) ;
             SetUp(8, 8, new ConsoleRenderer());
             CurrentScene.ChessFloor();
-            DefinePlayers(new ChessPlayerActor() { Name = "Blue", Color = Color.Blue, WinningDirection = -1 }, new ChessPlayerActor() { Name = "Red", Color = Color.Red, WinningDirection = 1});
+            DefinePlayers(new ChessPlayerActor() { Name = "Blue", Color = Color.Blue, WinningDirection = -1 }, new ChessPlayerActor() { Name = "Red", Color = Color.Red, WinningDirection = 1 });
             // Example of saving assets
             //AssetManager.SaveAsset(RookPrefab, "Rook");
             //AssetManager.SaveAsset(PawnPrefab, "Pawn");
@@ -100,29 +100,21 @@ namespace ChessDemo
                 case SelectAndMoveCommand m:
                     foreach (var controller in Controllers)
                     {
+                        int possibleMoves = CountPossibleMoves(controller as ChessActor);
                         if ((controller as ChessActor).IsInCheck(CurrentScene))
                         {
                             ShowMessage(new("Player " + controller.Name + " is in Check! ", Color.Orange));
-                            int countPossibleMoves = 0;
-                            foreach (var tile in CurrentScene)
-                            {
-                                if (tile.TileObject == null) continue;
-                                if (tile.TileObject.TryGetComponent<ControllerComponent>(typeof(ControllerComponent), out var contTemp) &&
-                                    contTemp.ControllerID == controller.ControllerID)
-                                {
-                                    var movProvider = tile.TileObject.GetComponent<ChessComponent>(typeof(ChessComponent));
-                                    var moves = movProvider.GetPossibleMoves(tile.Position, CurrentScene).Union(movProvider.GetPossibleDestroyMoves(tile.Position, CurrentScene));
-                                    moves = movProvider.FilterMoves(moves, CurrentScene, contTemp, tile.Position);
-                                    countPossibleMoves += moves.Count();
-                                }
-                            }
-                            if (countPossibleMoves == 0)
+                            if (possibleMoves == 0)
                             {
                                 ShowMessage(new("Player " + controller.Name + " is in Mate! ", Color.Red));
                                 Stop();
                             }
                         }
-
+                        else if (possibleMoves == 0 && controller.ControllerID != CurrentController)
+                        {
+                            ShowMessage(new("Player " + controller.Name + " is in Stalemate! ", Color.Yellow));
+                            Stop();
+                        }
                     }
 
                     break;
@@ -133,6 +125,24 @@ namespace ChessDemo
                     }
                     break;
             }
+        }
+        public static int CountPossibleMoves(ChessActor controller)
+        {
+            int PossibleMoves = 0;
+
+            foreach (var tile in CurrentScene)
+            {
+                if (tile.TileObject == null) continue;
+                if (tile.TileObject.TryGetComponent<ControllerComponent>(typeof(ControllerComponent), out var contTemp) &&
+                    contTemp.ControllerID == controller.ControllerID)
+                {
+                    var movProvider = tile.TileObject.GetComponent<ChessComponent>(typeof(ChessComponent));
+                    var moves = movProvider.GetPossibleMoves(tile.Position, CurrentScene).Union(movProvider.GetPossibleDestroyMoves(tile.Position, CurrentScene));
+                    moves = movProvider.FilterMoves(moves, CurrentScene, contTemp, tile.Position);
+                    PossibleMoves += moves.Count();
+                }
+            }
+            return PossibleMoves;
         }
     }
 }
