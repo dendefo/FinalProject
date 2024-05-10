@@ -70,7 +70,7 @@ namespace Core.Commands
 
             foreach (var command in Commands)
             {
-                if (parameters[0].ToLower() == command.Prompt.ToLower())
+                if (parameters[0].ToLower() == command.Prompt.ToLower() && command.IsEnabled)
                 {
                     activated++;
                     command.Activate(parameters);
@@ -173,7 +173,7 @@ namespace Core.Commands
                 position = default;
                 return false;
             }
-            if (charvalue >= CurrentScene.Width || pos-1 >= CurrentScene.Height)
+            if (charvalue >= CurrentScene.Width || pos - 1 >= CurrentScene.Height)
             {
                 ShowMessage(new("Invalid parameters, out of bounds", Color.Red));
                 position = default;
@@ -182,5 +182,18 @@ namespace Core.Commands
             position = new((int)charvalue, CurrentScene.Height - (pos));
             return true;
         }
+
+        //Disables all commands except the one passed in, listens for input, then re-enables all commands
+        public void IsolateOneCommand(Command command, Func<string> action)
+        {
+            DisableAllCommands();
+            AddCommand(command);
+            Listen(action);
+            RemoveCommand(command);
+            EnableAllCommands();
+        }
+        private void DisableAllCommands() => Commands.ForEach(command => command.IsEnabled = false);
+        private void EnableAllCommands() => Commands.ForEach(command => command.IsEnabled = true);
+
     }
 }

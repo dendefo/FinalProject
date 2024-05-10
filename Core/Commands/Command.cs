@@ -13,6 +13,14 @@ namespace Core.Commands
         public string Description { get; protected set; }
         public string Prompt;
         public bool DoesEndTurn { get; protected set; } = false;
+        private bool _isEnabled = true;
+        public virtual bool IsEnabled
+        {
+            get
+            { return _isEnabled; }
+            set
+            { _isEnabled = value; }
+        }
         public static event Action<Command> CommandExecuted;
         public Command(string description, string prompt, bool doesEndTurn)
         {
