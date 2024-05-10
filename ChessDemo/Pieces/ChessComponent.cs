@@ -102,5 +102,10 @@ namespace ChessDemo.Pieces
         {
             Pawn.CurrentEnPassaunt = default;
         }
+        public override void Dispose()
+        {
+            base.Dispose();
+            Programm.HalfMoves = -1;
+        }
     }
 }

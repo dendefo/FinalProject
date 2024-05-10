@@ -50,7 +50,7 @@ namespace Core.Components
             return ret;
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             TileObject = null;
         }

@@ -48,7 +48,7 @@ namespace ChessDemo.Pieces
         public override void MoveCallback(Position2D lastPosition, Position2D newPostion)
         {
             var controller = (Controllers[CurrentController] as ChessActor);
-            
+            Programm.HalfMoves = -1;
             if (newPostion == CurrentEnPassaunt && newPostion.Distance(lastPosition) > 1)
             {
                 var direction = controller.WinningDirection;

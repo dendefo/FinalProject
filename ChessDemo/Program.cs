@@ -1,4 +1,5 @@
 ﻿global using System.Drawing;
+using ChessDemo;
 using ChessDemo.Pieces;
 using Core;
 using Core.Components;
@@ -20,6 +21,8 @@ namespace ChessDemo
 
     public class Programm
     {
+        public static int HalfMoves = 0;
+        public static int FullMoves = 0;
 
         static void Main(string[] args)
         {
@@ -98,6 +101,13 @@ namespace ChessDemo
                     break;
                 case AttackCommand a:
                 case SelectAndMoveCommand m:
+                    HalfMoves++;
+                    if (HalfMoves==100)
+                    {
+                        ShowMessage(new("Draw by 50 moves rule! ", Color.Yellow)); Stop();
+                        return;
+                    }
+                    if (CurrentController == 1) FullMoves++;
                     foreach (var controller in Controllers)
                     {
                         int possibleMoves = CountPossibleMoves(controller as ChessActor);
@@ -108,12 +118,14 @@ namespace ChessDemo
                             {
                                 ShowMessage(new("Player " + controller.Name + " is in Mate! ", Color.Red));
                                 Stop();
+                                return;
                             }
                         }
                         else if (possibleMoves == 0 && controller.ControllerID != CurrentController)
                         {
                             ShowMessage(new("Player " + controller.Name + " is in Stalemate! ", Color.Yellow));
                             Stop();
+                            return;
                         }
                     }
 
@@ -219,7 +231,7 @@ public static class ChessExtentionMethods
         else output += "-";
         output += " ";
         //Implemet Halfmove and Fullmove counter and also Draw Condition!
-        output += "0 1";
+        output += $"{Programm.HalfMoves} {Programm.FullMoves}";
         return output;
     }
 }
