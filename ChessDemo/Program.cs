@@ -23,6 +23,7 @@ namespace ChessDemo
     {
         public static int HalfMoves = 0;
         public static int FullMoves = 0;
+        public static List<string> GameFENs = new();
 
         static void Main(string[] args)
         {
@@ -90,6 +91,12 @@ namespace ChessDemo
             {
                 Instantiate(PawnPrefab, new(i, 6), Controllers[0]);
             }
+            string fen = CurrentScene.ToFENFromat();
+            //Remove moves counter from fen
+            fen = fen.Substring(0, fen.LastIndexOf(' '));
+            fen = fen.Substring(0, fen.LastIndexOf(' '));
+            fen = fen.Remove(fen.LastIndexOf('w'));
+            GameFENs.Add(fen);
         }
         public static void CommandsCallback(Command c)
         {
@@ -108,6 +115,20 @@ namespace ChessDemo
                         return;
                     }
                     if (CurrentController == 1) FullMoves++;
+                    string fen = CurrentScene.ToFENFromat();
+                    //Remove moves counter from fen
+                    fen = fen.Substring(0, fen.LastIndexOf(' '));
+                    fen = fen.Substring(0, fen.LastIndexOf(' '));
+                    if (CurrentController == 0) fen = fen.Substring(0, fen.LastIndexOf('w'));
+                    else fen = fen.Substring(0, fen.LastIndexOf('b'));
+                    GameFENs.Add(fen);
+                    //Count repetition FENs
+                    if (GameFENs.Count(x => x == fen) == 3)
+                    {
+                        ShowMessage(new("Draw by repetition! ", Color.Yellow)); Stop();
+                        return;
+                    }
+
                     foreach (var controller in Controllers)
                     {
                         int possibleMoves = CountPossibleMoves(controller as ChessActor);
