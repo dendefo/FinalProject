@@ -18,22 +18,31 @@ namespace ChessDemo
     using System.Diagnostics;
     using Core;
     using ChessDemo.Commands;
+    using WindowRenderer;
+    using System.Windows.Forms;
 
     public class Programm
     {
         public static int HalfMoves = 0;
         public static int FullMoves = 0;
         public static List<string> GameFENs = new();
+        public static IRenderer renderer;
 
         static void Main(string[] args)
         {
+
             Console.WriteLine("Welcome to Chess Game!");
-            Console.WriteLine("Choose Difficulty from 1 to 15");
-            uint difficulty;
-            while (!uint.TryParse(Console.ReadLine(), out difficulty)) ;
-            SetUp(8, 8, new ConsoleRenderer());
+            Console.WriteLine("Choose Renderer \n1: Console\n2: Graphic");
+            uint difficulty = 1;
+            uint choice = 0;
+            while (choice != 1 && choice != 2)
+            {
+                uint.TryParse(Console.ReadLine(), out choice);
+            }
+            renderer = choice == 1 ? new ConsoleRenderer() : new WindowRenderer();
+            SetUp(8, 8, renderer);
             CurrentScene.ChessFloor();
-            DefinePlayers(new ChessPlayerActor() { Name = "Blue", Color = Color.Blue, WinningDirection = -1 }, new ChessPlayerActor() { Name = "Red", Color = Color.Red, WinningDirection = 1 });
+            DefinePlayers(new ChessPlayerActor() { Name = "Blue", Color = Color.Blue, WinningDirection = -1 }, new StockFish() { Name = "Red", Color = Color.Red, WinningDirection = 1, Difficulty = difficulty });
             // Example of saving assets
             //AssetManager.SaveAsset(RookPrefab, "Rook");
             //AssetManager.SaveAsset(PawnPrefab, "Pawn");
@@ -50,11 +59,27 @@ namespace ChessDemo
 
             Command.CommandExecuted += CommandsCallback;
 
-            Play();
+            if (renderer is WindowRenderer windowRenderer)
+            {
+                windowRenderer.form.Shown += Form_Shown;
+                CommandConverter.Initialize(windowRenderer);
+                Application.Run(windowRenderer.form);
+                windowRenderer.form.Shown -= Form_Shown;
+            }
+            else
+            {
+                Play();
+            }
             Command.CommandExecuted -= CommandsCallback;
             Thread.Sleep(10000);
 
         }
+
+        private async static void Form_Shown(object? sender, EventArgs e)
+        {
+            await Task.Run(() => Play());
+        }
+
         public static void SetUpPiecesForTwoPlayers()
         {
             // Load the assets
@@ -109,7 +134,7 @@ namespace ChessDemo
                 case AttackCommand a:
                 case SelectAndMoveCommand m:
                     HalfMoves++;
-                    if (HalfMoves==100)
+                    if (HalfMoves == 100)
                     {
                         ShowMessage(new("Draw by 50 moves rule! ", Color.Yellow)); Stop();
                         return;

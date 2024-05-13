@@ -242,12 +242,23 @@ namespace Core
             Command.CommandExecuted += Command_CommandExecuted;
             while (isRunning)
             {
-                var controller = Controllers[CurrentController];
-                ShowMessage(new($"{controller.Name} Player turn", controller.Color));
-                Render();
-                CurrentScene.ClearHighlights();
-                controller.StartTurn();
+                Loop();
             }
+        }
+        public static bool Loop() 
+        {
+            if (!isRunning) return false;
+            var controller = Controllers[CurrentController];
+            ShowMessage(new($"{controller.Name} Player turn", controller.Color));
+            Render();
+            CurrentScene.ClearHighlights();
+            controller.StartTurn();
+            return true;
+        }
+        public static void TurnOn()
+        {
+            isRunning = true;
+            Command.CommandExecuted += Command_CommandExecuted;
         }
         public static void Stop()
         {
