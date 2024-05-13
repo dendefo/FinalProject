@@ -34,7 +34,12 @@ namespace WindowRenderer
                 graphics.FillRectangle(new SolidBrush(BackgroundObject.Visuals.Color), BackgroundObject.Position.x * size, BackgroundObject.Position.y * size, size, size);
             if (@object != null)
             {
-                graphics.DrawString(@object.Visuals.Visual.ToString(), new Font("Arial", size * 0.75f), new SolidBrush(@object.Visuals.Color), BackgroundObject.Position.x * size, BackgroundObject.Position.y * size);
+                if (@object.Visuals.Visual is Image image)
+                {
+                    graphics.DrawImage(@object.Visuals.Visual as Image, BackgroundObject.Position.x * size+10, BackgroundObject.Position.y * size+10, size-20, size-20);
+                }
+                else
+                    graphics.DrawString(@object.Visuals.Visual.ToString(), new Font("Arial", size * 0.75f), new SolidBrush(@object.Visuals.Color), BackgroundObject.Position.x * size, BackgroundObject.Position.y * size);
             }
         }
         public void ShowMessage(MessageLine message)

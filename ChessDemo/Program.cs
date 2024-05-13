@@ -42,12 +42,11 @@ namespace ChessDemo
             renderer = choice == 1 ? new ConsoleRenderer() : new WindowRenderer();
             SetUp(8, 8, renderer);
             CurrentScene.ChessFloor();
-            DefinePlayers(new ChessPlayerActor() { Name = "Blue", Color = Color.Blue, WinningDirection = -1 }, new StockFish() { Name = "Red", Color = Color.Red, WinningDirection = 1, Difficulty = difficulty });
+            DefinePlayers(new ChessPlayerActor() { Name = "White", Color = Color.White, WinningDirection = -1 }, new StockFish() { Name = "Black", Color = Color.Black, WinningDirection = 1, Difficulty = difficulty });
             // Example of saving assets
             //AssetManager.SaveAsset(RookPrefab, "Rook");
             //AssetManager.SaveAsset(PawnPrefab, "Pawn");
 
-            SetUpPiecesForTwoPlayers();
 
             CommandSystem.Instance.AddCommand(new SelectCommand("Select"));
             CommandSystem.Instance.AddCommand(new DeselectCommand("Deselect"));
@@ -61,6 +60,7 @@ namespace ChessDemo
 
             if (renderer is WindowRenderer windowRenderer)
             {
+                SetUpPiecesForImages();
                 windowRenderer.form.Shown += Form_Shown;
                 CommandConverter.Initialize(windowRenderer);
                 Application.Run(windowRenderer.form);
@@ -68,10 +68,13 @@ namespace ChessDemo
             }
             else
             {
+                Controllers[0].Color = Color.Blue;
+                Controllers[1].Color = Color.Red;
+                SetUpPiecesForChars();
                 Play();
+                Thread.Sleep(10000);
             }
             Command.CommandExecuted -= CommandsCallback;
-            Thread.Sleep(10000);
 
         }
 
@@ -79,8 +82,7 @@ namespace ChessDemo
         {
             await Task.Run(() => Play());
         }
-
-        public static void SetUpPiecesForTwoPlayers()
+        public static void SetUpPiecesForChars()
         {
             // Load the assets
             var RookPrefab = AssetManager.LoadAsset<Rook>("Rook");
@@ -89,7 +91,6 @@ namespace ChessDemo
             var BishopPrefab = AssetManager.LoadAsset<Bishop>("Bishop");
             var KnightPrefab = AssetManager.LoadAsset<Knight>("Knight");
             var KingPrefab = AssetManager.LoadAsset<King>("King");
-
 
             //Example of Adding assets to scene by reference to prefab component
             Instantiate(RookPrefab, new(0, 0), Controllers[1]);
@@ -116,12 +117,88 @@ namespace ChessDemo
             {
                 Instantiate(PawnPrefab, new(i, 6), Controllers[0]);
             }
+            FirstFEN();
+        }
+        public static void SetUpPiecesForImages()
+        {
+            // Load the assets
+            var RookPrefab = AssetManager.LoadAsset<Rook>("Rook");
+            var PawnPrefab = AssetManager.LoadAsset<Pawn>("Pawn");
+            var QueenPrefab = AssetManager.LoadAsset<Queen>("Queen");
+            var BishopPrefab = AssetManager.LoadAsset<Bishop>("Bishop");
+            var KnightPrefab = AssetManager.LoadAsset<Knight>("Knight");
+            var KingPrefab = AssetManager.LoadAsset<King>("King");
+            Bitmap KingIcon = new Bitmap("C:\\Users\\danie\\Documents\\GitHub\\QuarterEngine\\ChessDemo\\Assets\\King.png");
+            Bitmap RookIcon = new Bitmap("C:\\Users\\danie\\Documents\\GitHub\\QuarterEngine\\ChessDemo\\Assets\\Rook.png");
+            Bitmap QueenIcon = new Bitmap("C:\\Users\\danie\\Documents\\GitHub\\QuarterEngine\\ChessDemo\\Assets\\Queen.png");
+            Bitmap BishopIcon = new Bitmap("C:\\Users\\danie\\Documents\\GitHub\\QuarterEngine\\ChessDemo\\Assets\\Bishop.png");
+            Bitmap KnightIcon = new Bitmap("C:\\Users\\danie\\Documents\\GitHub\\QuarterEngine\\ChessDemo\\Assets\\Knight.png");
+            Bitmap PawnIcon = new Bitmap("C:\\Users\\danie\\Documents\\GitHub\\QuarterEngine\\ChessDemo\\Assets\\Pawn.png");
+
+            //Example of Adding assets to scene by reference to prefab component
+            FillPieceWithColor(Instantiate(RookPrefab, new(0, 0), Controllers[1]), RookIcon);
+            FillPieceWithColor(Instantiate(RookPrefab, new(7, 0), Controllers[1]), RookIcon);
+            FillPieceWithColor(Instantiate(QueenPrefab, new(3, 0), Controllers[1]), QueenIcon);
+            FillPieceWithColor(Instantiate(BishopPrefab, new(2, 0), Controllers[1]), BishopIcon);
+            FillPieceWithColor(Instantiate(BishopPrefab, new(5, 0), Controllers[1]), BishopIcon);
+            FillPieceWithColor(Instantiate(KnightPrefab, new(1, 0), Controllers[1]), KnightIcon);
+            FillPieceWithColor(Instantiate(KnightPrefab, new(6, 0), Controllers[1]), KnightIcon);
+            FillPieceWithColor(Instantiate(KingPrefab, new(4, 0), Controllers[1]), KingIcon);
+            for (int i = 0; i < 8; i++)
+            {
+                FillPieceWithColor(Instantiate(PawnPrefab, new(i, 1), Controllers[1]), PawnIcon);
+            }
+            FillPieceWithColor(Instantiate(RookPrefab, new(0, 7), Controllers[0]), RookIcon);
+            FillPieceWithColor(Instantiate(RookPrefab, new(7, 7), Controllers[0]), RookIcon);
+            FillPieceWithColor(Instantiate(QueenPrefab, new(3, 7), Controllers[0]), QueenIcon);
+            FillPieceWithColor(Instantiate(BishopPrefab, new(2, 7), Controllers[0]), BishopIcon);
+            FillPieceWithColor(Instantiate(BishopPrefab, new(5, 7), Controllers[0]), BishopIcon);
+            FillPieceWithColor(Instantiate(KnightPrefab, new(1, 7), Controllers[0]), KnightIcon);
+            FillPieceWithColor(Instantiate(KnightPrefab, new(6, 7), Controllers[0]), KnightIcon);
+            FillPieceWithColor(Instantiate(KingPrefab, new(4, 7), Controllers[0]), KingIcon);
+            for (int i = 0; i < 8; i++)
+            {
+                FillPieceWithColor(Instantiate(PawnPrefab, new(i, 6), Controllers[0]), PawnIcon);
+            }
+            FirstFEN();
+        }
+        public static void FirstFEN()
+        {
             string fen = CurrentScene.ToFENFromat();
             //Remove moves counter from fen
             fen = fen.Substring(0, fen.LastIndexOf(' '));
             fen = fen.Substring(0, fen.LastIndexOf(' '));
             fen = fen.Remove(fen.LastIndexOf('w'));
             GameFENs.Add(fen);
+        }
+        internal static void FillPieceWithColor(ChessComponent piece, Bitmap image)
+        {
+            var comp = piece.GetComponent<RenderingComponent>(typeof(RenderingComponent));
+            image = image.Clone() as Bitmap;
+            comp.Visuals = new(image, comp.Visuals.Color);
+            for (int i = 0; i < image.Height; i++)
+            {
+                bool isFill = false;
+                for (int j = 0; j < image.Width; j++)
+                {
+                    if (image.GetPixel(j, i).A >= 230)
+                    {
+                        var color = comp.Visuals.Color;
+                        image.SetPixel(j, i, Color.FromArgb(255, 255 - color.R, 255 - color.G, 255 - color.B));
+                        isFill = true;
+                        for (int k = j + 1; k < image.Width; k++)
+                        {
+                            if (image.GetPixel(k, i).A >= 230) { isFill = true; break; }
+                            if (image.GetPixel(k, i).A <= 230) isFill = false;
+
+                        }
+                    }
+                    else if (isFill)
+                    {
+                        image.SetPixel(j, i, comp.Visuals.Color);
+                    }
+                }
+            }
         }
         public static void CommandsCallback(Command c)
         {

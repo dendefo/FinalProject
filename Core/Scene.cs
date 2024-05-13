@@ -37,7 +37,7 @@ namespace Core
                     if ((i + j) % 2 != 0)
                         floorTiles[i, j] = new Tile(new Position2D(i, j), new VisualRepresentation(visual: default, System.Drawing.Color.Black));
                     else
-                        floorTiles[i, j] = new Tile(new Position2D(i, j), new VisualRepresentation(visual: default, System.Drawing.Color.Gray));
+                        floorTiles[i, j] = new Tile(new Position2D(i, j), new VisualRepresentation(visual: default, System.Drawing.Color.White));
                 }
             }
         }
